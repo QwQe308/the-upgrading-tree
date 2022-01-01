@@ -125,6 +125,7 @@ addLayer("g", {
     effect(){
         var eff = player[this.layer].power.div(3).add(1).pow(1.5).mul(n(1.1).pow(player[this.layer].power))
         eff = powsoftcap(eff,n(100),2)
+        efd = expRootSoftcap(eff,n(1000),1.5)
         return eff
     },
     effectDescription(){
