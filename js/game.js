@@ -204,7 +204,6 @@ function doReset(layer, force=false) {
 	if(!layers[layer].layerShown) return;
 	if (tmp[layer].type == "none") force = true
 	let row = tmp[layer].row
-	if(row == "side") row = 10
 	if (!force) {
 		if (tmp[layer].baseAmount.lt(tmp[layer].requires)) return;
 		let gain = tmp[layer].resetGain
@@ -248,7 +247,7 @@ function doReset(layer, force=false) {
 	player.points = (row == 0 ? OmegaNumZero : getStartPoints())
 
 	for (let x = row; x >= 0; x--) rowReset(x, layer)
-	rowReset("side", layer)
+	player.u1.t = n(0)
 	prevOnReset = undefined
 
 	player[layer].resetTime = 0
