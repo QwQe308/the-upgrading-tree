@@ -56,7 +56,7 @@ addLayer("p", {
             effect(){
                 var eff = player.points.add(10).log10().pow(2)
                 eff = hasUpgThenPow("p",13,eff)   
-                eff = expRootSoftcap(eff,n(1e8),1.6)   
+                eff = expRootSoftcap(eff,n(1e8),1.25)   
                 return eff
             },
             effectDisplay(){return `x${format(this.effect())}`},
