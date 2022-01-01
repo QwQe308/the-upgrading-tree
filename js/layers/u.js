@@ -316,6 +316,7 @@ addLayer("u1", {
             onEnter(){
                 player.u1.upgrades = [35]
                 for(i=10;i>=1;i--) rowHardReset(i,"u1")
+                player.u1.t = n(0)
             },
             enterReq(){return player.u1.t.gte(10000000)},
             canComplete(){return player.points.gte(100000000)},
