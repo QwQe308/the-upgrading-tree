@@ -102,7 +102,6 @@ addLayer("p", {
             onHold(){
                 doReset(this.layer)
             }
-            unlocked(){return true}
         },
     },
     hotkeys: [
