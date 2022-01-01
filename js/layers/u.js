@@ -322,7 +322,7 @@ addLayer("u1", {
             canComplete(){return player.points.gte(1000000)},
             goalDescription(){return format(ExpantaNum(1000000))+"点数"},
             rewardDisplay(){return `???`},
-            unlocked(){return hasUpgrade("u1",35)||player[this.layer].activeChallenge == this.id}
+            unlocked(){return hasUpgrade("u1",35)||player[this.layer].activeChallenge == 11}
         },
     },
 
