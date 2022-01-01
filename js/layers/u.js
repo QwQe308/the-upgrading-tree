@@ -321,7 +321,7 @@ addLayer("u1", {
             enterReq(){return player.u1.t.gte(10000000)},
             canComplete(){return player.points.gte(100000000)},
             goalDescription(){return format(ExpantaNum(100000000))+"点数"},
-            rewardDisplay(){return `???`},
+            rewardDisplay(){return `您每秒获得10%的重置点,并且自动购买重置点升级.`},
             unlocked(){return hasUpgrade("u1",35)||player[this.layer].activeChallenge == this.id}
         },
     },
