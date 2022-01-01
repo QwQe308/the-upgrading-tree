@@ -95,6 +95,15 @@ addLayer("p", {
             cost(){return n(2048)},
         },
     },
+    clickables: {
+        11: {
+            canClick(){return true},
+            display() {return `长按以重置(手机端qol)`},
+            onHold(){
+                doReset(this.layer)
+            }
+        },
+    },
     hotkeys: [
         {key: "p", description: "P: p转", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
