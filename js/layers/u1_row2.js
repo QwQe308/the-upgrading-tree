@@ -160,7 +160,7 @@ addLayer("g", {
         12: {
             description: "总升级点加成时间速率.",
             effect(){
-                var eff = player.u1.total
+                var eff = player.u1.total.div(10).pow(2).add(1)
                 return eff
             },
             effectDisplay(){return `x${format(this.effect())}`},
