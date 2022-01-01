@@ -36,7 +36,7 @@ addLayer("p", {
         return str
     },
     passiveGeneration(){
-        if(hasMilestone("g",2)) return 0.1
+        if(hasMilestone("g",2) || hasChallenge("u1",11)) return 0.1
         return 0
     },
     unlocked(){return hasUpgrade("u1",11)},
@@ -117,4 +117,5 @@ addLayer("p", {
         }
         else layerDataReset(this.layer)
     },
+    autoUpgrade(){return hasChallenge("u1",11)}
 })
