@@ -12,11 +12,13 @@
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
+	num: "0.2-test",
 	name: "",
 }
 
 let changelog = `<h1>更新日志:</h1><br>
+	<h3>v0.2-test</h3><br>
+		- 添加一排升级.(待测试)
 	<h3>v0.1</h3><br>
 		- 添加前两排升级.`
 

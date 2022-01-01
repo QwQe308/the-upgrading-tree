@@ -275,6 +275,7 @@ function resetRow(row) {
 
 function startChallenge(layer, x) {
 	let enter = false
+	if (!player[layer].enterReq()) return 
 	if (!player[layer].unlocked) return
 	if (player[layer].activeChallenge == x) {
 		completeChallenge(layer, x)

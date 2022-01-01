@@ -27,11 +27,17 @@ addLayer("p", {
     effect(){
         var eff = player.p.points.add(1).pow(0.2)
         eff = hasUpgThenPow("p",11,eff)
+        eff = hasUpgThenPow("u1",34,eff)
+        eff = hasUpgThenPow("b",11,eff)
         return eff
     },
     effectDescription(){
         var str = `重置点加成点数获取x${format(this.effect())}`
         return str
+    },
+    passiveGeneration(){
+        if(hasMilestone("g",2)) return 0.1
+        return 0
     },
     unlocked(){return hasUpgrade("u1",11)},
     layerShown(){return hasUpgrade("u1",11)},
@@ -92,4 +98,12 @@ addLayer("p", {
     hotkeys: [
         {key: "p", description: "P: p转", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
+    doReset(layer){
+        if(layer == this.layer) return
+        if((layer == "b" && hasMilestone("b",1)) || (layer == "g" && hasMilestone("g",1)) || (hasMilestone("b",1) && hasMilestone("g",1))){
+            layerDataReset(this.layer,["upgrades"])
+            return
+        }
+        else layerDataReset(this.layer)
+    },
 })

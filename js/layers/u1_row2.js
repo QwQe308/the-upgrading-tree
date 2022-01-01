@@ -27,6 +27,8 @@ addLayer("b", {
     layerShown(){return hasUpgrade("u1",21)},
     effect(){
         var eff = n(1.5).pow(player[this.layer].points)
+        if(hasMilestone("b",2)) eff = eff.pow(1.25)
+        eff = hasUpgThenPow("b",12,eff)
         return eff
     },
     effectDescription(){return `倍增器使得点数*${format(this.effect())}`},
@@ -39,10 +41,46 @@ addLayer("b", {
         var base = this.base
         if(!this.base) base = new ExpantaNum(2)
         if(this.baseAmount().lt(this.requires())) return new ExpantaNum(0)
-        var gain = this.baseAmount().mul(this.gainMult()).div(this.requires()).pow(this.gainExp()).logBase(this.base).root(this.exponent).add(1).sub(player[this.layer].points).floor().max(0)
+        var gain = this.baseAmount().mul(this.gainMult()).div(this.requires()).pow(this.gainExp()).logBase(base).root(this.exponent).add(1).sub(player[this.layer].points).floor().max(0)
         if(!this.canBuyMax && gain.gte(1)) return new ExpantaNum(1)
         if(gain.gte(1)) if(!this.canBuyMax()) return new ExpantaNum(1)
         return gain
+    },
+    milestones: {
+        1: {
+            requirementDescription: "2倍增器",
+            effectDescription: "保留p升级.",
+            done() { return player.b.points.gte(2) && this.unlocked()},
+            unlocked() {return hasUpgrade("u1",31)},
+        },
+        2: {
+            requirementDescription: "3倍增器",
+            effectDescription: "倍增器效果^1.25.",
+            done() { return player.b.points.gte(3) && this.unlocked()},
+            unlocked() {return hasUpgrade("u1",31)},
+        },
+    },
+    upgrades: {
+        11: {
+            description: "重置点效果基于倍增器增加.",
+            effect(){
+                var eff = player.b.points.pow(0.75).div(10).add(1)
+                return eff
+            },
+            effectDisplay(){return `^${format(this.effect())}`},
+            cost(){return n(2)},
+            unlocked() {return hasUpgrade("u1",31)},
+        },
+        12: {
+            description: "倍增器效果基于重置点增加.",
+            effect(){
+                var eff = player.p.points.add(1).log10().pow(0.75).div(10).add(1)
+                return eff
+            },
+            effectDisplay(){return `^${format(this.effect())}`},
+            cost(){return n(3)},
+            unlocked() {return hasUpgrade("u1",31)},
+        },
     },
 })
 
@@ -86,12 +124,50 @@ addLayer("g", {
     },
     effect(){
         var eff = player[this.layer].power.div(3).add(1).pow(1.5).mul(n(1.1).pow(player[this.layer].power))
+        eff = powsoftcap(eff,n(100),2)
         return eff
     },
     effectDescription(){
         return `产生${format(this.proc())}能量/lg(t+1)^1.5<br>你有${format(player.g.power)}能量,能量使得时间速率*${format(this.effect())}`
     },
     //resetsNothing(){return hasMilestone("t",4)},
+    milestones: {
+        1: {
+            requirementDescription: "4发生器",
+            effectDescription: "保留p升级.",
+            done() { return player.g.points.gte(4) && this.unlocked()},
+            unlocked() {return hasUpgrade("u1",32)},
+        },
+        2: {
+            requirementDescription: "6发生器",
+            effectDescription: "每秒获得10%的重置点.",
+            done() { return player.g.points.gte(6)  && this.unlocked()},
+            unlocked() {return hasUpgrade("u1",32)},
+        },
+    },
+    upgrades: {
+        11: {
+            description: "+3升级点.立即生效.",
+            effect(){
+                var eff = n(3)
+                return eff
+            },
+            effectDisplay(){return `+${format(this.effect())}`},
+            cost(){return n(3)},
+            onPurchase(){player.u1.points = player.u1.points.add(3)},
+            unlocked() {return hasUpgrade("u1",32)},
+        },
+        12: {
+            description: "总升级点加成时间速率.",
+            effect(){
+                var eff = player.u1.points.pow(0.8).div(10).add(1)
+                return eff
+            },
+            effectDisplay(){return `x${format(this.effect())}`},
+            cost(){return n(5)},
+            unlocked() {return hasUpgrade("u1",32)},
+        },
+    },
     //important!!!
     update(diff){
         player[this.layer].power = player.u1.t.add(1).log10().pow(1.5).mul(this.proc())
@@ -110,13 +186,6 @@ addLayer("g", {
         }
         */
     },
-    //milestones: {
-    //    0: {
-    //        requirementDescription: "2发生器",
-    //        effectDescription: "让B层级的软上限更软一点.(? (^0.1 -> ^0.2)",
-    //        done() { return player.g.points.gte(2) }
-    //    },
-    //},
     //canBuyMax(){return hasMilestone("g",3)},
 
     hotkeys: [

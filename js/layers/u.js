@@ -3,6 +3,7 @@ function getU1TimeSpeed(){
     timespeed = hasUpgThenMul("u1",13,timespeed)
     timespeed = hasUpgThenMul("u1",14,timespeed)
     timespeed = timespeed.mul(layerEffect("g"))
+    timespeed = hasUpgThenMul("g",12,timespeed)
     return timespeed
 }
 
@@ -55,6 +56,7 @@ addLayer("u1", {
         var exp = n(0.5)
         exp = hasUpgThenAdd("u1",12,exp)
         exp = hasUpgThenAdd("u1",24,exp)
+        exp = hasUpgThenAdd("u1",33,exp)
         return exp
     },
     row: "side", // Row the layer is in on the tree (0 is the first row)  QwQ:1也可以当第一排
@@ -89,6 +91,7 @@ addLayer("u1", {
         12: {
             cost(x = getBuyableAmount(this.layer, this.id)) {
                 var c = three.pow(x.add(2).pow(1.33))
+                if(x.gte(6)) c = three.pow(x.add(2).pow(1.5))
                 return c
             },
             display() { return `+1 升级点.(重置升级以获得)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}重置点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
@@ -265,19 +268,63 @@ addLayer("u1", {
             },
             effectDisplay(){return `^${format(this.effect())}`},
         },
-    },
-    /*
-    challenges: {
-        11: {
-            name: "AntiLooperrrr",
-            challengeDescription: "因为挑战出了bug，devU13被禁用了。刷新后的第一帧时间计数x100。",
-            canComplete(){return player.points.gte(1e10)},
-            goalDescription(){return format(ExpantaNum(1e10))+"点数"},
-            rewardDisplay(){return `你永远保留dev11的效果，同时“刷新后的第一帧时间计数x100。”被保留。`},
-            unlocked(){return hasUpgrade("dev",15)}
+        31: {
+            description(){return `u${this.id}:解锁倍增器里程碑和升级.`},
+            cost(){return n(9)},
+            unlocked(){return player[this.layer].total.gte(15)},
+            canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
+        },
+        32: {
+            description(){return `u${this.id}:解锁发生器里程碑和升级.`},
+            cost(){return n(9)},
+            unlocked(){return player[this.layer].total.gte(15)},
+            canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
+        },
+        33: {
+            description(){return `u${this.id}:时间指数+0.2.`},
+            cost(){return n(9)},
+            unlocked(){return player[this.layer].total.gte(15)},
+            canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
+            effect(){
+                var eff = n(0.2)
+                return eff
+            },
+            effectDisplay(){return `+${format(this.effect())}`},
+        },
+        34: {
+            description(){return `u${this.id}:重置点效果^1.25.`},
+            cost(){return n(9)},
+            unlocked(){return player[this.layer].total.gte(15)},
+            canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
+            effect(){
+                var eff = n(1.25)
+                return eff
+            },
+            effectDisplay(){return `^${format(this.effect())}`},
+        },
+        35: {
+            description(){return `u${this.id}:解锁U挑战-1.`},
+            cost(){return n(9)},
+            unlocked(){return player[this.layer].total.gte(15)},
+            canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
         },
     },
-    */
+    challenges: {
+        11: {
+            name: "C-1",
+            challengeDescription: "挑战就是没有挑战.进入条件:拥有1,000,000t.Tips:进入任何U挑战后您的升级会被重置,但花费的升级点不会返还!",
+            onEnter(){
+                player.u1.upgrades = []
+                doReset(this.layer)
+                for(i=10;i>=1;i--) rowHardReset(i,"u1")
+            },
+            enterReq(){return player.u1.t.gte(1000000)},
+            canComplete(){return player.points.gte(1000000)},
+            goalDescription(){return format(ExpantaNum(1000000))+"点数"},
+            rewardDisplay(){return `???`},
+            unlocked(){return hasUpgrade("u1",35)}
+        },
+    },
 
     update(diff){
         player.u1.total = buyableEffect("u1",11).add(buyableEffect("u1",12)).add(buyableEffect("u1",13)).add(buyableEffect("u1",14))
