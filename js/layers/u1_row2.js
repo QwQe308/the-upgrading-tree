@@ -64,7 +64,7 @@ addLayer("b", {
         11: {
             description: "重置点效果基于倍增器增加.",
             effect(){
-                var eff = player.b.points.pow(0.75).div(10).add(1)
+                var eff = player.b.points.pow(0.6).div(10).add(1)
                 return eff
             },
             effectDisplay(){return `^${format(this.effect())}`},
@@ -74,7 +74,7 @@ addLayer("b", {
         12: {
             description: "倍增器效果基于重置点增加.",
             effect(){
-                var eff = player.p.points.add(1).log10().pow(0.75).div(10).add(1)
+                var eff = player.p.points.add(1).log10().pow(0.5).div(10).add(1)
                 return eff
             },
             effectDisplay(){return `^${format(this.effect())}`},
