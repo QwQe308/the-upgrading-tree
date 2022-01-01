@@ -315,14 +315,13 @@ addLayer("u1", {
             challengeDescription: "挑战就是没有挑战.进入条件:拥有1,000,000t.Tips:进入任何U挑战后您的升级会被重置,但花费的升级点不会返还!",
             onEnter(){
                 player.u1.upgrades = []
-                doReset(this.layer)
                 for(i=10;i>=1;i--) rowHardReset(i,"u1")
             },
             enterReq(){return player.u1.t.gte(1000000)},
             canComplete(){return player.points.gte(1000000)},
             goalDescription(){return format(ExpantaNum(1000000))+"点数"},
             rewardDisplay(){return `???`},
-            unlocked(){return hasUpgrade("u1",35)||player[this.layer].activeChallenge == 11}
+            unlocked(){return hasUpgrade("u1",35)||player[this.layer].activeChallenge == this.id}
         },
     },
 
