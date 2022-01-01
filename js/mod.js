@@ -12,11 +12,13 @@
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
+	num: "0.21",
 	name: "",
 }
 
 let changelog = `<h1>更新日志:</h1><br>
+	<h3>v0.21</h3><br>
+		- 修正endgame至45.
 	<h3>v0.2</h3><br>
 		- 添加一排升级.(QwQe308:v0.2全程手机码字呜呜呜)<br><br>
 	<h3>v0.1</h3><br>
@@ -55,12 +57,12 @@ var displayThings = [
 		return U1Function
 	},
 	function(){return `t = ${format(player.u1.t)} (+ ${format(getU1TimeSpeed())} /s)`},
-	function(){return `当前endgame:38升级点(也许能更多?)+c1完成`},
+	function(){return `当前endgame:45升级点(也许能更多?)+c1完成`},
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.u1.total.gte(38) && hasChallenge("u1",11)
+	return player.u1.total.gte(45) && hasChallenge("u1",11)
 }
 
 
