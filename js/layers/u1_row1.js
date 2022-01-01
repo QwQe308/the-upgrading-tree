@@ -66,7 +66,7 @@ addLayer("p", {
         13: {
             description: "重置点加成点数加成重置点.",
             effect(){
-                var eff = player.p.points.add(10).log10().pow(0.75).div(5).add(0.75)                
+                var eff = player.p.points.add(10).log10().pow(0.75).div(5).add(0.8)                
                 eff = hasUpgThenPow("p",14,eff)
                 eff = powsoftcap(eff,n(4),2)
                 return eff
