@@ -46,7 +46,8 @@ addLayer("u1", {
         unlocked: true,
 		points: new ExpantaNum(0),
         t:n(0),
-        exchangedUnstableU1P:n(0)
+        exchangedUnstableU1P:n(0),
+        confirmWindow:true,
     }},
     color: "lightblue",
     resource: "升级点", // Name of prestige currency
@@ -221,12 +222,19 @@ addLayer("u1", {
             canClick(){return true},
             display() {return `重置升级<br />升级点恢复为 ${format(player.u1.total)}.(本轮获得${format(player.u1.total.sub(player.u1.best))})<br />您在这一轮中获得了${format(player.u1.exchangedUnstableU1P)}临时升级点(当前值:${format(getUnstableU1P())})`},
             onClick(){
-                if(!confirm("确定重置升级?")) return
+                if(player.u1.confirmWindow) if(!confirm("确定重置升级?")) return
                 player.u1.upgrades = []
                 player.u1.points = player.u1.total
                 player.u1.exchangedUnstableU1P = zero
                 doReset(this.layer)
                 for(i=10;i>=1;i--) rowHardReset(i,"u1")
+            }
+        },
+        12: {
+            canClick(){return true},
+            display() {return `禁用确认重置弹窗(${player.u1.confirmWindow?'未禁用':'已禁用'})`},
+            onClick(){
+                player.u1.confirmWindow = !player.u1.confirmWindow
             }
         },
     },
