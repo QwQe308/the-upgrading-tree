@@ -14,6 +14,7 @@ addLayer("p", {
         mult = new ExpantaNum(1)
         mult = hasUpgThenMul("p",12,mult)
         mult = hasUpgThenMul("p",15,mult)
+        mult = mult.mul(layerEffect("t"))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses

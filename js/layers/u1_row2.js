@@ -1,28 +1,28 @@
 addLayer("b", {
-    name: "booster", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "B", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: -1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    name: "booster", 
+    symbol: "B",
+    position: -1, 
     startData() { return {
         unlocked: true,
 		points: new ExpantaNum(0),
     }},
     color: "blue",
-    resource: "倍增器", // Name of prestige currency
-    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already 
+    resource: "倍增器", 
+    type: "static", 
     baseResource: "点数",
     baseAmount() {return player.points},
     requires(){return n(100)},
     base:20,
     exponent: 1.25,
-    gainMult() { // Calculate the multiplier for main currency from bonuses
+    gainMult() { 
         mult = new ExpantaNum(1)
         return mult
     },
-    gainExp() { // Calculate the exponent on main currency from bonuses
+    gainExp() { 
         var exp = n(1)
         return exp
     },
-    row: 2, // Row the layer is in on the tree (0 is the first row)  QwQ:1也可以当第一排
+    row: 2, 
     branches:["p"],
     layerShown(){return hasUpgrade("u1",21)},
     effect(){
@@ -82,8 +82,25 @@ addLayer("b", {
             unlocked() {return hasUpgrade("u1",31)},
         },
     },
+    clickables: {
+        11: {
+            canClick(){return true},
+            display() {return `长按以重置(手机端qol)`},
+            onHold(){
+                doReset(this.layer)
+            }
+        },
+    },
+    doReset(layer){
+        if(layers[layer].row <= this.row) return
+        if(hasMilestone("t",1)){
+            layerDataReset(this.layer,["upgrades",'milestones'])
+            return
+        }
+        else layerDataReset(this.layer)
+    },
+    autoPrestige(){return hasMilestone('t',2)},
 })
-
 
 
 
@@ -124,12 +141,21 @@ addLayer("g", {
     },
     effect(){
         var eff = player[this.layer].power.div(3).add(1).pow(1.5).mul(n(1.1).pow(player[this.layer].power))
-        eff = powsoftcap(eff,n(100),2)
-        eff = expRootSoftcap(eff,n(1000),1.5)
+        eff = powsoftcap(eff,n(100),1.5)
+        eff = expRootSoftcap(eff,n(100),1.5)
         return eff
     },
     effectDescription(){
         return `产生${format(this.proc())}能量/lg(t+1)^1.5<br>你有${format(player.g.power)}能量,能量使得时间速率*${format(this.effect())}`
+    },
+    clickables: {
+        11: {
+            canClick(){return true},
+            display() {return `长按以重置(手机端qol)`},
+            onHold(){
+                doReset(this.layer)
+            }
+        },
     },
     //resetsNothing(){return hasMilestone("t",4)},
     milestones: {
@@ -155,7 +181,6 @@ addLayer("g", {
             },
             effectDisplay(){return `+${format(this.effect())}`},
             cost(){return n(3)},
-            onPurchase(){player.u1.points = player.u1.points.add(3)},
             unlocked() {return hasUpgrade("u1",32)},
         },
         12: {
@@ -168,6 +193,14 @@ addLayer("g", {
             cost(){return n(5)},
             unlocked() {return hasUpgrade("u1",32)},
         },
+    },
+    doReset(layer){
+        if(layers[layer].row <= this.row) return
+        if(hasMilestone("t",1)){
+            layerDataReset(this.layer,["upgrades",'milestones'])
+            return
+        }
+        else layerDataReset(this.layer)
     },
     //important!!!
     update(diff){
