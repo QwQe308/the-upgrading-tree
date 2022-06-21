@@ -187,8 +187,9 @@ function fixData(defaultData, newData) {
 		}
 	}
 }
-function load() {
+function load(data = null) {
 	let get = localStorage.getItem(modInfo.id);
+	if(data) get = data
 	if (get === null || get === undefined) {
 		player = getStartPlayer();
 		options = getStartOptions();

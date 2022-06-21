@@ -14,7 +14,7 @@ addLayer("t", {
     baseAmount() {return player.points},
     requires(){return n(1e15)},
     base:1e5,
-    exponent: 1.5,
+    exponent: 2,
     gainMult() { 
         mult = new ExpantaNum(1)
         return mult
@@ -32,7 +32,8 @@ addLayer("t", {
       return proc
     },
     effect(){
-        var eff = expRoot(player.t.te.add(10),0.5).div(10)
+        var eff = expRoot(player.t.te.add(10),0.8).div(10)
+        //eff = expRootSoftcap(eff,n(1e50),1.625)
         return eff
     },
     effectDescription(){return `您有${format(player.t.te)}/${format(this.proc().mul(500))}时间能量(+${format(this.proc())}/s)<br>

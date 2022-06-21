@@ -16,6 +16,7 @@ addLayer("b", {
     exponent: 1.25,
     gainMult() { 
         mult = new ExpantaNum(1)
+        mult = mult.mul(challengeEffect("u1",11))
         return mult
     },
     gainExp() { 
@@ -99,7 +100,9 @@ addLayer("b", {
         }
         else layerDataReset(this.layer)
     },
-    autoPrestige(){return hasMilestone('t',2)},
+    resetsNothing(){return false},
+    autoUpgrade(){return autoActive(22)},
+    canBuyMax(){return autoActive(23)},
 })
 
 
@@ -125,6 +128,7 @@ addLayer("g", {
     exponent: 1.2,
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new ExpantaNum(1)
+        mult = mult.mul(challengeEffect("u1",11))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -140,7 +144,7 @@ addLayer("g", {
         return eff.sub(1)
     },
     effect(){
-        var eff = player[this.layer].power.div(3).add(1).pow(1.5).mul(n(1.1).pow(player[this.layer].power))
+        var eff = player[this.layer].power.div(4).add(1).pow(1.5).mul(n(1.1).pow(player[this.layer].power))
         eff = powsoftcap(eff,n(100),1.5)
         eff = expRootSoftcap(eff,n(100),1.5)
         return eff
@@ -157,7 +161,6 @@ addLayer("g", {
             }
         },
     },
-    //resetsNothing(){return hasMilestone("t",4)},
     milestones: {
         1: {
             requirementDescription: "4发生器",
@@ -186,7 +189,7 @@ addLayer("g", {
         12: {
             description: "总升级点加成时间速率.",
             effect(){
-                var eff = player.u1.total.div(8).pow(3).add(1)
+                var eff = player.u1.total.div(9).pow(2.5).add(1)
                 return eff
             },
             effectDisplay(){return `x${format(this.effect())}`},
@@ -220,11 +223,11 @@ addLayer("g", {
         }
         */
     },
-    //canBuyMax(){return hasMilestone("g",3)},
 
     hotkeys: [
         {key: "g", description: "G: G转", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
+    canBuyMax(){return autoActive(33)},
         //static gain
         getResetGain(){
             //cost = (base^(x^exp)*req/gainMult)^(1/gainExp) 注：原公式是*gainMult 但因为OmegaNum精确度问题改为除以.
@@ -236,4 +239,6 @@ addLayer("g", {
             if(gain.gte(1)) if(!this.canBuyMax()) return new ExpantaNum(1)
             return gain
         },
+    autoUpgrade(){return autoActive(32)},
+    resetsNothing(){return false},
 })

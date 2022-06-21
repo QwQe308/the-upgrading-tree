@@ -7,6 +7,29 @@ function getU1TimeSpeed(){
     return timespeed
 }
 
+function resetU1Upgs(extraKeptUpgs = [],force = false,aReset= false){
+  player.u1.t = n(0)
+  if(!aReset){
+    player.a.points = player.a.points.add(getResetGain('a'))
+    player.a.total = player.a.total.add(getResetGain('a'))
+    player.a.best = player.a.best.max(player.a.points)
+  }
+  var kept = extraKeptUpgs
+  //for(i=41;i<=41;i+=10){
+  //  if(layers.u1.upgrades[i].unlocked()){
+  //    for(a=i-30;a<=i-26;a++) kept.push(a)
+  //  }
+  //}
+  player.u1.upgrades=kept
+  if(!force && !aReset){
+    player.u1.points = player.u1.total
+    player.u1.exchangedUnstableU1P = zero
+    player.u1.baseUPLastReset = player.u1.total
+  }
+  doReset(this.layer)
+  for(i=10;i>=1;i--) rowHardReset(i,"u1")
+}
+
 function getU1PointMult(){
     return layers.u1.gainMult()
 }
@@ -44,10 +67,11 @@ addLayer("u1", {
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
-		points: new ExpantaNum(0),
+		    points: new ExpantaNum(0),
         t:n(0),
         exchangedUnstableU1P:n(0),
         confirmWindow:true,
+        baseUPLastReset:n(0)
     }},
     color: "lightblue",
     resource: "升级点", // Name of prestige currency
@@ -64,9 +88,11 @@ addLayer("u1", {
         exp = hasUpgThenAdd("u1",12,exp)
         exp = hasUpgThenAdd("u1",24,exp)
         exp = hasUpgThenAdd("u1",33,exp)
+        exp = hasUpgThenMul("u1",42,exp)
         return exp
     },
     row: "side", // Row the layer is in on the tree (0 is the first row)  QwQ:1也可以当第一排
+    /*
     milestones:{
         1: {
             requirementDescription: "81升级点",
@@ -75,6 +101,7 @@ addLayer("u1", {
             unlocked() {return hasUpgrade("u1",31)},
         },
     },
+    */
     buyables: {
         11: {
             cost(x = getBuyableAmount(this.layer, this.id)) {
@@ -193,7 +220,7 @@ addLayer("u1", {
                 if(x.gte(3)) c = x.pow(2)
                 return c
             },
-            display() { return `+(2x)^1.5 升级点.(重置升级以获得)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}时间胶囊<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            display() { return `+2 升级点.(重置升级以获得)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}时间胶囊<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.t.points.gte(this.cost()) },
             buy() {
                 player.t.points = player.t.points.sub(this.cost())
@@ -206,7 +233,7 @@ addLayer("u1", {
                 //setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(c))
             //},
             effect(){
-                var eff = getBuyableAmount(this.layer,this.id).mul(2).pow(1.5)
+                var eff = getBuyableAmount(this.layer,this.id).mul(2)
                 return eff
             },
             unlocked(){return hasUpgrade("u1",41)},
@@ -220,14 +247,10 @@ addLayer("u1", {
     clickables: {
         11: {
             canClick(){return true},
-            display() {return `重置升级<br />升级点恢复为 ${format(player.u1.total)}.(本轮获得${format(player.u1.total.sub(player.u1.best))})<br />您在这一轮中获得了${format(player.u1.exchangedUnstableU1P)}临时升级点(当前值:${format(getUnstableU1P())})`},
+            display() {return `重置升级<br />升级点恢复为 ${format(player.u1.total)}.(本轮获得${format(player.u1.total.sub(player.u1.baseUPLastReset))})<br />您在这一轮中获得了${format(player.u1.exchangedUnstableU1P)}临时升级点(当前值:${format(getUnstableU1P())})`},
             onClick(){
                 if(player.u1.confirmWindow) if(!confirm("确定重置升级?")) return
-                player.u1.upgrades = []
-                player.u1.points = player.u1.total
-                player.u1.exchangedUnstableU1P = zero
-                doReset(this.layer)
-                for(i=10;i>=1;i--) rowHardReset(i,"u1")
+                resetU1Upgs()
             }
         },
         12: {
@@ -345,12 +368,12 @@ addLayer("u1", {
             effectDisplay(){return `+${format(this.effect())}`},
         },
         34: {
-            description(){return `u${this.id}:重置点效果^1.25.`},
+            description(){return `u${this.id}:重置点效果^1.2.`},
             cost(){return n(9)},
             unlocked(){return player[this.layer].total.gte(15)},
             canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
             effect(){
-                var eff = n(1.25)
+                var eff = n(1.2)
                 return eff
             },
             effectDisplay(){return `^${format(this.effect())}`},
@@ -361,28 +384,55 @@ addLayer("u1", {
             unlocked(){return player[this.layer].total.gte(15)},
             canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
         },
-        41: {
-            description(){return `u${this.id}:解锁节点T.`},
+        /*41: {
+            description(){return `u${this.id}:解锁节点T.*注意:最高解锁升级层数-3及以下的升级会被保留.`},
             cost(){return n(24)},
             unlocked(){return player[this.layer].total.gte(50)},
             canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
         },
+        42: {
+            description(){return `u${this.id}:时间指数基于升级点倍增.`},
+            cost(){return n(24)},
+            unlocked(){return player[this.layer].total.gte(50)},
+            canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
+            effect(){
+                var eff = player.u1.total.add(10).log10().sub(1).pow(0.75).div(5).add(1)
+                return eff
+            },
+            effectDisplay(){return `x${format(this.effect(),3)}`},
+        },
+        43: {
+            description(){return `u${this.id}:解锁节点S.`},
+            cost(){return n(24)},
+            unlocked(){return player[this.layer].total.gte(50)},
+            canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
+        },
+        44: {
+            description(){return `u${this.id}:解锁U挑战-2以及U挑战sp-1.`},
+            cost(){return n(24)},
+            unlocked(){return player[this.layer].total.gte(50)},
+            canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
+        },
+        45: {
+            description(){return `u${this.id}:解锁更多重置点升级.`},
+            cost(){return n(24)},
+            unlocked(){return player[this.layer].total.gte(50)},
+            canAfford(){return checkAroundUpg(this.layer,this.id) && player[this.layer].points.gte(this.cost())},
+        }, */
     },
     challenges: {
         11: {
-            name: "C-1",
+            name(){return "C-1" + (hasUpgrade("u1",35)?"":"<text style='color:red'>(未解锁)</text>")},
             challengeDescription: "挑战就是没有挑战.进入条件:拥有10,000,000t.Tips:进入任何U挑战后您的升级会被重置,但花费的升级点不会返还!",
             onEnter(){
-                player.u1.upgrades = [35]
-                for(i=10;i>=1;i--) rowHardReset(i,"u1")
-                player.u1.t = n(0)
-                player.u1.exchangedUnstableU1P = zero
+                resetU1Upgs([35],true)
             },
-            enterReq(){return player.u1.t.gte(10000000)},
+            enterReq(){return player.u1.t.gte(10000000)&&hasUpgrade("u1",35)},
             canComplete(){return player.points.gte(100000000)},
             goalDescription(){return format(ExpantaNum(100000000))+"点数"},
-            rewardDisplay(){return `您每秒获得10%的重置点,并且自动购买重置点升级.`},
-            unlocked(){return hasUpgrade("u1",35)||player[this.layer].activeChallenge == this.id}
+            rewardEffect(){return player.g.power.add(1).pow(this.unlocked()?1.875:1.25)},
+            rewardDisplay(){return `倍增器和发生器价格除以(发生器能量+1)^1.25. (如果您解锁了C1,该效果再次^1.5) 当前效果:/${format(this.rewardEffect())}`},
+            unlocked(){return layers[this.layer].upgrades[35].unlocked()}
         },
     },
 

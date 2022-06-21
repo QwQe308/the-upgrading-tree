@@ -60,7 +60,7 @@ function getNextAt(layer, canMax=false, useType = null) {
 	{
 		if (!tmp[layer].canBuyMax) canMax = false
 		let amt = player[layer].points.plus((canMax&&tmp[layer].baseAmount.gte(tmp[layer].nextAt))?tmp[layer].resetGain:0).div(tmp[layer].directMult)
-		let extraCost = OmegaNum.pow(tmp[layer].base, amt.pow(tmp[layer].exponent).div(tmp[layer].gainExp)).times(tmp[layer].gainMult)
+		let extraCost = OmegaNum.pow(tmp[layer].base, amt.pow(tmp[layer].exponent).div(tmp[layer].gainExp)).div(tmp[layer].gainMult)
 		let cost = extraCost.times(tmp[layer].requires).max(tmp[layer].requires)
 		if (tmp[layer].roundUpCost) cost = cost.ceil()
 		return cost;
@@ -237,7 +237,12 @@ function doReset(layer, force=false) {
 	}
 
 	if (run(layers[layer].resetsNothing, layers[layer])) return
-
+	if(layer == 'a' && !force){
+	  resetU1Upgs(player.u1.upgrades,false,true)
+	  updateTemp()
+	  updateTemp()
+	  return
+	}
 
 	for (layerResetting in layers) {
 		if (row >= layers[layerResetting].row && (!force || layerResetting != layer)) completeChallenge(layerResetting)
@@ -246,7 +251,7 @@ function doReset(layer, force=false) {
 	prevOnReset = {...player} 
 	player.points = (row == 0 ? OmegaNumZero : getStartPoints())
 
-	for (let x = row; x >= 0; x--) rowReset(x, layer)
+	for (let x = row; x >= 0; x--){rowReset(x, layer)}
 	player.u1.t = n(0)
 	prevOnReset = undefined
 

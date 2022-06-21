@@ -30,6 +30,7 @@ addLayer("p", {
         eff = hasUpgThenPow("p",11,eff)
         eff = hasUpgThenPow("u1",34,eff)
         eff = hasUpgThenPow("b",11,eff)
+        eff = expRootSoftcap(eff,n(1e50),1.5)
         return eff
     },
     effectDescription(){
@@ -37,7 +38,7 @@ addLayer("p", {
         return str
     },
     passiveGeneration(){
-        if(hasMilestone("g",2) || hasChallenge("u1",11)) return 0.1
+        if(hasMilestone("g",2) || autoActive(13)) return 0.1
         return 0
     },
     unlocked(){return hasUpgrade("u1",11)},
@@ -77,10 +78,11 @@ addLayer("p", {
             cost(){return n(128)},
         },        
         14: {
-            description: "时间加成重置点加成点数加成重置点.(于^1.5达到软上限,五次根)",
+            description: "时间加成重置点加成点数加成重置点.(于^1.5和^2达到软上限)",
             effect(){
                 var eff = player.u1.t.add(10).log10().pow(0.65)
                 eff = powsoftcap(eff,n(1.5),5)
+                eff = logsoftcap(eff,n(2),1)
                 return eff
             },
             effectDisplay(){return `^${format(this.effect())}`},
@@ -118,5 +120,5 @@ addLayer("p", {
         }
         else layerDataReset(this.layer)
     },
-    autoUpgrade(){return hasChallenge("u1",11)}
+    autoUpgrade(){return autoActive(12)}
 })

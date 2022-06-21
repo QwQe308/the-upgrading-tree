@@ -1,24 +1,30 @@
-let modInfo = {
+﻿let modInfo = {
 	name: "升级树",
 	id: "The_upgrading_tree",
 	author: "QwQe308",
 	pointsName: "点数",
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new ExpantaNum (0), // Used for hard resets and new players
+	initialStartPoints: new ExpantaNum (0.1), // Used for hard resets and new players
 	
 	offlineLimit: 0,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.22",
-	name: "",
+	num: "0.3",
+	name: "重平衡+QoL",
 }
 
 let changelog = `<h1>更新日志:</h1><br>
+	<h3>v0.3</h3><br>
+		- 添加自动化节点.*重点*
+		- 重平衡和修改部分内容.
+		- 暂时移除了第四排升级.(其实就移除了一个)
+		- v0.22中大于50升级点的存档被强制返回至50升级点.
+		- 当前endgame:50升级点.<br><br>
 	<h3>v0.22</h3><br>
-		- 添加一个升级和一个节点.当前endgame:90升级点..<br><br>
+		- 添加一个升级和一个节点.当前endgame:90升级点.<br><br>
 	<h3>v0.21</h3><br>
 		- 修正endgame至45.<br><br>
 	<h3>v0.2</h3><br>
@@ -59,12 +65,12 @@ var displayThings = [
 		return U1Function
 	},
 	function(){return `t = ${format(player.u1.t)} (+ ${format(getU1TimeSpeed())} /s)`},
-	function(){return `当前endgame:90升级点(也许能更多?)+c1完成`},
+	function(){return `当前endgame:50升级点-你并不需要将所有自动化升级买下,不过有志向也行(?`},
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.u1.total.gte(90) && hasChallenge("u1",11)
+	return player.u1.total.gte(50) && hasChallenge("u1",11)
 }
 
 
@@ -79,4 +85,20 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
+  if(oldVersion <= 0.22){
+    if(player.u1.total.gte(50)){
+      player.u1.buyables[11]=n(21)
+      player.u1.buyables[12]=n(15)
+      player.u1.buyables[13]=n(7)
+      player.u1.buyables[14]=n(7)
+      player.u1.buyables[21]=n(0)
+      player.u1.total = n(50)
+	  player.u1.best = n(50)
+      player.u1.milestones = []
+      player.u1.upgrades = []
+      player.u1.points = player.u1.total
+      player.u1.exchangedUnstableU1P = zero
+      for(i=10;i>=1;i--) rowHardReset(i,"u1")
+    }
+  }
 }
