@@ -106,6 +106,16 @@ var layerA = {
           update(diff){},
           style(){if(autoBought(this.id)){if(autoActive(this.id)) return {'background-color':'green'};return {'background-color':'blue'}}if(player.a.points.gte(this.cost)) return {'background-color':'gold'};return {"background-color":"#bf8f8f"}},
         },
+        24: {
+          canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
+          name:'B不再重置任何东西',
+          cost:n(2048),
+          unlocked(){return player.a.total.gte(this.cost.div(10))},
+          display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
+          onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
+          update(diff){},
+          style(){if(autoBought(this.id)){if(autoActive(this.id)) return {'background-color':'green'};return {'background-color':'blue'}}if(player.a.points.gte(this.cost)) return {'background-color':'gold'};return {"background-color":"#bf8f8f"}},
+        },
         31: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动G重置',
@@ -140,6 +150,46 @@ var layerA = {
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
           update(diff){},
           style(){if(autoBought(this.id)){if(autoActive(this.id)) return {'background-color':'green'};return {'background-color':'blue'}}if(player.a.points.gte(this.cost)) return {'background-color':'gold'};return {"background-color":"#bf8f8f"}},
+        },
+        34: {
+          canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
+          name:'G不再重置任何东西',
+          cost:n(2048),
+          unlocked(){return player.a.total.gte(this.cost.div(10))},
+          display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
+          onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
+          update(diff){},
+          style(){if(autoBought(this.id)){if(autoActive(this.id)) return {'background-color':'green'};return {'background-color':'blue'}}if(player.a.points.gte(this.cost)) return {'background-color':'gold'};return {"background-color":"#bf8f8f"}},
+        },
+        41: {
+          canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
+          name:'自动T重置',
+          cost:n(1024),
+          unlocked(){return true},
+          display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>\n\n间隔:${autoStat(this.id)}s(在不重置任何东西后自动每帧一次)`},
+          onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else toggleNumberStat(this.id)},
+          update(diff){
+            if(!autoActive(this.id)) return
+            if(!layers["t"/* fix this */].layerShown()) return
+            player.a[this.id].time += diff            
+            if(autoStat(this.id).lte(player.a[this.id].time) || layers["t"/* fix this */].resetsNothing()){doReset("t"/* fix this */);player.a[this.id].time = 0}
+          },
+          style(){if(autoBought(this.id)){if(autoActive(this.id)) return {'background-color':'green'};return {'background-color':'blue'}}if(player.a.points.gte(this.cost))  return {'background-color':'gold'};return {"background-color":"#bf8f8f"}},
+        },
+        51: {
+          canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
+          name:'自动S重置',
+          cost:n(1024),
+          unlocked(){return true},
+          display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>\n\n间隔:${autoStat(this.id)}s(在不重置任何东西后自动每帧一次)`},
+          onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else toggleNumberStat(this.id)},
+          update(diff){
+            if(!autoActive(this.id)) return
+            if(!layers["s"/* fix this */].layerShown()) return
+            player.a[this.id].time += diff            
+            if(autoStat(this.id).lte(player.a[this.id].time) || layers["s"/* fix this */].resetsNothing()){doReset("s"/* fix this */);player.a[this.id].time = 0}
+          },
+          style(){if(autoBought(this.id)){if(autoActive(this.id)) return {'background-color':'green'};return {'background-color':'blue'}}if(player.a.points.gte(this.cost))  return {'background-color':'gold'};return {"background-color":"#bf8f8f"}},
         },
     },
     

@@ -46,6 +46,9 @@ function showBulkBuy(item,cost,level,costmult){
 function expRoot(num,root){
     return ten.pow(num.log10().root(root))
 }
+function expPow(num,pow){
+    return ten.pow(num.log10().pow(pow))
+}
 //e后数字指数软上限
 function expRootSoftcap(num,start,power){
     if(num.lte(start)) return num;

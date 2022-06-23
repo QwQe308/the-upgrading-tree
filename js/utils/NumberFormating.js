@@ -39,6 +39,7 @@ function egg(n) {
   return n
 }
 function format(decimal, precision = 2, small=false) {
+    decimal = new ExpantaNum(decimal)
     if(decimal.isNaN()){
       console.error("NaN!")
       return "NaN"
@@ -48,7 +49,6 @@ function format(decimal, precision = 2, small=false) {
       return "-"+format(ExpantaNum(0).sub(decimal),precision,small)
     }
     small = small || modInfo.allowSmall
-    decimal = new ExpantaNum(decimal)
     let fmt = decimal.toString()
     if(decimal.eq(0))return "0"
     if(decimal.lt("0.0001")){

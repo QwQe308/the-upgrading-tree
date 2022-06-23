@@ -100,7 +100,7 @@ addLayer("b", {
         }
         else layerDataReset(this.layer)
     },
-    resetsNothing(){return false},
+    resetsNothing(){return autoActive(24)},
     autoUpgrade(){return autoActive(22)},
     canBuyMax(){return autoActive(23)},
 })
@@ -240,5 +240,5 @@ addLayer("g", {
             return gain
         },
     autoUpgrade(){return autoActive(32)},
-    resetsNothing(){return false},
+    resetsNothing(){return autoActive(34)},
 })

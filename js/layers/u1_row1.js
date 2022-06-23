@@ -82,7 +82,7 @@ addLayer("p", {
             effect(){
                 var eff = player.u1.t.add(10).log10().pow(0.65)
                 eff = powsoftcap(eff,n(1.5),5)
-                eff = logsoftcap(eff,n(2),1)
+                if(eff.gte(2)) eff = eff.log10().mul(3.33).add(1)
                 return eff
             },
             effectDisplay(){return `^${format(this.effect())}`},
