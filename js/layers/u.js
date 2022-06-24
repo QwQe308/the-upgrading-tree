@@ -350,7 +350,7 @@ addLayer("u1", {
             description(){return `u${this.id}:升级点总数倍增点数.(未获取的也计入)`},
             effect(){
                 var eff = player.u1.total.pow(1.2).mul(0.15).add(1)
-                if(hasChallenge("u1",11)) eff = eff.pow(player.points.add(1).log10().add(10).log10().pow(1.65))
+                if(hasChallenge("u1",11)) eff = eff.pow(player.points.add(1).log10().add(10).log10().pow(1.33))
                 return eff
             },
             effectDisplay(){return `x${format(this.effect())}`},
