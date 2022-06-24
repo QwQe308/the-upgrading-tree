@@ -12,11 +12,14 @@
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.41",
+	num: "0.42",
 	name: "",
 }
 
 let changelog = `<h1>更新日志:</h1><br>
+	<h3>v0.42</h3><br>
+		- 微调c1加成.<br>
+		- 显示点数获取速率.<br><br>
 	<h3>v0.41</h3><br>
 		- 修复时间能量上限公式错误的问题.<br>
 		- 修复T/S节点可能排序错误的问题.<br>
@@ -55,13 +58,12 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return false
+	return true
 }
 
 // Calculate points/sec!
 function getPointGen() {
-	if(!canGenPoints()) return new ExpantaNum(0)
-	let gain = new ExpantaNum(1)
+	let gain = trueGain
 	return gain
 }
 

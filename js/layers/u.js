@@ -1,3 +1,5 @@
+var trueGain = n(0)
+
 function getU1TimeSpeed(){
     var timespeed = n(1)
     timespeed = hasUpgThenMul("u1",13,timespeed)
@@ -41,9 +43,8 @@ function getU1PointMult(){
 function getU1TimeExp(){
     return layers.u1.gainExp()
 }
-function calcU1Point(){
+function calcU1Point(t = player.u1.t){
     var mult = getU1PointMult()
-    var t = player.u1.t
     var timeExp = getU1TimeExp()
     t = t.pow(timeExp)    
     var point = t.mul(mult)
@@ -508,6 +509,7 @@ addLayer("u1", {
     },
 
     update(diff){
+        trueGain = calcU1Point(player.u1.t.add(getU1TimeSpeed())).sub(calcU1Point())
         player.u1.total = buyableEffect("u1",11).add(buyableEffect("u1",12)).add(buyableEffect("u1",13)).add(buyableEffect("u1",14)).add(buyableEffect("u1",21)).add(buyableEffect("u1",22).add(buyableEffect("u1",23))).floor()
         //if(player.u1.total.gte(81)) player.u1.total = player.u1.total.sub(81).root(1.5).add(81).floor()
         player.u1.t = player.u1.t.add(getU1TimeSpeed().mul(diff))
