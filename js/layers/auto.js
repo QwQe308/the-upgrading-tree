@@ -38,7 +38,7 @@ var layerA = {
         11: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动P重置',
-          cost:n(10),
+          cost:n(4),
           unlocked(){return true},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>\n\n间隔:${autoStat(this.id)}s(在能自动获取后被自动关闭)`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else toggleNumberStat(this.id)},
@@ -54,7 +54,7 @@ var layerA = {
         12: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动P升级',
-          cost:n(25),
+          cost:n(10),
           unlocked(){return player.a.total.gte(this.cost.div(10))},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
@@ -64,7 +64,7 @@ var layerA = {
         13: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动每秒获取10%P点',
-          cost:n(128),
+          cost:n(64),
           unlocked(){return player.a.total.gte(this.cost.div(10))},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
@@ -74,7 +74,7 @@ var layerA = {
         21: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动B重置',
-          cost:n(64),
+          cost:n(32),
           unlocked(){return true},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>\n\n间隔:${autoStat(this.id)}s(在不重置任何东西后自动每帧一次)`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else toggleNumberStat(this.id)},
@@ -89,7 +89,7 @@ var layerA = {
         22: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动B升级',
-          cost:n(128),
+          cost:n(64),
           unlocked(){return player.a.total.gte(this.cost.div(10))},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
@@ -99,7 +99,7 @@ var layerA = {
         23: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'允许批量重置B',
-          cost:n(256),
+          cost:n(128),
           unlocked(){return player.a.total.gte(this.cost.div(10))},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
@@ -109,7 +109,7 @@ var layerA = {
         24: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'B不再重置任何东西',
-          cost:n(2048),
+          cost:n(1024),
           unlocked(){return player.a.total.gte(this.cost.div(10))},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
@@ -119,7 +119,7 @@ var layerA = {
         31: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动G重置',
-          cost:n(64),
+          cost:n(32),
           unlocked(){return true},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>\n\n间隔:${autoStat(this.id)}s(在不重置任何东西后自动每帧一次)`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else toggleNumberStat(this.id)},
@@ -134,7 +134,7 @@ var layerA = {
         32: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动G升级',
-          cost:n(128),
+          cost:n(64),
           unlocked(){return player.a.total.gte(this.cost.div(10))},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
@@ -144,7 +144,7 @@ var layerA = {
         33: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'允许批量重置G',
-          cost:n(256),
+          cost:n(128),
           unlocked(){return player.a.total.gte(this.cost.div(10))},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
@@ -154,7 +154,7 @@ var layerA = {
         34: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'G不再重置任何东西',
-          cost:n(2048),
+          cost:n(1024),
           unlocked(){return player.a.total.gte(this.cost.div(10))},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else player.a[this.id].active = !player.a[this.id].active},
@@ -164,7 +164,7 @@ var layerA = {
         41: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动T重置',
-          cost:n(1024),
+          cost:n(512),
           unlocked(){return true},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>\n\n间隔:${autoStat(this.id)}s(在不重置任何东西后自动每帧一次)`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else toggleNumberStat(this.id)},
@@ -179,7 +179,7 @@ var layerA = {
         51: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动S重置',
-          cost:n(1024),
+          cost:n(512),
           unlocked(){return true},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>\n\n间隔:${autoStat(this.id)}s(在不重置任何东西后自动每帧一次)`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else toggleNumberStat(this.id)},

@@ -42,7 +42,7 @@ addLayer("t", {
         //eff = expRootSoftcap(eff,n(1e50),1.625)
         return eff
     },
-    effectDescription(){return `您有${format(player.t.te)}${hasUpgrade("t",11)?"":("/"+format(this.proc().mul(player.u1.total).pow(2).div(10)))}时间能量(+${format(this.proc())}/s${hasUpgrade("t",11)?"":",上限基于升级点"})<br>
+    effectDescription(){return `您有${format(player.t.te)}${hasUpgrade("t",11)?"":("/"+format(this.proc().mul(player.u1.total.pow(2).div(10))))}时间能量(+${format(this.proc())}/s${hasUpgrade("t",11)?"":",上限基于升级点"})<br>
     时间能量使得重置点*${format(this.effect())}`},
     hotkeys: [
         {key: "t", description: "T: T转", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
@@ -68,7 +68,7 @@ addLayer("t", {
         return gain
     },
     update(diff){
-      player.t.te = player.t.te.add(this.proc().mul(diff)).min(this.proc().mul(player.u1.total).pow(2).div(10))
+      player.t.te = player.t.te.add(this.proc().mul(diff)).min(this.proc().mul(player.u1.total.pow(2).div(10)))
     },
     buyables:{
        11: {
@@ -150,7 +150,7 @@ addLayer("t", {
 addLayer("s", {
     name: "space", 
     symbol: "S",
-    position: -1, 
+    position: 1, 
     startData() { return {
         unlocked: true,
 	      points: new ExpantaNum(0),
