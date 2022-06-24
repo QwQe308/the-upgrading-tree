@@ -68,7 +68,8 @@ addLayer("t", {
         return gain
     },
     update(diff){
-      player.t.te = player.t.te.add(this.proc().mul(diff)).min(this.proc().mul(player.u1.total.pow(2).div(10)))
+      player.t.te = player.t.te.add(this.proc().mul(diff))
+      if(!hasUpgrade("t",11)) player.t.te = player.t.te.min(this.proc().mul(player.u1.total.pow(2).div(10)))
     },
     buyables:{
        11: {

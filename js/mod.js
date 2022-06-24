@@ -12,11 +12,13 @@
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.42",
+	num: "0.43",
 	name: "",
 }
 
 let changelog = `<h1>更新日志:</h1><br>
+	<h3>v0.43</h3><br>
+		- 修复t升级11无法移除上限的问题.<br><br>
 	<h3>v0.42</h3><br>
 		- 微调c1加成.<br>
 		- 显示点数获取速率.<br><br>
