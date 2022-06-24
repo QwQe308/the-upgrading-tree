@@ -350,7 +350,7 @@ addLayer("u1", {
             description(){return `u${this.id}:升级点总数倍增点数.(未获取的也计入)`},
             effect(){
                 var eff = player.u1.total.pow(1.2).mul(0.15).add(1)
-                if(hasChallenge("u1",11)) eff = eff.pow(1.33)
+                if(hasChallenge("u1",11)) eff = eff.pow(player.points.add(1).log10().add(10).log10().pow(1.65))
                 return eff
             },
             effectDisplay(){return `x${format(this.effect())}`},
@@ -489,7 +489,7 @@ addLayer("u1", {
             canComplete(){return player.points.gte(100000000)},
             goalDescription(){return format(ExpantaNum(100000000))+"点数"},
             rewardEffect(){return player.g.power.add(1).pow(hasUpgrade("u1",this.baseUPG)?3.5:1.75)},
-            rewardDisplay(){return `倍增器和发生器价格除以(发生器能量+1)^1.75. (如果您解锁了C1,该效果再次^2) 当前效果:/${format(this.rewardEffect())}. 小幅度改善u15公式.`},
+            rewardDisplay(){return `倍增器和发生器价格除以(发生器能量+1)^1.75. (如果您解锁了C1,该效果再次^2) 当前效果:/${format(this.rewardEffect())}. 基于点数小幅度改善u15公式.`},
             unlocked(){return layers[this.layer].upgrades[this.baseUPG].unlocked()}
         },
         12: {
