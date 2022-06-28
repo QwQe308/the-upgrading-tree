@@ -298,7 +298,7 @@ function exportSave() {
 }
 function importSave(imported = undefined, forced = false) {
 	if (imported === undefined){
-		imported = prompt("Paste your save here")
+		imported = options.ch?prompt("在这里粘贴你的存档!"):prompt("Paste your save here")
 	};
 	try {
 		var a = LZString.decompressFromBase64(imported.substr(214));

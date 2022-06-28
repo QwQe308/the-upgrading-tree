@@ -139,14 +139,16 @@ function loadVue() {
 		template: `
 		<div v-if="tmp[layer].challenges && tmp[layer].challenges[data]!== undefined && tmp[layer].challenges[data].unlocked && !(options.hideChallenges && maxedChallenge(layer, [data]) && !inChallenge(layer, [data]))"
 			v-bind:class="['hChallenge', challengeStyle(layer, data), inChallenge(layer, data) ? 'resetNotify' : '']" v-bind:style="tmp[layer].challenges[data].style">
-			<br><h3 v-html="tmp[layer].challenges[data].name"></h3><br><br>
-			<button v-bind:class="{ longUpg: true, can: true, [layer]: true }" v-bind:style="{'background-color': tmp[layer].color}" v-on:click="startChallenge(layer, data)">{{challengeButtonText(layer, data)}}</button><br><br>
+			<br><h3 v-html="options.ch?tmp[layer].challenges[data].name:tmp[layer].challenges[data].nameEN"></h3><br>
+			<button v-bind:class="{ longUpg: true, can: true, [layer]: true }" v-bind:style="{'background-color': tmp[layer].color}" v-on:click="startChallenge(layer, data)">{{challengeButtonText(layer, data)}}</button><br>
 			<span v-if="layers[layer].challenges[data].fullDisplay" v-html="run(layers[layer].challenges[data].fullDisplay, layers[layer].challenges[data])"></span>
 			<span v-else>
-				<span v-html="tmp[layer].challenges[data].challengeDescription"></span><br>
-				目标:  <span v-if="tmp[layer].challenges[data].goalDescription" v-html="tmp[layer].challenges[data].goalDescription"></span><span v-else>{{format(tmp[layer].challenges[data].goal)}} {{tmp[layer].challenges[data].currencyDisplayName ? tmp[layer].challenges[data].currencyDisplayName : modInfo.pointsName}}</span><br>
-				奖励: <span v-html="tmp[layer].challenges[data].rewardDescription"></span><br>
-				<span v-if="layers[layer].challenges[data].rewardDisplay!==undefined">当前奖励: <span v-html="(tmp[layer].challenges[data].rewardDisplay) ? (run(layers[layer].challenges[data].rewardDisplay, layers[layer].challenges[data])) : format(tmp[layer].challenges[data].rewardEffect)"></span></span>
+				<span v-if="options.ch" v-html="tmp[layer].challenges[data].challengeDescription"></span>
+				<span v-else v-html="tmp[layer].challenges[data].challengeDescriptionEN"></span>
+				<br>
+				{{options.ch?'目标':'Goal'}}:  <span v-if="tmp[layer].challenges[data].goalDescription && options.ch" v-html="tmp[layer].challenges[data].goalDescription"></span><span v-if="tmp[layer].challenges[data].goalDescription && !options.ch" v-html="tmp[layer].challenges[data].goalDescriptionEN"></span><br>
+				{{options.ch?'奖励':'Reward'}}: <span v-if="options.ch" v-html="tmp[layer].challenges[data].rewardDescription"></span><span v-else v-html="tmp[layer].challenges[data].rewardDescriptionEN"></span><br>
+				<span v-if="layers[layer].challenges[data].rewardDisplay!==undefined">{{options.ch?'当前奖励':'Current reward'}}: <span v-if="options.ch" v-html="(tmp[layer].challenges[data].rewardDisplay) ? (run(layers[layer].challenges[data].rewardDisplay, layers[layer].challenges[data])) : format(tmp[layer].challenges[data].rewardEffect)"></span><span v-else v-html="(tmp[layer].challenges[data].rewardDisplayEN) ? (run(layers[layer].challenges[data].rewardDisplayEN, layers[layer].challenges[data])) : format(tmp[layer].challenges[data].rewardEffectEN)"></span></span>
 			</span>
 			<node-mark :layer='layer' :data='tmp[layer].challenges[data].marked' :offset="20" :scale="1.5"></node-mark></span>
 		</div>
@@ -175,10 +177,11 @@ function loadVue() {
 			v-bind:style="[((!hasUpgrade(layer, data) && canAffordUpgrade(layer, data)) ? {'background-color': tmp[layer].color} : {}), tmp[layer].upgrades[data].style]">
 			<span v-if="layers[layer].upgrades[data].fullDisplay" v-html="run(layers[layer].upgrades[data].fullDisplay, layers[layer].upgrades[data])"></span>
 			<span v-else>
-				<span v-if= "tmp[layer].upgrades[data].title"><h3 v-html="tmp[layer].upgrades[data].title"></h3><br></span>
-				<span v-html="tmp[layer].upgrades[data].description"></span>
-				<span v-if="layers[layer].upgrades[data].effectDisplay"><br>当前效果: <span v-html="run(layers[layer].upgrades[data].effectDisplay, layers[layer].upgrades[data])"></span></span>
-				<br><br>价格: {{ formatWhole(tmp[layer].upgrades[data].cost) }} {{(tmp[layer].upgrades[data].currencyDisplayName ? tmp[layer].upgrades[data].currencyDisplayName : tmp[layer].resource)}}
+				<span v-if= "tmp[layer].upgrades[data].title && options.ch"><h3 v-html="tmp[layer].upgrades[data].title"></h3><br></span>
+				<span v-if= "tmp[layer].upgrades[data].title && !options.ch"><h3 v-html="tmp[layer].upgrades[data].titleEN"></h3><br></span>
+				<span v-if= "options.ch" v-html="tmp[layer].upgrades[data].description"></span><span v-else v-html="tmp[layer].upgrades[data].descriptionEN"></span>
+				<span v-if="layers[layer].upgrades[data].effectDisplay"><br>{{options.ch?'当前效果':'Currently'}}: <span v-html="run(options.ch?layers[layer].upgrades[data].effectDisplay:(layers[layer].upgrades[data].effectDisplayEN?layers[layer].upgrades[data].effectDisplayEN:layers[layer].upgrades[data].effectDisplay), layers[layer].upgrades[data])"></span></span>
+				<br><br>{{options.ch?'价格':'Cost'}}: {{ formatWhole(tmp[layer].upgrades[data].cost) }} {{(tmp[layer].upgrades[data].currencyDisplayName ? tmp[layer].upgrades[data].currencyDisplayName : (options.ch?tmp[layer].resource:tmp[layer].resourceEN))}}
 			</span>	
 			</button>
 		`
@@ -202,9 +205,10 @@ function loadVue() {
 	Vue.component('milestone', {
 		props: ['layer', 'data'],
 		template: `
-		<td v-if="tmp[layer].milestones && tmp[layer].milestones[data]!== undefined && milestoneShown(layer, data) && tmp[layer].milestones[data].unlocked" v-bind:style="[tmp[layer].milestones[data].style]" v-bind:class="{milestone: !hasMilestone(layer, data), milestoneDone: hasMilestone(layer, data)}">
-			<h3 v-html="tmp[layer].milestones[data].requirementDescription"></h3><br>
-			<span v-html="run(layers[layer].milestones[data].effectDescription, layers[layer].milestones[data])"></span><br>
+		<td v-if="tmp[layer].milestones && tmp[layer].milestones[data]!== undefined && milestoneShown(layer, data) && tmp[layer].milestones[data].unlocked" v-bind:style="[tmp[layer].milestones[data].style]" v-bind:class="{milestone: !hasMilestone(layer, data), tooltipBox: true, milestoneDone: hasMilestone(layer, data)}">
+			<br><h3 v-if="options.ch && tmp[layer].milestones[data].requirementDescription" v-html="tmp[layer].milestones[data].requirementDescription"></h3><h3 v-if="tmp[layer].milestones[data].requirementDescription&&!options.ch" v-html="tmp[layer].milestones[data].requirementDescriptionEN"></h3><br>
+			<span v-if="options.ch" v-html="run(layers[layer].milestones[data].effectDescription, layers[layer].milestones[data])"></span><span v-if="!options.ch" v-html="run(layers[layer].milestones[data].effectDescriptionEN, layers[layer].milestones[data])"></span><br>
+			<tooltip v-if="tmp[layer].milestones[data].tooltip" :text="tmp[layer].milestones[data].tooltip"></tooltip>
 		<span v-if="(tmp[layer].milestones[data].toggles)&&(hasMilestone(layer, data))" v-for="toggle in tmp[layer].milestones[data].toggles"><toggle :layer= "layer" :data= "toggle" v-bind:style="tmp[layer].componentStyles.toggle"></toggle>&nbsp;</span></td></tr>
 		`
 	})
@@ -212,7 +216,7 @@ function loadVue() {
 	Vue.component('toggle', {
 		props: ['layer', 'data'],
 		template: `
-		<button class="smallUpg can" v-bind:style="{'background-color': tmp[data[0]].color}" v-on:click="toggleAuto(data)">{{player[data[0]][data[1]]?"开":"关"}}</button>
+		<button class="smallUpg can" v-bind:style="{'background-color': tmp[data[0]].color}" v-on:click="toggleAuto(data)">{{player[data[0]][data[1]]?(options.ch?"已开启":"ON"):(options.ch?"已关闭":"OFF")}}</button>
 		`
 	})
 
@@ -232,7 +236,7 @@ function loadVue() {
 	Vue.component('main-display', {
 		props: ['layer', 'data'],
 		template: `
-		<div><span v-if="player[layer].points.lt('1e1000')">您有 </span><h2 v-bind:style="{'color': tmp[layer].color, 'text-shadow': '0px 0px 10px ' + tmp[layer].color}">{{data ? format(player[layer].points, data) : formatWhole(player[layer].points)}}</h2> {{tmp[layer].resource}}<span v-if="layers[layer].effectDescription">, <span v-html="run(layers[layer].effectDescription, layers[layer])"></span></span><br><br></div>
+		<div><span v-if="player[layer].points.lt('1e1000')">{{options.ch?"您有":"You have"}} </span><h2 v-bind:style="{'color': tmp[layer].color, 'text-shadow': '0px 0px 10px ' + tmp[layer].color}">{{data ? format(player[layer].points, data) : formatWhole(player[layer].points)}}</h2> {{options.ch?tmp[layer].resource:tmp[layer].resourceEN}}<span v-if="layers[layer].effectDescription">, <span v-html="run(options.ch?layers[layer].effectDescription:layers[layer].effectDescriptionEN, layers[layer])"></span></span><br><br></div>
 		`
 	})
 
@@ -241,11 +245,11 @@ function loadVue() {
 		props: ['layer'],
 		template: `
 		<div style="margin-top: -13px">
-			<span v-if="tmp[layer].baseAmount"><br>你有 {{formatWhole(tmp[layer].baseAmount)}} {{tmp[layer].baseResource}}</span>
-			<span v-if="tmp[layer].passiveGeneration"><br>你每秒获得 {{format(tmp[layer].resetGain.times(tmp[layer].passiveGeneration))}} {{tmp[layer].resource}}</span>
+			<span v-if="tmp[layer].baseAmount"><br>{{options.ch?"您有":"You have"}} {{formatWhole(tmp[layer].baseAmount)}} {{options.ch?tmp[layer].resource:tmp[layer].resourceEN}}</span>
+			<span v-if="tmp[layer].passiveGeneration"><br>{{options.ch?"您每秒获得":"You are gaining "}} {{format(tmp[layer].resetGain.times(tmp[layer].passiveGeneration))}} {{options.ch?tmp[layer].resource:tmp[layer].resourceEN}}{{options.ch?"":" per second"}}</span>
 			<br><br>
-			<span v-if="tmp[layer].showBest">你最高拥有 {{tmp[layer].resource}} {{formatWhole(player[layer].best)}}<br></span>
-			<span v-if="tmp[layer].showTotal">你总共拥有 {{formatWhole(player[layer].total)}} {{tmp[layer].resource}}<br></span>
+			<span v-if="tmp[layer].showBest">{{options.ch?"您最高拥有":"Your best resource this layer is "}} {{formatWhole(player[layer].best)}} {{options.ch?tmp[layer].resource:tmp[layer].resourceEN}}<br></span>
+			<span v-if="tmp[layer].showTotal">{{options.ch?"您总共拥有":"You have made a total of "}} {{formatWhole(player[layer].total)}} {{options.ch?tmp[layer].resource:tmp[layer].resourceEN}}<br></span>
 		</div>
 		`
 	})
@@ -273,8 +277,8 @@ function loadVue() {
 			<button v-bind:class="{ buyable: true, can: tmp[layer].buyables[data].canBuy, locked: !tmp[layer].buyables[data].canAfford, bought: player[layer].buyables[data].gte(tmp[layer].buyables[data].purchaseLimit)}"
 			v-bind:style="[tmp[layer].buyables[data].canBuy ? {'background-color': tmp[layer].color} : {}, size ? {'height': size, 'width': size} : {}, tmp[layer].componentStyles.buyable, tmp[layer].buyables[data].style]"
 			v-on:click="buyBuyable(layer, data)" @mousedown="start" @mouseleave="stop" @mouseup="stop" @touchstart="start" @touchend="stop" @touchcancel="stop">
-				<span v-if= "tmp[layer].buyables[data].title"><h2 v-html="tmp[layer].buyables[data].title"></h2><br></span>
-				<span v-bind:style="{'white-space': 'pre-line'}" v-html="run(layers[layer].buyables[data].display, layers[layer].buyables[data])"></span>
+				<span v-if= "tmp[layer].buyables[data].title"><h2 v-html="options.ch?tmp[layer].buyables[data].title:tmp[layer].buyables[data].titleEN"></h2><br></span>
+				<span v-bind:style="{'white-space': 'pre-line'}" v-html="run(options.ch?layers[layer].buyables[data].display:layers[layer].buyables[data].displayEN, layers[layer].buyables[data])"></span>
 				<node-mark :layer='layer' :data='tmp[layer].buyables[data].marked'></node-mark>
 			</button>
 			<br v-if="(tmp[layer].buyables[data].sellOne !== undefined && !(tmp[layer].buyables[data].canSellOne !== undefined && tmp[layer].buyables[data].canSellOne == false)) || (tmp[layer].buyables[data].sellAll && !(tmp[layer].buyables[data].canSellAll !== undefined && tmp[layer].buyables[data].canSellAll == false))">
@@ -334,8 +338,8 @@ function loadVue() {
 			v-bind:class="{ upg: true, can: tmp[layer].clickables[data].canClick, locked: !tmp[layer].clickables[data].canClick}"
 			v-bind:style="[tmp[layer].clickables[data].canClick ? {'background-color': tmp[layer].color} : {}, size ? {'height': size, 'width': size} : {}, tmp[layer].clickables[data].style]"
 			v-on:click="clickClickable(layer, data)"  @mousedown="start" @mouseleave="stop" @mouseup="stop" @touchstart="start" @touchend="stop" @touchcancel="stop">
-			<span v-if= "tmp[layer].clickables[data].title"><h2 v-html="tmp[layer].clickables[data].title"></h2><br></span>
-			<span v-bind:style="{'white-space': 'pre-line'}" v-html="run(layers[layer].clickables[data].display, layers[layer].clickables[data])"></span>
+			<span v-if= "tmp[layer].clickables[data].title"><h2 v-html="options.ch?tmp[layer].clickables[data].title:tmp[layer].clickables[data].titleEN"></h2><br></span>
+			<span v-bind:style="{'white-space': 'pre-line'}" v-html="run(options.ch?layers[layer].clickables[data].display:layers[layer].clickables[data].displayEN, layers[layer].clickables[data])"></span>
 			<node-mark :layer='layer' :data='tmp[layer].clickables[data].marked'></node-mark>
 		</button>
 		`,

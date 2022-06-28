@@ -2,9 +2,9 @@ function prestigeButtonText(layer) {
 	if (layers[layer].prestigeButtonText !== undefined)
 		return run(layers[layer].prestigeButtonText(), layers[layer])
 	if (tmp[layer].type == "normal")
-		return `${player[layer].points.lt(1e3) ? (tmp[layer].resetDescription !== undefined ? tmp[layer].resetDescription : "重置以获得") : ""}+<b>${formatWhole(tmp[layer].resetGain)}</b> ${tmp[layer].resource} ${tmp[layer].resetGain.lt(100) && player[layer].points.lt(1e3) ? `<br><br>下一个在: ${(tmp[layer].roundUpCost ? formatWhole(tmp[layer].nextAt) : format(tmp[layer].nextAt))} ${tmp[layer].baseResource}` : ""}`
+		return `${player[layer].points.lt(1e3) ? (tmp[layer].resetDescription !== undefined ? tmp[layer].resetDescription : (options.ch?"重置以获得":"Reset for ")) : ""}+<b>${formatWhole(tmp[layer].resetGain)}</b> ${options.ch?tmp[layer].resource:tmp[layer].resourceEN} ${tmp[layer].resetGain.lt(100) && player[layer].points.lt(1e3) ? `<br><br>${(options.ch?"下一个在:":"Next at:")}: ${(tmp[layer].roundUpCost ? formatWhole(tmp[layer].nextAt) : format(tmp[layer].nextAt))} ${options.ch?tmp[layer].baseResource:tmp[layer].baseResourceEN}` : ""}`
 	if (tmp[layer].type == "static")
-		return `${tmp[layer].resetDescription !== undefined ? tmp[layer].resetDescription : "重置以获得"}+<b>${formatWhole(tmp[layer].resetGain)}</b> ${tmp[layer].resource}<br><br>${player[layer].points.lt(30) ? (tmp[layer].baseAmount.gte(tmp[layer].nextAt) && (tmp[layer].canBuyMax !== undefined) && tmp[layer].canBuyMax ? "下一个在:" : "要求:") : ""} ${formatWhole(tmp[layer].baseAmount)} / ${(tmp[layer].roundUpCost ? formatWhole(tmp[layer].nextAtDisp) : format(tmp[layer].nextAtDisp))} ${tmp[layer].baseResource}		
+		return `${tmp[layer].resetDescription !== undefined ? tmp[layer].resetDescription : (options.ch?"重置以获得":"Reset for ")}+<b>${formatWhole(tmp[layer].resetGain)}</b> ${options.ch?tmp[layer].resource:tmp[layer].resourceEN}<br><br>${player[layer].points.lt(30) ? (tmp[layer].baseAmount.gte(tmp[layer].nextAt) && (tmp[layer].canBuyMax !== undefined) && tmp[layer].canBuyMax ? (options.ch?"下一个在:":"Next at:") : (options.ch?"要求:":"Req:")) : ""} ${formatWhole(tmp[layer].baseAmount)} / ${(tmp[layer].roundUpCost ? formatWhole(tmp[layer].nextAtDisp) : format(tmp[layer].nextAtDisp))} ${options.ch?tmp[layer].baseResource:tmp[layer].baseResourceEN}		
 		`
 	if (tmp[layer].type == "none")
 		return ""
@@ -32,7 +32,7 @@ function challengeStyle(layer, id) {
 }
 
 function challengeButtonText(layer, id) {
-    return (player[layer].activeChallenge==(id)?(canCompleteChallenge(layer, id)?"点击以完成":"离开挑战"):(hasChallenge(layer, id)?"已完成":"开始挑战"))
+    return (player[layer].activeChallenge==(id)?(canCompleteChallenge(layer, id)?(options.ch?"点击以完成":"Finish"):(options.ch?"退出挑战":"Exit Early")):(hasChallenge(layer, id)?(options.ch?"已完成":"Completed"):(options.ch?"开始挑战":"Start")))
 
 }
 

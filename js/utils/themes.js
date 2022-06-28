@@ -3,6 +3,9 @@ const themes = {
 	1: "aqua"
 };
 const theme_names = {
+	aqua: "海蓝"
+};
+const theme_names_EN = {
 	aqua: "Aqua"
 };
 function changeTheme() {
@@ -15,7 +18,7 @@ function changeTheme() {
 	document.body.style.setProperty("--locked", aqua ? "#c4a7b3" : "#bf8f8f");
 }
 function getThemeName() {
-	return options.theme ? theme_names[options.theme] : "Default";
+	return options.theme ? (options.ch?theme_names[options.theme]:theme_names_EN[options.theme]) : (options.ch?"默认背景":"Default");
 }
 function switchTheme() {
 	if (options.theme === null)

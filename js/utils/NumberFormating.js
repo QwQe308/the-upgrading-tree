@@ -64,7 +64,7 @@ function format(decimal, precision = 2, small=false) {
     if(precision==0){
       return format(decimal.floor())}
     else if(f.length==1){
-      return fmt+".00"
+      return fmt//+".00"
     }
     else if(f[1].length<precision){
       return fmt+"0".repeat(precision-f[1].length)

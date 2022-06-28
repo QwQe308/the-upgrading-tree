@@ -9,8 +9,10 @@ addLayer("t", {
     }},
     color: "lime",
     resource: "时间胶囊", 
+    resourceEN: "Time Capsules", 
     type: "static", 
     baseResource: "点数",
+    baseResourceEN: "Points",
     baseAmount() {return player.points},
     requires(){return n(1e20)},
     base:1e6,
@@ -42,15 +44,16 @@ addLayer("t", {
         //eff = expRootSoftcap(eff,n(1e50),1.625)
         return eff
     },
-    effectDescription(){return `您有${format(player.t.te)}${hasUpgrade("t",11)?"":("/"+format(this.proc().mul(player.u1.total.pow(2).div(10))))}时间能量(+${format(this.proc())}/s${hasUpgrade("t",11)?"":",上限基于升级点"})<br>
-    时间能量使得重置点*${format(this.effect())}`},
+    effectDescription(){return `您有${format(player.t.te)}${hasUpgrade("t",11)?"":("/"+format(this.proc().mul(player.u1.total.pow(2).div(10))))}时间能量(+${format(this.proc())}/s${hasUpgrade("t",11)?"":",上限基于升级点"})<br>时间能量使得重置点*${format(this.effect())}`},
+    effectDescriptionEN(){return `You have ${format(player.t.te)}${hasUpgrade("t",11)?"":("/"+format(this.proc().mul(player.u1.total.pow(2).div(10))))} Time Energy(+${format(this.proc())}/s${hasUpgrade("t",11)?"":",Cap is based on Upgrade Points"})<br>Time Energy boosts Prestige Points by*${format(this.effect())}`},
     hotkeys: [
-        {key: "t", description: "T: T转", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "t", description: "T: T转",descriptionEN: "T: Reset T Node", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     clickables: {
         11: {
             canClick(){return true},
             display() {return `长按以重置(手机端qol)`},
+            displayEN() {return `Hold to reset (A QoL for mobile players)`},
             onHold(){
                 doReset(this.layer)
             }
@@ -78,6 +81,7 @@ addLayer("t", {
                 return c
             },
             display() { return `+1 额外时间胶囊.(购买时强制进行一次t转)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}倍增器<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `+1 Extra Time Capsule.(Calls T reset on bought)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Boosters<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.b.points.gte(this.cost()) },
             buy() {
                 player.b.points = player.b.points.sub(this.cost())
@@ -101,6 +105,7 @@ addLayer("t", {
                 return c
             },
             display() { return `+1 额外时间胶囊.(购买时强制进行一次t转)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}倍增器<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `+1 Extra Time Capsule.(Calls T reset on bought)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Boosters<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.b.points.gte(this.cost()) },
             buy() {
                 player.b.points = player.b.points.sub(this.cost())
@@ -122,7 +127,9 @@ addLayer("t", {
     milestones: {
         1: {
             requirementDescription: "2时间胶囊",
+            requirementDescriptionEN: "2 Time Capsules",
             effectDescription: "保留第二行节点升级和里程碑.",
+            effectDescriptionEN: "Keep row 2 nodes\' Upgrades and Milestones.",
             done() { return player.t.points.gte(2) && this.unlocked()},
             unlocked() {return true},
         },
@@ -130,11 +137,13 @@ addLayer("t", {
     upgrades: {
         11: {
             description: "解锁下一个T购买项.时间能量上限被移除.",
+            descriptionEN: "Unlock the next T buyable.Remove Time Energy cap.",
             cost(){return n(3)},
             unlocked() {return true},
         },
         12: {
             description: "能量倍增时间能量.",
+            descriptionEN: "Energy boosts Time Energy.",
             effect(){
                 var eff = player.g.power.div(10).add(1)
                 return eff
@@ -158,8 +167,10 @@ addLayer("s", {
     }},
     color: "white",
     resource: "空间", 
+    resourceEN: "Space", 
     type: "static", 
     baseResource: "点数",
+    baseResourceEN: "Points",
     baseAmount() {return player.points},
     requires(){return n(1e30).mul(n(1e9).pow(player.s.total.root(1.25)))},
     base(){return 1e9},
@@ -180,23 +191,32 @@ addLayer("s", {
         var eff = player.s.points.add(player.s.total.div(6)).add(1).log10().add(1)
         return eff
     },
-    effectDescription(){return `空间建筑强度为${format(this.effect().mul(100))}%(基于空间,总空间和其他加成) 空间价格会逐渐变贵.`},
+    effect2(){
+        var eff = player.s.total.mul(2).root(2).floor()
+        return eff
+    },
+    effectDescription(){return `空间建筑强度为${format(this.effect().mul(100))}%(基于空间,总空间和其他加成),获得${format(this.effect2())}额外升级点.<br>空间价格会逐渐变贵.`},
+    effectDescriptionEN(){return `Building strength is ${format(this.effect().mul(100))}%(Based on Space,total Space and other boosts),get ${format(this.effect2())} Extra Upgrade Points based on Space.<br>Space becomes more expensive based on total Space.`},
     hotkeys: [
-        {key: "s", description: "S: S转", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "s", description: "S: S转",descriptionEN: "S: Reset S Node", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
+    showBest:true,
     clickables: {
         11: {
             canClick(){return true},
             display() {return `长按以重置(手机端qol)`},
+            displayEN() {return `Hold to reset (A QoL for mobile players)`},
             onHold(){
                 doReset(this.layer)
             }
         },
         12: {
             canClick(){return true},
-            display() {return `重置S层级并让价格复原`},
+            display() {return `重置S层级(完全重置)并让价格复原`},
+            displayEN() {return `Reset EVERYTHING in S layer to reset the cost`},
             onClick(){
-                if(!window.confirm("确认重置S层级?这不会保留任何S层级的东西!")) return
+                if(options.ch) if(!window.confirm("确认重置S层级?这不会保留任何S层级的东西!")) return
+                if(!options.ch) if(!window.confirm("Are you sure to reset S layer?This won\'t keep ANYTHING in S layer!")) return
                 layerDataReset(this.layer)
                 doReset(this.layer,true)
             }
@@ -220,14 +240,14 @@ addLayer("s", {
                 var c = x.add(1)
                 return c
             },
-            display() { return `建筑1:基于点数倍增点数<br />x${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}空间<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            display() { return `建筑1:基于点数倍增点数<br />x${format(buyableEffect(this.layer,this.id),2)}.(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}空间<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `Buliding 1:Boost Points based on Points<br />x${format(buyableEffect(this.layer,this.id),2)}.(Next Level: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Space<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.s.points.gte(this.cost()) },
             buy() {
                 player.s.points = player.s.points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
-            effect(){
-                var x = getBuyableAmount(this.layer,this.id)
+            effect(x = getBuyableAmount(this.layer, this.id)){
                 if(x.gte(1)) x = x.add(0.5)
                 var eff = expPow(player.points.add(10).log10(),2.5).pow(x.mul(layerEffect("s")).root(1.33))
                 return eff
@@ -243,19 +263,16 @@ addLayer("s", {
                 return c
             },
             display() { return `建筑2:倍增时间速率<br />x${format(buyableEffect(this.layer,this.id),2)}.(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}空间<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `Buliding 2:Boost Time Speed<br />x${format(buyableEffect(this.layer,this.id),2)}.(Next Level: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Space<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.s.points.gte(this.cost()) },
             buy() {
                 player.s.points = player.s.points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             effect(x = getBuyableAmount(this.layer, this.id)){
-                var eff = ten.pow(x.mul(layerEffect("s")))
+                var eff = six.pow(x.mul(layerEffect("s")))
                 return eff
             },
-            abtick:0,
-            abdelay(){
-                return 1e308
-            }
         },
     },
     /* milestones: {

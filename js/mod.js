@@ -1,22 +1,27 @@
 ﻿let modInfo = {
 	name: "升级树",
+	nameEN: "The Upgrading Tree",
 	id: "The_upgrading_tree",
 	author: "QwQe308",
 	pointsName: "点数",
+	pointsNameEN: "points",
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new ExpantaNum (0.1), // Used for hard resets and new players
+	initialStartPoints: new ExpantaNum (0.5), // Used for hard resets and new players
 	
 	offlineLimit: 0,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.43",
+	num: "0.44",
 	name: "",
 }
 
-let changelog = `<h1>更新日志:</h1><br>
+let changelog = `<h1>更新日志(Currently not translated):</h1><br>
+	<h3>v0.44</h3><br>
+		- 增加语言调节(英文).<br>
+		- 加强了S节点.<br><br>
 	<h3>v0.43</h3><br>
 		- 修复t升级11无法移除上限的问题.<br><br>
 	<h3>v0.42</h3><br>
@@ -76,11 +81,11 @@ function addedPlayerData() { return {
 // Display extra things at the top of the page
 var displayThings = [
 	function(){
-		var U1Function = `点数 = f(t) = ${format(getU1PointMult())} * t<sup>${format(getU1TimeExp())}</sup>`
+		var U1Function = (options.ch?`点数`:`Point`)+` = f(t) = ${format(getU1PointMult())} * t<sup>${format(getU1TimeExp())}</sup>`
 		return U1Function
 	},
 	function(){return `t = ${format(player.u1.t)} (+ ${format(getU1TimeSpeed())} /s)`},
-	function(){return `当前endgame:128升级点-你并不需要将所有自动化升级买下,不过有志向也行(?`},
+	function(){return (options.ch?`当前Endgame:128升级点`:`Current Endgame: 128 Upgrade Points`)},
 ]
 
 // Determines when the game "ends"
@@ -94,7 +99,7 @@ function isEndgame() {
 
 // You can change this if you have things that can be messed up by long tick lengths
 function maxTickLength() {
-	return(360) // Default is 1 hour which is just arbitrarily large
+	return(1800) // Default is 1 hour which is just arbitrarily large
 }
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,

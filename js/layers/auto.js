@@ -33,7 +33,8 @@ var layerA = {
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return setupList},
     layerShown:true,
-    effectDescription(){return `<br>重置u升级等方式也会给予自动化点.<br>粉红:买不起 金:未购买但可购买 蓝:未启用 绿:已启用<br>若要禁用一个自动化,输入一个不符合规则的设置.<br>自动化随自动化点的增加而解锁.当你总自动化点达到价格/10时会解锁.`},
+    canReset(){return player.points.gte(this.requires()) && player.a.cd.eq(0)},
+    effectDescription(){return `<br>重置u升级等方式也会给予自动化点.<br>粉红:买不起 金:未购买但可购买 蓝:未启用 绿:已启用<br>若要禁用一个自动化,输入一个不符合规则的设置.<br>自动化随自动化点的增加而解锁.当你总自动化点达到价格/10时会解锁.<br><br>CD:${formatTime(player.a.cd.toNumber())}`},
     clickables: {
         11: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
@@ -175,7 +176,29 @@ var layerA = {
             if(autoStat(this.id).lte(player.a[this.id].time) || layers["t"/* fix this */].resetsNothing()){doReset("t"/* fix this */);player.a[this.id].time = 0}
           },
           style(){if(autoBought(this.id)){if(autoActive(this.id)) return {'background-color':'green'};return {'background-color':'blue'}}if(player.a.points.gte(this.cost))  return {'background-color':'gold'};return {"background-color":"#bf8f8f"}},
-        },
+        },/* 
+        42: {
+          canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
+          name:'自动T购买项',
+          cost:n(1024),
+          unlocked(){return true},
+          display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>\n\n间隔:${autoStat(this.id)}s(在不重置任何东西后自动每帧一次)`},
+          onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else toggleNumberStat(this.id)},
+          update(diff){
+            if(!autoActive(this.id)) return
+            if(!layers["t"].layerShown()) return
+            player.a[this.id].time += diff            
+            if(autoStat(this.id).lte(player.a[this.id].time) || layers.t.resetsNothing()){
+              for(i in layers.t.buyables){
+                i = Number(i)
+                if(!i) break
+                buyBuyable("t", i)
+              }
+              player.a[this.id].time = 0
+            }
+          },
+          style(){if(autoBought(this.id)){if(autoActive(this.id)) return {'background-color':'green'};return {'background-color':'blue'}}if(player.a.points.gte(this.cost))  return {'background-color':'gold'};return {"background-color":"#bf8f8f"}},
+        },  */
         51: {
           canClick(){return autoBought(this.id)||player.a.points.gte(this.cost)},
           name:'自动S重置',
@@ -202,6 +225,7 @@ var layerA = {
     requires(){return n(1e4)},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = player.points.max(10).log10().div(4).pow(2)
+        //if(!player.a.cd.eq(0)) mult = n(0)
         return mult.floor()
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -213,10 +237,11 @@ var layerA = {
 
     update(diff){
         for(automation in autoList) autoList[automation].update(diff)
+        player.a.cd = player.a.cd.sub(diff).max(0)
     },
     getNextAt(){return ten.pow(getResetGain(this.layer).add(1).root(2).mul(4))},
 }
 var autoList = Object.assign({},layerA.clickables)
-var setupList = {unlocked: true,points: new ExpantaNum(0)}
+var setupList = {unlocked: true,points: new ExpantaNum(0),cd:new ExpantaNum(10)}
 for(i in autoList) setupList[i] = {bought:false,stat:n(0),active:false,time:0}
 addLayer("a", layerA)

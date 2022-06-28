@@ -8,8 +8,10 @@ addLayer("b", {
     }},
     color: "blue",
     resource: "倍增器", 
+    resourceEN: "Boosters", // Name of prestige currency
     type: "static", 
     baseResource: "点数",
+    baseResourceEN: "Points",
     baseAmount() {return player.points},
     requires(){return n(100)},
     base:20,
@@ -33,8 +35,9 @@ addLayer("b", {
         return eff
     },
     effectDescription(){return `倍增器使得点数*${format(this.effect())}`},
+    effectDescriptionEN(){return `Boosts points by*${format(this.effect())}<br>I have to say that cost increase 20x every booster instead of 2x,because of a mistake.But it still would be useful and balanced later!`},
     hotkeys: [
-        {key: "b", description: "B: B转", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "b", description: "B: B转",descriptionEN: "B: Reset B Node", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     //static gain
     getResetGain(){
@@ -50,20 +53,25 @@ addLayer("b", {
     milestones: {
         1: {
             requirementDescription: "2倍增器",
-            effectDescription: "保留p升级.",
+            requirementDescriptionEN: "2 Boosters",
+            effectDescription: "在b重置时保留p升级.",
+            effectDescriptionEN: "Keep P upgrades on B reset.",
             done() { return player.b.points.gte(2) && this.unlocked()},
             unlocked() {return hasUpgrade("u1",31)},
         },
         2: {
             requirementDescription: "3倍增器",
+            requirementDescriptionEN: "3 Boosters",
             effectDescription: "倍增器效果^1.25.",
+            effectDescriptionEN: "Booster effect ^1.25.",
             done() { return player.b.points.gte(3) && this.unlocked()},
             unlocked() {return hasUpgrade("u1",31)},
         },
     },
     upgrades: {
         11: {
-            description: "重置点效果基于倍增器增加.",
+            description(){return "重置点效果基于倍增器增加."},
+            descriptionEN: "Prestige Points\' effect is boosted by Boosters.",
             effect(){
                 var eff = player.b.points.pow(0.6).div(10).add(1)
                 return eff
@@ -74,6 +82,7 @@ addLayer("b", {
         },
         12: {
             description: "倍增器效果基于重置点增加.",
+            descriptionEN: "Boosters\' effect is boosted by Prestige Points.Reserved effect sounds fun.",
             effect(){
                 var eff = player.p.points.add(1).log10().pow(0.5).div(10).add(1)
                 return eff
@@ -87,6 +96,7 @@ addLayer("b", {
         11: {
             canClick(){return true},
             display() {return `长按以重置(手机端qol)`},
+            displayEN() {return `Hold to reset (A QoL for mobile players)`},
             onHold(){
                 doReset(this.layer)
             }
@@ -120,8 +130,10 @@ addLayer("g", {
     }},
     color: "green",
     resource: "发生器", // Name of prestige currency
+    resourceEN: "Generators", // Name of prestige currency
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already 
     baseResource: "点数",
+    baseResourceEN: "Points",
     baseAmount() {return player.points},
     requires(){return n(200)},
     base:4,
@@ -152,10 +164,14 @@ addLayer("g", {
     effectDescription(){
         return `产生${format(this.proc())}能量/lg(t+1)^1.5<br>你有${format(player.g.power)}能量,能量使得时间速率*${format(this.effect())}`
     },
+    effectDescriptionEN(){
+        return `which produces ${format(this.proc())} Energy/lg(t+1)^1.5<br>You have ${format(player.g.power)} Energy,which boosts Time Speed by*${format(this.effect())}`
+    },
     clickables: {
         11: {
             canClick(){return true},
             display() {return `长按以重置(手机端qol)`},
+            displayEN() {return `Hold to reset (A QoL for mobile players)`},
             onHold(){
                 doReset(this.layer)
             }
@@ -164,20 +180,25 @@ addLayer("g", {
     milestones: {
         1: {
             requirementDescription: "4发生器",
-            effectDescription: "保留p升级.",
+            requirementDescriptionEN: "4 Generators",
+            effectDescription: "在G重置时保留P升级.",
+            effectDescriptionEN: "Keep P upgrades.",
             done() { return player.g.points.gte(4) && this.unlocked()},
             unlocked() {return hasUpgrade("u1",32)},
         },
         2: {
             requirementDescription: "6发生器",
+            requirementDescriptionEN: "6 Generators",
             effectDescription: "每秒获得10%的重置点.",
+            effectDescriptionEN: "Gain 10% of Prestige Points on reset every second.",
             done() { return player.g.points.gte(6)  && this.unlocked()},
             unlocked() {return hasUpgrade("u1",32)},
         },
     },
     upgrades: {
         11: {
-            description: "+3升级点.立即生效.",
+            description: "+3临时升级点.",
+            descriptionEN: "+3 temporary Upgrade Points.",
             effect(){
                 var eff = n(3)
                 return eff
@@ -188,6 +209,7 @@ addLayer("g", {
         },
         12: {
             description: "总升级点加成时间速率.",
+            descriptionEN: "Upgrade Points boost Time Speed.",
             effect(){
                 var eff = player.u1.total.div(9).pow(2.5).add(1)
                 return eff
@@ -225,7 +247,7 @@ addLayer("g", {
     },
 
     hotkeys: [
-        {key: "g", description: "G: G转", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "g", description: "G: G转",descriptionEN: "G: Reset G Node", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     canBuyMax(){return autoActive(33)},
         //static gain

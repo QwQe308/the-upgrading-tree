@@ -28,7 +28,8 @@
 	<script src="js/mod.js"></script>
 	<script src="js/technical/temp.js"></script>
 	<script src="js/technical/displays.js"></script>
-	
+
+	<script src="js/utils/options.js"></script>
 	<script src="js/game.js"></script>
 	<script src="js/utils.js"></script>
 	<script src="js/utils/easyAccess.js"></script>
@@ -37,18 +38,17 @@
 	<script src="js/technical/canvas.js"></script>
 	<script src="js/technical/particleSystem.js"></script>
 	<script src="js/utils/NumberFormating.js"></script>
-	<script src="js/utils/options.js"></script>
 	<script src="js/utils/save.js"></script>
 	<script src="js/utils/themes.js"></script>	
 </head>
 
 
-<body onload="load()" onmousemove="updateMouse(event)">
+<body onload="load();options.ch = window.confirm('选择语言(英文版可能会有一些bug)\nChoose your language(there may be some bugs in English mode)\n选择是:中文  否:英文\nselect yes:Chinese  no:English')" onmousemove="updateMouse(event)">
 	<div id="app">
 		<canvas id="treeCanvas" class="canvas" v-if="!(gameEnded && !player.keepGoing)"></canvas>
 
 		<div v-if="false" id="loadingSection" class="fullWidth">
-			<h1>加载中... (如果卡死了就是有bug!)如果你点了硬重置,请点重新游玩.←</h1>
+			<h1>加载中... (如果卡死了就是有bug!)如果你点了硬重置,请点重新游玩.<br>Loading... (If it's stuck,maybe it's a bug!)If you did hard reset before this reloading,click "play again".</h1>
 		</div>
 		<div class="vl" v-if="player.navTab !== 'none' && tmp.other.splitScreen && player.tab!='none' && !(gameEnded && !player.keepGoing)"></div>
 		<div v-if="(gameEnded && !player.keepGoing)" class="fullWidth">
@@ -56,17 +56,17 @@
 			<h2>{{modInfo.name}} {{VERSION.withoutName}}</h2><br><br>
 			<h3 v-html="modInfo.winText"></h3><br>
 			<h3>看QQ来催更!</h3><br><br>
-			<div v-if="!player.timePlayedReset">通关花了您 {{formatTime(player.timePlayed)}} .</div>
+			<div v-if="!player.timePlayedReset">{{options.ch?"通关花了您":"It costs you"}} {{formatTime(player.timePlayed)}} {{options.ch?"的时间(当前版本)":"to complete this game(in current version)"}}.</div>
 			<br>
-			<button class="longUpg can" onclick="hardReset(true)">重新游玩</button>&nbsp;&nbsp;&nbsp;&nbsp;<button
-				class="longUpg can" onclick="keepGoing()">继续游玩</button>
+			<button class="longUpg can" onclick="hardReset(true)">重新游玩-Play Again</button>&nbsp;&nbsp;&nbsp;&nbsp;<button
+				class="longUpg can" onclick="keepGoing()">继续游玩-Continue Playing</button>
 			<br><br><br>
 			<span v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink"
 					target="_blank">{{modInfo.discordName}}</a><br></span>
 			<a class="link" href="https://discord.gg/F3xveHV" target="_blank"
-				v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">模组树Discord</a><br>
+				v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">模组树Discord - The Modding Tree Discord</a><br>
 			<a class="link" href="http://discord.gg/wwQfgPa" target="_blank" v-bind:style="{'font-size': '16px'}">Main
-				转生树Discord</a><br>
+				转生树Discord - The Prestige Tree Discord</a><br>
 			<br><br>
 		</div>
 
@@ -90,9 +90,9 @@
 					<li v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink"
 							target="_blank">{{modInfo.discordName}}</a><br></li>
 					<li><a class="link" href="https://discord.gg/F3xveHV" target="_blank"
-							v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">模组树Discord</a><br></li>
+							v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">模组树Discord - The Modding Tree Discord</a><br></li>
 					<li><a class="link" href="http://discord.gg/wwQfgPa" target="_blank"
-							v-bind:style="{'font-size': '16px'}">转生树Discord</a></li>
+							v-bind:style="{'font-size': '16px'}">转生树Discord - The Prestige Tree Discord</a></li>
 				</ul>
 
 			</div>

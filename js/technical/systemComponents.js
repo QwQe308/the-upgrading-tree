@@ -49,8 +49,8 @@ var systemComponents = {
 			<tooltip
       v-if="tmp[layer].tooltip != ''"
 			:text="(tmp[layer].isLayer) ? (
-				player[layer].unlocked ? (tmp[layer].tooltip ? tmp[layer].tooltip : formatWhole(player[layer].points) + ' ' + tmp[layer].resource)
-				: (tmp[layer].tooltipLocked ? tmp[layer].tooltipLocked : '达到 ' + formatWhole(tmp[layer].requires) + ' ' + tmp[layer].baseResource + ' 以解锁 (你有 ' + formatWhole(tmp[layer].baseAmount) + ' ' + tmp[layer].baseResource + ')')
+				player[layer].unlocked ? (tmp[layer].tooltip ? tmp[layer].tooltip : formatWhole(player[layer].points) + ' ' + (options.ch?tmp[layer].resource:tmp[layer].resourceEN))
+				: (tmp[layer].tooltipLocked ? tmp[layer].tooltipLocked : (options.ch?'达到 ':'Reach ') + formatWhole(tmp[layer].requires) + ' ' + (options.ch?tmp[layer].baseResource:tmp[layer].baseResourceEN) + (options.ch?' 以解锁 (你有 ':' to unlock (You have ') + formatWhole(tmp[layer].baseAmount) + ' ' + (options.ch?tmp[layer].baseResource:tmp[layer].baseResourceEN) + ')')
 			)
 			: (
 				tmp[layer].canClick ? (tmp[layer].tooltip ? tmp[layer].tooltip : 'I am a button!')
@@ -104,15 +104,20 @@ var systemComponents = {
 		template: `			
 		<div class="overlayThing" style="padding-bottom:7px; width: 90%; z-index: 1000; position: relative">
 		<span v-if="player.devSpeed && player.devSpeed != 1" class="overlayThing">
-			<br>时间加速: {{format(player.devSpeed)}}x<br>
+			<br>
+			<div v-if=options.ch>时间加速: {{format(player.devSpeed)}}x</div>
+			<div v-else>Dev Speed: {{format(player.devSpeed)}}x</div>
 		</span>
 		<span v-if="player.offTime !== undefined"  class="overlayThing">
-			<br>离线加速剩余时间: {{formatTime(player.offTime.remain)}}<br>
+			<br>
+			<div v-if=options.ch>离线加速剩余时间: {{formatTime(player.offTime.remain)}}</div>
+			<div v-else>Offline Time: {{formatTime(player.offTime.remain)}}</div>
+			<br>
 		</span>
 		<br>
-		<span v-if="player.points.lt('1e1000')"  class="overlayThing">你有 </span>
+		<span v-if="player.points.lt('1e1000')"  class="overlayThing">{{options.ch?'你有':'You have'}} </span>
 		<h2  class="overlayThing" id="points">{{format(player.points)}}</h2>
-		<span v-if="player.points.lt('1e1e6')"  class="overlayThing"> {{modInfo.pointsName}}</span>
+		<span v-if="player.points.lt('1e1e6')"  class="overlayThing"> {{options.ch?modInfo.pointsName:modInfo.pointsNameEN}}</span>
 		<br>
 		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/sec)</span>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
@@ -123,26 +128,26 @@ var systemComponents = {
     'info-tab': {
         template: `
         <div>
-        <h2>{{modInfo.name}}</h2>
+        <h2>{{options.ch?modInfo.name:modInfo.nameEN}}</h2>
         <br>
         <h3>{{VERSION.withName}}</h3>
         <span v-if="modInfo.author">
             <br>
-            作者: {{modInfo.author}}	
+            {{options.ch?'作者: ':'Made by '}}{{modInfo.author}}	
         </span>
         <br>
-        模组树 <a v-bind:href="'https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md'" target="_blank" class="link" v-bind:style = "{'font-size': '14px', 'display': 'inline'}" >{{TMT_VERSION.tmtNum}}</a> 制作者为Acamaeda
+        {{options.ch?'模组树':'The Modding Tree '}} <a v-bind:href="'https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md'" target="_blank" class="link" v-bind:style = "{'font-size': '14px', 'display': 'inline'}" >{{TMT_VERSION.tmtNum}}</a> {{options.ch?'作者为Acamaeda':'by Acamaeda'}}
         <br>
-        声望树作者 Jacorb 和 Aarex
+        {{options.ch?'声望树作者: Jacorb 和 Aarex':'The Prestige Tree made by Jacorb and Aarex'}}
 		<br><br>
-		<div class="link" onclick="showTab('changelog-tab')">模组树更新记录(本树更新记录请点右上版本号)</div><br>
+		<div class="link" onclick="showTab('changelog-tab')">{{options.ch?'模组树更新记录(本树更新记录请点右上版本号)':'Changelog'}}</div><br>
         <span v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink" target="_blank">{{modInfo.discordName}}</a><br></span>
-        <a class="link" href="https://discord.gg/F3xveHV" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">模组树Discord</a><br>
-        <a class="link" href="http://discord.gg/wwQfgPa" target="_blank" v-bind:style="{'font-size': '16px'}">声望树Discord</a><br>
+        <a class="link" href="https://discord.gg/F3xveHV" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">{{options.ch?'模组树Discord':'The Modding Tree Discord'}}</a><br>
+        <a class="link" href="http://discord.gg/wwQfgPa" target="_blank" v-bind:style="{'font-size': '16px'}">{{options.ch?'声望树Discord':'Main Prestige Tree server'}}</a><br>
 		<br><br>
-        游玩时长: {{ formatTime(player.timePlayed) }}<br><br>
-        <h3>快捷键</h3><br>
-        <span v-for="key in hotkeys" v-if="player[key.layer].unlocked && tmp[key.layer].hotkeys[key.id].unlocked"><br>{{key.description}}</span></div>
+        {{options.ch?'游玩时长':'Time Played'}}: {{ formatTime(player.timePlayed) }}<br><br>
+        <h3>{{options.ch?'快捷键':'Hotkeys'}}</h3><br>
+        <span v-for="key in hotkeys" v-if="player[key.layer].unlocked && tmp[key.layer].hotkeys[key.id].unlocked"><br>{{options.ch?key.description:key.descriptionEN}}</span></div>
     `
     },
 
@@ -150,24 +155,23 @@ var systemComponents = {
         template: `
         <table>
             <tr>
-                <td><button class="opt" onclick="save()">存档</button></td>
-                <td><button class="opt" onclick="toggleOpt('autosave')">自动存档: {{ options.autosave?"已开启":"已关闭" }}</button></td>
-                <td><button class="opt" onclick="hardReset()">硬重置(删除存档)</button></td>
+                <td><button class="opt" onclick="exportSave()">{{options.ch?'导出存档(复制到黏贴板)' :'Export'}}</button></td>
+                <td><button class="opt" onclick="importSave()">{{options.ch?'导入存档':'Import'}}</button></td>
+                <td><button class="opt" onclick="toggleOpt('offlineProd')">'{{options.ch?'离线进度' :'Offline Prod'}}: {{ options.offlineProd?(options.ch?"已开启":"ON"):(options.ch?"已关闭":"OFF") }}</button></td>
             </tr>
             <tr>
-                <td><button class="opt" onclick="exportSave()">导出存档(复制到黏贴板)</button></td>
-                <td><button class="opt" onclick="importSave()">导入存档</button></td>
-                <td><button class="opt" onclick="toggleOpt('offlineProd')">离线进度: {{ options.offlineProd?"已开启":"已关闭" }}</button></td>
+                <td><button class="opt" onclick="switchTheme()">{{options.ch?'背景主题':'Theme'}}: {{ getThemeName() }}</button></td>
+                <td><button class="opt" onclick="adjustMSDisp()">{{options.ch?'显示里程碑':'Show Milestones'}}: {{options.ch? MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)] : MS_DISPLAYS_EN[MS_SETTINGS.indexOf(options.msDisplay)]}}</button></td>
+                <td><button class="opt" onclick="toggleOpt('hqTree')">{{options.ch?'高质量树':'High-Quality Tree'}}: {{ options.hqTree?(options.ch?"已开启":"ON"):(options.ch?"已关闭":"OFF") }}</button></td>
             </tr>
             <tr>
-                <td><button class="opt" onclick="switchTheme()">背景主题: {{ getThemeName() }}</button></td>
-                <td><button class="opt" onclick="adjustMSDisp()">显示里程碑: {{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</button></td>
-                <td><button class="opt" onclick="toggleOpt('hqTree')">高质量树: {{ options.hqTree?"已开启":"已关闭" }}</button></td>
-            </tr>
-            <tr>
-                <td><button class="opt" onclick="toggleOpt('hideChallenges')">已完成挑战: {{ options.hideChallenges?"隐藏":"显示" }}</button></td>
-                <td><button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">节点内容占据整个屏幕: {{ options.forceOneTab?"永远这样":"自动调节" }}</button></td>
+                <td><button class="opt" onclick="toggleOpt('hideChallenges')">{{options.ch?'已完成挑战':'Completed Challenges'}}: {{ options.hideChallenges?(options.ch?"隐藏":"HIDDEN"):(options.ch?"显示":"SHOWN") }}</button></td>
+                <td><button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">{{options.ch?'节点内容占据整个屏幕':'Single-Tab Mode'}}: {{ options.forceOneTab?(options.ch?"永远这样":"ALWAYS"):(options.ch?"自动调节":"AUTO") }}</button></td>
 			</tr> 
+			<br>
+			<tr>
+				<td><button class="opt" onclick="options.ch = !options.ch; needsCanvasUpdate = true">{{options.ch?'语言':'Language'}}: {{ options.ch?"中文(Chinese)":"英文(English)" }}</button></td>
+			</tr>
         </table>`
     },
 
