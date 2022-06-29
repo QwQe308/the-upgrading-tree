@@ -329,7 +329,7 @@ addLayer("u1", {
         13: {
             canClick(){return true},
             display() {return `强制进行A重置(CD未到无自动化点奖励)<br />获得${format(player.u1.total.sub(player.u1.baseUPLastReset))}升级点<br />您在这一轮中获得了${format(player.u1.exchangedUnstableU1P)}临时升级点(当前值:${format(getUnstableU1P())})`},
-            displayEN() {return `Do \'A\' reset(no AP reward while CD isn\'t over)<br />Gain ${format(player.u1.total.sub(player.u1.baseUPLastReset))} Upgrade Points`},
+            displayEN() {return `Do \'A\' Force Reset(no AP reward while CD isn\'t over)<br />Gain ${format(player.u1.total.sub(player.u1.baseUPLastReset))} Upgrade Points`},
             onClick(){
                 resetU1Upgs(player.u1.upgrades,true,true)
             }
