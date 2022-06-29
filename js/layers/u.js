@@ -113,7 +113,7 @@ addLayer("u1", {
                 return c
             },
             display() { return `+1 升级点.(重置U或A以获得)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}点数<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
-            displayEN() { return `+1 Upgrade Points.(Do U or A reset to gain)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} Points<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `+1 Upgrade Points.(Do U or A reset to gain)(Tip:U reset means reset U upgs)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} Points<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return calcU1Point().gte(this.cost()) },
             buy() {
                 costU1Time(this.cost())
@@ -324,6 +324,14 @@ addLayer("u1", {
             displayEN() {return `Disable \'Reset Upgrades\' confirm window in U layer(${player.u1.confirmWindow?(options.ch?"未禁用":"Enabled"):(options.ch?"已禁用":"Disabled")})`},
             onClick(){
                 player.u1.confirmWindow = !player.u1.confirmWindow
+            }
+        },
+        13: {
+            canClick(){return true},
+            display() {return `强制进行A重置(CD未到无自动化点奖励)<br />获得${format(player.u1.total.sub(player.u1.baseUPLastReset))}升级点<br />您在这一轮中获得了${format(player.u1.exchangedUnstableU1P)}临时升级点(当前值:${format(getUnstableU1P())})`},
+            displayEN() {return `Do \'A\' reset(no AP reward while CD isn\'t over)<br />Gain ${format(player.u1.total.sub(player.u1.baseUPLastReset))} Upgrade Points`},
+            onClick(){
+                resetU1Upgs(player.u1.upgrades,true,true)
             }
         },
     },

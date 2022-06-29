@@ -14,11 +14,14 @@
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.44",
+	num: "0.45",
 	name: "",
 }
 
 let changelog = `<h1>更新日志(Currently not translated):</h1><br>
+	<h3>v0.45</h3><br>
+		- 增加强制A重置功能.<br>
+		- 修复翻译问题.添加部分说明.<br><br>
 	<h3>v0.44</h3><br>
 		- 增加语言调节(英文).<br>
 		- 加强了S节点.<br><br>

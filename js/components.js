@@ -245,7 +245,7 @@ function loadVue() {
 		props: ['layer'],
 		template: `
 		<div style="margin-top: -13px">
-			<span v-if="tmp[layer].baseAmount"><br>{{options.ch?"您有":"You have"}} {{formatWhole(tmp[layer].baseAmount)}} {{options.ch?tmp[layer].resource:tmp[layer].resourceEN}}</span>
+			<span v-if="tmp[layer].baseAmount"><br>{{options.ch?"您有":"You have"}} {{formatWhole(tmp[layer].baseAmount)}} {{options.ch?tmp[layer].baseResource:tmp[layer].baseResourceEN}}</span>
 			<span v-if="tmp[layer].passiveGeneration"><br>{{options.ch?"您每秒获得":"You are gaining "}} {{format(tmp[layer].resetGain.times(tmp[layer].passiveGeneration))}} {{options.ch?tmp[layer].resource:tmp[layer].resourceEN}}{{options.ch?"":" per second"}}</span>
 			<br><br>
 			<span v-if="tmp[layer].showBest">{{options.ch?"您最高拥有":"Your best resource this layer is "}} {{formatWhole(player[layer].best)}} {{options.ch?tmp[layer].resource:tmp[layer].resourceEN}}<br></span>
