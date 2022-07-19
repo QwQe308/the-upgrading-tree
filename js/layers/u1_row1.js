@@ -16,6 +16,7 @@ addLayer("p", {
         mult = hasUpgThenMul("p",12,mult)
         mult = hasUpgThenMul("p",15,mult)
         mult = mult.mul(layerEffect("t"))
+        mult = hasUpgThenMul("g",21,mult)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -45,6 +46,7 @@ addLayer("p", {
         return str
     },
     passiveGeneration(){
+        if(autoBought(13) && !autoActive(13)) return 0
         if(hasMilestone("g",2) || autoActive(13)) return 0.1
         return 0
     },
@@ -58,7 +60,7 @@ addLayer("p", {
                 var eff = n(1.12)
                 return eff
             },
-            effectDisplay(){return `^${format(this.effect())}`},
+            effectDisplay(){return `^${format(tmp[this.layer].upgrades[this.id].effect)}`},
             cost(){return n(10)},
         },
         12: {
@@ -70,7 +72,7 @@ addLayer("p", {
                 eff = expRootSoftcap(eff,n(1e8),1.25)   
                 return eff
             },
-            effectDisplay(){return `x${format(this.effect())}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}`},
             unlocked(){return hasUpgrade("u1",23)},
             cost(){return n(64)},
         },        
@@ -83,7 +85,7 @@ addLayer("p", {
                 eff = powsoftcap(eff,n(4),2)
                 return eff
             },
-            effectDisplay(){return `^${format(this.effect())}`},
+            effectDisplay(){return `^${format(tmp[this.layer].upgrades[this.id].effect)}`},
             unlocked(){return hasUpgrade("u1",23)},
             cost(){return n(128)},
         },        
@@ -96,7 +98,7 @@ addLayer("p", {
                 if(eff.gte(2)) eff = eff.log10().mul(3.33).add(1)
                 return eff
             },
-            effectDisplay(){return `^${format(this.effect())}`},
+            effectDisplay(){return `^${format(tmp[this.layer].upgrades[this.id].effect)}`},
             unlocked(){return hasUpgrade("u1",23)},
             cost(){return n(512)},
         },
@@ -105,9 +107,10 @@ addLayer("p", {
             descriptionEN: "Upgrade Points boost Prestige Points.",
             effect(){
                 var eff = player.u1.total.div(16).add(1).pow(2)
+                if(ngSub()) eff = eff.div(64).add(1).pow(2)
                 return eff
             },
-            effectDisplay(){return `x${format(this.effect())}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}`},
             unlocked(){return hasUpgrade("u1",23)},
             cost(){return n(2048)},
         },
@@ -127,6 +130,8 @@ addLayer("p", {
     ],
     doReset(layer){
         if(layer == this.layer) return
+        player.u1.t = n(0)
+        player.points = n(0)
         if((layer == "b" && hasMilestone("b",1)) || (layer == "g" && hasMilestone("g",1)) || (hasMilestone("b",1) && hasMilestone("g",1))){
             layerDataReset(this.layer,["upgrades"])
             return

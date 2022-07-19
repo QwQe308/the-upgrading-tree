@@ -2,6 +2,7 @@ var player;
 var needCanvasUpdate = true;
 var gameEnded = false;
 var scrolled = false;
+var trueDiff = 0.05
 
 // Don't change this
 const EN_VERSION = {
@@ -177,7 +178,7 @@ function layerDataReset(layer, keep = []) {
 	if (layers[layer].clickables && !player[layer].clickables) 
 		player[layer].clickables = getStartClickables(layer)
 	for (thing in storedData) {
-		player[layer][thing] =storedData[thing]
+		player[layer][thing] = storedData[thing]
 	}
 }
 
@@ -205,6 +206,7 @@ function doReset(layer, force=false) {
 	if (tmp[layer].type == "none") force = true
 	let row = tmp[layer].row
 	if (!force) {
+		if (!tmp[layer].canReset) return;
 		if (tmp[layer].baseAmount.lt(tmp[layer].requires)) return;
 		let gain = tmp[layer].resetGain
 		if (tmp[layer].type=="static") {
@@ -281,6 +283,7 @@ function startChallenge(layer, x) {
 	let enter = false
 	if (!player[layer].unlocked) return
 	if (player[layer].activeChallenge == x) {
+		if(!canCompleteChallenge(layer,x)) if(!window.confirm("您是否要退出挑战")) return;
 		completeChallenge(layer, x)
 		player[layer].activeChallenge = null
 	} else {
@@ -323,6 +326,7 @@ function canCompleteChallenge(layer, x)
 function completeChallenge(layer, x) {
 	var x = player[layer].activeChallenge
 	if (!x) return
+	
 	
 	let completions = canCompleteChallenge(layer, x)
 	if (!completions){
@@ -435,7 +439,7 @@ var interval = setInterval(function() {
 	ticking = true
 	let now = Date.now()
 	let diff = (now - player.time) / 1e3
-	let trueDiff = diff
+	trueDiff = diff
 	if (player.offTime !== undefined) {
 		if (player.offTime.remain > modInfo.offlineLimit * 3600) player.offTime.remain = modInfo.offlineLimit * 3600
 		if (player.offTime.remain > 0) {

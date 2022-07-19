@@ -1,21 +1,21 @@
 function hasUpgrade(layer, id) {
-	return ((player[layer].upgrades.includes(toNumber(id)) || player[layer].upgrades.includes(id.toString())) && !tmp[layer].deactivated)
+	return ((player[layer].upgrades.includes(toNumber(id)) || player[layer].upgrades.includes(id.toString())))
 }
 
 function hasMilestone(layer, id) {
-	return ((player[layer].milestones.includes(toNumber(id)) || player[layer].milestones.includes(id.toString())) && !tmp[layer].deactivated)
+	return ((player[layer].milestones.includes(toNumber(id)) || player[layer].milestones.includes(id.toString())))
 }
 
 function hasAchievement(layer, id) {
-	return ((player[layer].achievements.includes(toNumber(id)) || player[layer].achievements.includes(id.toString())) && !tmp[layer].deactivated)
+	return ((player[layer].achievements.includes(toNumber(id)) || player[layer].achievements.includes(id.toString())))
 }
 
 function hasChallenge(layer, id) {
-	return ((player[layer].challenges[id]) && !tmp[layer].deactivated)
+	return ((player[layer].challenges[id]))
 }
 
 function maxedChallenge(layer, id) {
-	return ((player[layer].challenges[id] >= tmp[layer].challenges[id].completionLimit) && !tmp[layer].deactivated)
+	return ((player[layer].challenges[id] >= tmp[layer].challenges[id].completionLimit))
 }
 
 function challengeCompletions(layer, id) {

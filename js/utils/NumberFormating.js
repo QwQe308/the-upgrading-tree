@@ -45,15 +45,15 @@ function format(decimal, precision = 2, small=false) {
       return "NaN"
     }
     if(decimal.lt(0)){
-      console.error("Neg!")
+      //console.error("Neg!")
       return "-"+format(ExpantaNum(0).sub(decimal),precision,small)
     }
     small = small || modInfo.allowSmall
     let fmt = decimal.toString()
     if(decimal.eq(0))return "0"
-    if(decimal.lt("0.0001")){
+    /*if(decimal.lt("0.0001")){
       return format(decimal.rec(), precision) + "⁻¹"
-    }
+    }*/
   else if(decimal.lt(1)){
     if(small)precision+=2
     if(fmt.length<precision+2){fmt+="0".repeat(precision-fmt.length+2)}
@@ -75,7 +75,7 @@ function format(decimal, precision = 2, small=false) {
   }else if(decimal.lt(1e9)){
     return commaFormat(decimal,precision)
   }else if(decimal.lt("e10000")){
-    let mantissa = EN(10).pow(decimal.log10().sub(decimal.log10().floor()))
+    let mantissa = ten.pow(decimal.log10().sub(decimal.log10().floor()))
     let exp = decimal.log10().floor()
     let m = mantissa.toString().split(".")
     if(m.length==1)mantissa = m[0]+".00"

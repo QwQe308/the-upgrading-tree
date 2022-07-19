@@ -14,7 +14,7 @@
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.45",
+	num: "0.5",
 	name: "",
 }
 
@@ -60,7 +60,7 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"]
+var doNotCallTheseFunctionsEveryTick = ["autoUpdate","description","descriptionEN"]
 
 function getStartPoints(){
     return new ExpantaNum(modInfo.initialStartPoints)
@@ -85,15 +85,20 @@ function addedPlayerData() { return {
 var displayThings = [
 	function(){
 		var U1Function = (options.ch?`点数`:`Point`)+` = f(t) = ${format(getU1PointMult())} * t<sup>${format(getU1TimeExp())}</sup>`
+		if(ngSub()) U1Function += `/${format(nerf)}`
 		return U1Function
 	},
 	function(){return `t = ${format(player.u1.t)} (+ ${format(getU1TimeSpeed())} /s)`},
-	function(){return (options.ch?`当前Endgame:128升级点`:`Current Endgame: 128 Upgrade Points`)},
+	function(){if(ngSub())return `<text style='color:lightblue'>你处在NG-中</text>`},
+	function(){return (options.ch?`当前Endgame:480升级点 + 全升级`:`Current Endgame: 480 Upgrade Points`)},
+	function(){return `FPS:${format(1/trueDiff,0)}`},
+	function(){if(getU1TimeExp().lt(0)) return `低于0的时间指数已被削弱,并且您获得了一定基于原时间指数,时间速率和本轮U重置时间的点数加成!`},
+	function(){if(isEndgame()) return `您已超过当前版本目标,在此之后可能会受到版本软上限!`},
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.u1.total.gte(128)
+	return player.u1.total.gte(480)
 }
 
 
@@ -108,20 +113,30 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
-  if(oldVersion <= 0.22){
-    if(player.u1.total.gte(50)){
-      player.u1.buyables[11]=n(21)
-      player.u1.buyables[12]=n(15)
-      player.u1.buyables[13]=n(7)
-      player.u1.buyables[14]=n(7)
-      player.u1.buyables[21]=n(0)
-      player.u1.total = n(50)
-	  player.u1.best = n(50)
-      player.u1.milestones = []
-      player.u1.upgrades = []
-      player.u1.points = player.u1.total
-      player.u1.exchangedUnstableU1P = zero
-      for(i=10;i>=1;i--) rowHardReset(i,"u1")
-    }
-  }
+	if(oldVersion <= 0.45){
+		player.a.points = player.a.points.min(10000)
+      	player.u1.buyables[11]=player.u1.buyables[11].min(48)
+      	player.u1.buyables[12]=player.u1.buyables[12].min(27)
+      	player.u1.buyables[13]=player.u1.buyables[13].min(20)
+      	player.u1.buyables[14]=player.u1.buyables[14].min(20)
+      	player.u1.buyables[21]=player.u1.buyables[21].min(5)
+      	player.u1.buyables[22]=player.u1.buyables[22].min(5)
+      	player.u1.buyables[23]=player.u1.buyables[23].min(20)
+  	}
+  	if(oldVersion <= 0.22){
+    	if(player.u1.total.gte(50)){
+      		player.u1.buyables[11]=n(21)
+      		player.u1.buyables[12]=n(15)
+      		player.u1.buyables[13]=n(7)
+      		player.u1.buyables[14]=n(7)
+      		player.u1.buyables[21]=n(0)
+      		player.u1.total = n(50)
+	  		player.u1.best = n(50)
+     	 	player.u1.milestones = []
+      		player.u1.upgrades = []
+      		player.u1.points = player.u1.total
+      		player.u1.exchangedUnstableU1P = zero
+      		for(i=10;i>=1;i--) rowHardReset(i,"u1")
+    	}
+  	}
 }

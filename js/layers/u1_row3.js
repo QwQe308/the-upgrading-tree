@@ -84,20 +84,18 @@ addLayer("t", {
             displayEN() { return `+1 Extra Time Capsule.(Calls T reset on bought)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Boosters<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.b.points.gte(this.cost()) },
             buy() {
-                player.b.points = player.b.points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-                doReset(this.layer,true)
+                doReset(this.layer,autoActive(44))
                 player.t.te = zero
+                player.g.points = n(0)
+                player.g.total = n(0)
+                player.g.best = n(0)
             },
             effect(){
                 var eff = getBuyableAmount(this.layer,this.id)
                 return eff
             },
             unlocked(){return player.t.best.gt(0)},
-            abtick:0,
-            abdelay(){
-                return 1e308
-            }
         },
         12: {
             cost(x = getBuyableAmount(this.layer, this.id)) {
@@ -108,20 +106,18 @@ addLayer("t", {
             displayEN() { return `+1 Extra Time Capsule.(Calls T reset on bought)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Boosters<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.b.points.gte(this.cost()) },
             buy() {
-                player.b.points = player.b.points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-                doReset(this.layer,true)
+                doReset(this.layer,autoActive(44))
                 player.t.te = zero
+                player.g.points = n(0)
+                player.g.total = n(0)
+                player.g.best = n(0)
             },
             effect(){
                 var eff = getBuyableAmount(this.layer,this.id)
                 return eff
             },
             unlocked(){return hasUpgrade("t",11)},
-            abtick:0,
-            abdelay(){
-                return 1e308
-            }
         },
     },
     milestones: {
@@ -148,12 +144,13 @@ addLayer("t", {
                 var eff = player.g.power.div(10).add(1)
                 return eff
             },
-            effectDisplay(){return `x${format(this.effect())}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}`},
             cost(){return n(4)},
             unlocked() {return true},
         },
     },
-    resetsNothing(){return false},
+    resetsNothing(){return autoActive(44)&&this.layerShown()},
+    autoUpgrade(){return autoActive(43)},
 
 })
 
@@ -172,7 +169,11 @@ addLayer("s", {
     baseResource: "点数",
     baseResourceEN: "Points",
     baseAmount() {return player.points},
-    requires(){return n(1e30).mul(n(1e9).pow(player.s.total.root(1.25)))},
+    requires(){
+        var inc = n(1e9).pow(player.s.total.root(1.25))
+        if(hasUpgrade("g",25)) inc = inc.root(1.05)
+        return n(1e30).mul(inc)
+    },
     base(){return 1e9},
     exponent: 2,
     gainMult() { 
@@ -188,12 +189,15 @@ addLayer("s", {
     branches:["g"],
     layerShown(){return hasUpgrade("u1",43)},
     effect(){
-        var eff = player.s.points.add(player.s.total.div(6)).add(1).log10().add(1)
+        var sp = player.s.points.add(player.s.total.div(6))
+        if(hasUpgrade("u1",53)) sp = sp.pow(1.5).mul(2)
+        var eff = sp.add(1).log10().add(1)
         return eff
     },
     effect2(){
-        var eff = player.s.total.mul(2).root(2).floor()
-        return eff
+        var eff = player.s.total.mul(2).root(2)
+        eff = hasUpgThenMul("u1",53,eff)
+        return eff.floor()
     },
     effectDescription(){return `空间建筑强度为${format(this.effect().mul(100))}%(基于空间,总空间和其他加成),获得${format(this.effect2())}额外升级点.<br>空间价格会逐渐变贵.`},
     effectDescriptionEN(){return `Building strength is ${format(this.effect().mul(100))}%(Based on Space,total Space and other boosts),get ${format(this.effect2())} Extra Upgrade Points based on Space.<br>Space becomes more expensive based on total Space.`},
@@ -217,8 +221,12 @@ addLayer("s", {
             onClick(){
                 if(options.ch) if(!window.confirm("确认重置S层级?这不会保留任何S层级的东西!")) return
                 if(!options.ch) if(!window.confirm("Are you sure to reset S layer?This won\'t keep ANYTHING in S layer!")) return
-                layerDataReset(this.layer)
-                doReset(this.layer,true)
+                layerDataReset("s")
+                doReset("s",true)
+                rowHardReset(1,this.layer)
+                rowHardReset(2,this.layer)
+                player.u1.t = n(0)
+                player.points = calcU1Point()
             }
         },
     },
@@ -238,13 +246,14 @@ addLayer("s", {
         11: {
             cost(x = getBuyableAmount(this.layer, this.id)) {
                 var c = x.add(1)
-                return c
+                if(x.gte(4)) c = n(1.25).pow(x.sub(3)).mul(5)
+                return c.floor()
             },
             display() { return `建筑1:基于点数倍增点数<br />x${format(buyableEffect(this.layer,this.id),2)}.(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}空间<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             displayEN() { return `Buliding 1:Boost Points based on Points<br />x${format(buyableEffect(this.layer,this.id),2)}.(Next Level: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Space<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.s.points.gte(this.cost()) },
             buy() {
-                player.s.points = player.s.points.sub(this.cost())
+                if(!hasUpgrade("u1",53)) player.s.points = player.s.points.sub(this.cost()).max(0)
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             effect(x = getBuyableAmount(this.layer, this.id)){
@@ -252,27 +261,27 @@ addLayer("s", {
                 var eff = expPow(player.points.add(10).log10(),2.5).pow(x.mul(layerEffect("s")).root(1.33))
                 return eff
             },
-            abtick:0,
-            abdelay(){
-                return 1e308
-            }
         },
         12: {
             cost(x = getBuyableAmount(this.layer, this.id)) {
                 var c = x.add(2)
-                return c
+                if(x.gte(3)) c = n(1.2).pow(x.sub(2)).mul(5)
+                return c.floor()
             },
             display() { return `建筑2:倍增时间速率<br />x${format(buyableEffect(this.layer,this.id),2)}.(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}空间<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             displayEN() { return `Buliding 2:Boost Time Speed<br />x${format(buyableEffect(this.layer,this.id),2)}.(Next Level: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Space<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.s.points.gte(this.cost()) },
             buy() {
-                player.s.points = player.s.points.sub(this.cost())
+                if(!hasUpgrade("u1",53)) player.s.points = player.s.points.sub(this.cost()).max(0)
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             effect(x = getBuyableAmount(this.layer, this.id)){
                 var eff = six.pow(x.mul(layerEffect("s")))
                 return eff
             },
+            style(){
+                return `{height: 200px;width: 200px}`
+            }
         },
     },
     /* milestones: {
@@ -290,11 +299,10 @@ addLayer("s", {
                 var eff = player.g.power.add(1)
                 return eff
             },
-            effectDisplay(){return `x${format(this.effect())}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}`},
             cost(){return n(5)},
             unlocked() {return true},
         },
     }, */
-    resetsNothing(){return false},
-
+    resetsNothing(){return autoActive(53)&&this.layerShown()},
 })

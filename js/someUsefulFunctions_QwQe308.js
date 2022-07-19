@@ -52,8 +52,7 @@ function expPow(num,pow){
 //e后数字指数软上限
 function expRootSoftcap(num,start,power){
     if(num.lte(start)) return num;
-    num = num.log10();start = start.log10()
-    return ten.pow(num.root(power).mul(start.pow(one.sub(one.div(power)))))
+    return ten.pow(num.log10().root(power).mul(start.log10().pow(one.sub(one.div(power)))))
 }
 //修改class属性
 function setClass(id,toClass = []){
@@ -64,14 +63,14 @@ function setClass(id,toClass = []){
 }
 //便捷
 function hasUpgThenMul(UPGlayer,id,num){
-    if(hasUpgrade(UPGlayer,id)) return num.mul(upgradeEffect(UPGlayer,id))
+    if(hasUpgrade(UPGlayer,id)) return num.mul(tmp[UPGlayer].upgrades[id].effect)
     return num
 }
 function hasUpgThenPow(UPGlayer,id,num){
-    if(hasUpgrade(UPGlayer,id)) return num.pow(upgradeEffect(UPGlayer,id))
+    if(hasUpgrade(UPGlayer,id)) return num.pow(tmp[UPGlayer].upgrades[id].effect)
     return num
 }
 function hasUpgThenAdd(UPGlayer,id,num){
-    if(hasUpgrade(UPGlayer,id)) return num.add(upgradeEffect(UPGlayer,id))
+    if(hasUpgrade(UPGlayer,id)) return num.add(tmp[UPGlayer].upgrades[id].effect)
     return num
 }

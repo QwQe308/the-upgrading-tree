@@ -155,9 +155,14 @@ var systemComponents = {
         template: `
         <table>
             <tr>
+				<td><button class="opt" onclick="save()">{{options.ch?'本地存档' :'Save'}}</button></td>
+                <td><button class="opt" onclick="toggleOpt('autosave')">{{options.ch?'自动存档' :'AutoSave'}}: {{ options.offlineProd?(options.ch?"已开启":"ON"):(options.ch?"已关闭":"OFF") }}</button></td>
+                <td><button class="opt" onclick="hardReset()">{{options.ch?'硬重置(删除存档)' :'HardReset'}}</button></td>
+			</tr>
+			<tr>
                 <td><button class="opt" onclick="exportSave()">{{options.ch?'导出存档(复制到黏贴板)' :'Export'}}</button></td>
                 <td><button class="opt" onclick="importSave()">{{options.ch?'导入存档':'Import'}}</button></td>
-                <td><button class="opt" onclick="toggleOpt('offlineProd')">'{{options.ch?'离线进度' :'Offline Prod'}}: {{ options.offlineProd?(options.ch?"已开启":"ON"):(options.ch?"已关闭":"OFF") }}</button></td>
+                <td><button class="opt" onclick="toggleOpt('offlineProd')">{{options.ch?'离线进度' :'Offline Prod'}}: {{ options.offlineProd?(options.ch?"已开启":"ON"):(options.ch?"已关闭":"OFF") }}</button></td>
             </tr>
             <tr>
                 <td><button class="opt" onclick="switchTheme()">{{options.ch?'背景主题':'Theme'}}: {{ getThemeName() }}</button></td>
