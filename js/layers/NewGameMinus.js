@@ -121,7 +121,7 @@ addLayer("ng", {
     },
     effectDescription(){return `+ ${format(this.getResetGain())} /s`},
     update(diff){
-        if(!hasUpgrade('u1',52)){
+        if(!hasUpgrade('u1',52) && player.ng.activeChallenge == 11){
             player.ng.activeChallenge = null
             player.a.points = n(0)
             layerDataReset("ng")
