@@ -14,11 +14,19 @@
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.5",
-	name: "",
+	num: "0.51",
+	name: "膨胀与否? - Inflation or not?",
 }
 
 let changelog = `<h1>更新日志(Currently not translated):</h1><br>
+	<h3>v0.51</h3><br>
+		- 添加了v0.5内容的英文.<br>
+		- 添加了GU35的辅助.<br><br>
+	<h3>v0.5 - 膨胀与否? - Inflation or not?</h3><br>
+		- 修复了U节点部分情况下已有附近升级却无法解锁的情况.<br>
+		- 添加大量升级,第五排U升级,NG-模式,一个挑战,几个自动化.<br>
+		- 优化代码运行速度.<br>
+		- 当前endgame:480升级点.<br><br>
 	<h3>v0.45</h3><br>
 		- 增加强制A重置功能.<br>
 		- 修复翻译问题.添加部分说明.<br><br>
@@ -93,7 +101,10 @@ var displayThings = [
 	function(){return (options.ch?`当前Endgame:480升级点 + 全升级`:`Current Endgame: 480 Upgrade Points`)},
 	function(){return `FPS:${format(1/trueDiff,0)}`},
 	function(){if(getU1TimeExp().lt(0)) return `低于0的时间指数已被削弱,并且您获得了一定基于原时间指数,时间速率和本轮U重置时间的点数加成!`},
-	function(){if(isEndgame()) return `您已超过当前版本目标,在此之后可能会受到版本软上限!`},
+	function(){
+		if(options.ch) if(isEndgame()) return `您已超过当前版本目标,在此之后可能会受到版本软上限!`
+		return `After the endgame,there might be some softcaps to prevent inflation!`
+	},
 ]
 
 // Determines when the game "ends"

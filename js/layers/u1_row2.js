@@ -237,11 +237,12 @@ addLayer("g", {
         },
         13: {
             description: "<text style='color:blue'>不劳无获:处于NG-挑战中.</text>计时频率升级效果底数基于发生器数量增加.",
+            descriptionEN: "<text style='color:blue'>REQUIREMENT:in NG-.</text>Tickspeed Upgrade's base is boosted based on Generators.",
             effect(){
                 var eff = player.g.points.div(10).add(10).log10().sqrt()
                 return eff
             },
-            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(64),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -251,12 +252,13 @@ addLayer("g", {
         },
         14: {
             description: "<text style='color:blue'>勤俭节约:使用不超过169升级点.</text>升级点加成时间速率.",
+            descriptionEN: "<text style='color:blue'>Use less than or equal 169 Upgrade Points.</text>Upgrade Points boost Timespeed.",
             effect(){
                 var eff = n(1.1).pow(player.u1.total.root(1.69))
                 return eff
             },
             effectDisplay(){
-                return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`
+                return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`
             },
             cost:n(81),
             onPurchase(){
@@ -267,6 +269,7 @@ addLayer("g", {
         },
         15: {
             description: "<text style='color:blue'>不骄不躁:在BGT三个层级中,不获得任何里程碑.</text>每个里程碑给予1临时升级点.",
+            descriptionEN: "<text style='color:blue'>Do not get milestones in B&G&T.</text>Every milestone give 1 temporary upgrade points.",
             cost:n(81),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -277,18 +280,19 @@ addLayer("g", {
                 return eff
             },
             effectDisplay(){
-                return `+${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`
+                return `+${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`
             },
             canAfford(){return (player.g.upgStat[15] || player.g.unl.includes(this.id)) && player.g.points.gte(this.cost) },
             unlocked() {return hasUpgrade("u1",54)},
         },
         21: {
             description: "<text style='color:blue'>跨越P层级?</text>NG点加成重置点.",
+            descriptionEN: "<text style='color:blue'>Do not gain Prestige Points.</text>NG Points boost Prestige Points.",
             effect(){
                 var eff = player.ng.points.add(1).sqrt()
                 return eff
             },
-            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(49),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -297,12 +301,13 @@ addLayer("g", {
             unlocked() {return hasUpgrade("u1",54)},
         },
         22: {
-            description: "<text style='color:blue'>时不我待:在NG-中进行C2.</text>时间指数+0.08.",
+            description: "<text style='color:blue'>时不我待:在C-2中进入NG-.</text>时间指数+0.08.",
+            descriptionEN: "<text style='color:blue'>Get into NG- while doing C-2.</text>Time Exponent +0.08.",
             effect(){
                 var eff = n(0.08)
                 return eff
             },
-            effectDisplay(){return `+${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `+${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(12),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -312,11 +317,12 @@ addLayer("g", {
         },
         23: {
             description: "<text style='color:blue'>挑战自我:在C3中.</text>点数倍率^1.02.",
+            descriptionEN: "<text style='color:blue'>Do C-3.</text>Points multplier ^1.02.",
             effect(){
                 var eff = n(1.02)
                 return eff
             },
-            effectDisplay(){return `^${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `^${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(24),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -325,12 +331,13 @@ addLayer("g", {
             unlocked() {return hasUpgrade("u1",54)},
         },
         24: {
-            description: "<text style='color:blue'>静态时间:不获得发生器,得到1e18t.</text>基于升级点,本次U重置所用的现实时间和t,增幅时间速率.",
+            description: "<text style='color:blue'>静态时间:不获得发生器,得到1e18t.</text>基于升级点,本次U&A重置所用的现实时间和t,增幅时间速率.",
+            descriptionEN: "<text style='color:blue'>Do not gain Generator,and get 1e18 t.</text>Boost Timespeed based on real time this U&A reset,Upgrade points and t.",
             effect(){
                 var eff = player.u1.total.div(30).add(1).pow(Math.log10(player.u1.resetTime)/2).pow(player.u1.t.add(1e10).log10().log10().pow(2))
                 return eff
             },
-            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(0),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -340,6 +347,7 @@ addLayer("g", {
         },
         25: {
             description: "<text style='color:blue'>万物归一:每行同一时间只能拥有一种重置资源,得到1e169点数.</text>空间要求额外提高速度减缓.",
+            descriptionEN: "<text style='color:blue'>You CAN ONLY keep 1 kind of prestige resource EACH ROW at the SAME TIME.</text>Space extra cost-scaling is nerfed.",
             cost:n(0),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -347,16 +355,17 @@ addLayer("g", {
             canAfford(){return (player.g.upgStat[25] && player.points.gte(1e169) || player.g.unl.includes(this.id)) && player.g.points.gte(this.cost) },
             unlocked() {return hasUpgrade("u1",54)},
             effectDisplay(){
-                return `^(1/1.05)${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`
+                return `^(1/1.05)${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`
             },
         },
         31: {
             description: "<text style='color:blue'>极限规划:使用不超过216个升级点.</text>升级点使得B&G层级价格开根.",
+            descriptionEN: "<text style='color:blue'>Use less than or equal 216 Upgrade Points.</text>Upgrade Points nerf B&G cost.",
             effect(){
                 var eff = player.u1.total.add(1).log10().div(12).pow(2).add(1)
                 return eff
             },
-            effectDisplay(){return `^(1/${format(tmp[this.layer].upgrades[this.id].effect)})${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `^(1/${format(tmp[this.layer].upgrades[this.id].effect)})${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(196),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -366,11 +375,12 @@ addLayer("g", {
         },
         32: {
             description: "<text style='color:blue'>时光回溯:在NG-中进行C2的情况下,获得1e24t.</text>时间指数+0.08.",
+            descriptionEN: "<text style='color:blue'>Get 1e24t while doing NG- in C-2.</text>Time expontnt +0.08.",
             effect(){
                 var eff = n(0.08)
                 return eff
             },
-            effectDisplay(){return `+${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `+${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(16),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -380,11 +390,12 @@ addLayer("g", {
         },
         33: {
             description: "<text style='color:blue'>超脱凡物:在NG-中,不购买计时频率升级.</text>计时频率升级的效果一定程度上增幅点数倍率.",
+            descriptionEN: "<text style='color:blue'>Do not get Tickspeed Upgrade in NG-.</text>Tickspeed Upgrade slightly boosts Points.",
             effect(){
                 var eff = buyableEffect("ng",11).pow(0.4)
                 return eff
             },
-            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(128),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -393,12 +404,13 @@ addLayer("g", {
             unlocked() {return hasUpgrade("u1",54)},
         },
         34: {
-            description: "<text style='color:blue'>挑战极限:在NG-中,进入C3.</text>C1的奖励一定程度上倍增点数.",
+            description: "<text style='color:blue'>挑战极限:在C3中,进入NG-.</text>C1的奖励一定程度上倍增点数.",
+            descriptionEN: "<text style='color:blue'>Do NG- in C-3.</text>C1's reward slightly boosts points.",
             effect(){
                 var eff = challengeEffect("u1",11).root(2.5)
                 return eff
             },
-            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(12),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
@@ -407,12 +419,13 @@ addLayer("g", {
             unlocked() {return hasUpgrade("u1",54)},
         },
         35: {
-            description: "<text style='color:blue'>细致入微:购买该升级时,UPBGTS六个节点中购买项等级和升级的总和是素数(质数),各个节点内部也满足这一条件.</text>U节点升级总数增幅能量获取.",
+            description: "<text style='color:blue'>细致入微:购买该升级时,UPBGTS六个节点中非U购买项等级和升级的总和是100以内的素数(质数),各个节点内部也满足这一条件.</text>U节点升级总数增幅能量获取.",
+            descriptionEN: "<text style='color:blue'>When you're buying this upgrade,UPBGTS nodes' total non-u-Buyables and Upgrades is a prime number which less than 100.The same in each node.</text>U upgrades boosts energy.",
             effect(){
                 var eff = n(player.u1.upgrades.length).div(196).add(1)
                 return eff
             },
-            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":"<text style='color:red'>(未解锁)</text>"}`},
+            effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},
             cost:n(999),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)

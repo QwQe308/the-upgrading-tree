@@ -18,6 +18,7 @@ addLayer("ng", {
                 return c.floor()
             },
             display() { return `计时频率升级<br />时间速率x${format(buyableEffect(this.layer,this.id),2)}.(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />底数为${format(this.base())}(${format(this.base().sub(1))}+1,+1永远最后运算)<br />NG点x${format(n(1.02).pow(getBuyableAmount(this.layer, this.id)),2)}.(下一级: ${format(n(1.02).pow(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `Tickspeed Upgrade<br />Timespeed x${format(buyableEffect(this.layer,this.id),2)}.(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Effect base is${format(this.base())}(${format(this.base().sub(1))}+1,+1 applys the last)<br />NG Pointx${format(n(1.02).pow(getBuyableAmount(this.layer, this.id)),2)}.(Next: ${format(n(1.02).pow(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG Points<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.ng.points.gte(this.cost()) },
             buy() {
                 player.ng.points = player.ng.points.sub(this.cost())
@@ -47,6 +48,10 @@ addLayer("ng", {
             display() {
                 if(getBuyableAmount(this.layer,this.id).gte(5)) return `遥远星系<br />时间指数+${format(buyableEffect(this.layer,this.id),2)}(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />计时频率升级底数*${format(buyableEffect(this.layer,this.id).add(1).pow(2),2)}(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)).add(1).pow(2))})<br />购买时进行一次A转并重置你的计时频率升级和NG点<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` 
                 return `星系<br />时间指数+${format(buyableEffect(this.layer,this.id),2)}(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />计时频率升级底数*${format(buyableEffect(this.layer,this.id).add(1).pow(2),2)}(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)).add(1).pow(2))})<br />购买时进行一次A转并重置你的计时频率升级和NG点<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` 
+            },
+            displayEN() {
+                if(getBuyableAmount(this.layer,this.id).gte(5)) return `Remote Galaxy<br />Time Exponent+${format(buyableEffect(this.layer,this.id),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Tickspeed Upgrade base*${format(buyableEffect(this.layer,this.id).add(1).pow(2),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)).add(1).pow(2))})<br />Buying it does a A reset,resets your Tickspeed Upgrade and NG points<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` 
+                return `Galaxy<br />Time Exponent+${format(buyableEffect(this.layer,this.id),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Tickspeed Upgrade base*${format(buyableEffect(this.layer,this.id).add(1).pow(2),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)).add(1).pow(2))})<br />Buying it does a A reset,resets your Tickspeed Upgrade and NG points<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` 
             },
             canAfford() { return player.ng.points.gte(this.cost()) },
             buy() {
@@ -80,7 +85,16 @@ addLayer("ng", {
             6.独立的自动化部分.<br>
             7.一些小改动,如更多软上限.
             `,
-            /**/challengeDescriptionEN: "Wow time exponent seems not so useful now.REMOVE it.",
+            /**/challengeDescriptionEN: `
+            Entering NG- won't reset your U upgrades,but your current Automation Points will be reseted.These effects will active.<br>
+            1.Points muliplier is softcapped at time multplier,^0.5.<br>
+            2.Points make itself slower.(See it in the formula)<br>
+            3.Time exponent -1,applies the last.<br>
+            4.Timespeed/10.<br>
+            5.Unlocks new features,and you can buy Upgrade Points by NG Points.(NG Points is based on t,Points and Prestige Points)<br>
+            6.Independly automation.<br>
+            7.Some small changes,such as more softcaps.
+            `,
             onEnter(){
                 resetU1Upgs(player.u1.upgrades,true)
                 player.ng.activeChallenge = this.id
@@ -96,7 +110,7 @@ addLayer("ng", {
             goalDescription(){return "无尽"},
             /**/goalDescriptionEN(){return "Endless"},
             rewardDescription:`在挑战中获得尽可能多的升级点!</text>`,
-            /**/rewardDescriptionEN:`Get as much upgrade points as you can!.</text>`,
+            /**/rewardDescriptionEN:`Get as much upgrade points as you can!</text>`,
             unlocked(){return layers.u1.upgrades[52].unlocked()},
             style(){
                 return `{

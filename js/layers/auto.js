@@ -315,7 +315,7 @@ var layerA = {
           cost:n(2048),
           unlocked(){return true},
           display() {if(!autoBought(this.id)) return `<h3>${this.name}</h3>\n\n价格: ${format(this.cost)}`;return `<h3>${this.name}</h3>\n\n购买顺序:${autoStat(this.id)}(未列入的不购买)`},
-          //displayEN() {if(!autoBought(this.id)) return `<h3>${this.nameEN}</h3>\n\nCost: ${format(this.cost)}`;return `<h3>${this.nameEN}</h3>\n\nBuying:${autoStat(this.id)}s(Only buy these)`},
+          displayEN() {if(!autoBought(this.id)) return `<h3>${this.nameEN}</h3>\n\nCost: ${format(this.cost)}`;return `<h3>${this.nameEN}</h3>\n\nBuying Order:${autoStat(this.id)}(Only buy these)`},
           onClick(){if(!autoBought(this.id)) buyAuto(this.id,this.cost);else toggleIdStat(this.id,"t"/* fix this */)},
           autoUpdate(diff){
             if(!autoActive(this.id)) return

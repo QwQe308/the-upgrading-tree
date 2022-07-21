@@ -143,6 +143,7 @@ addLayer("u1", {
     resourceEN: "Upgrade Points", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     effectDescription(){return `<br>A节点重置CD:${formatTime(player.a.cd.toNumber())},将获得${format(getResetGain("a"))}自动化点<br>您已使用${format(getUsedUP())}升级点`},
+    effectDescriptionEN(){return `<br>A Node Reset CD:${formatTime(player.a.cd.toNumber())},Will Get ${format(getResetGain("a"))} AP on Reset<br>You've Used ${format(getUsedUP())} Upgrade Points`},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new ExpantaNum(1)
         mult = mult.mul(layerEffect("p"))
@@ -391,6 +392,37 @@ addLayer("u1", {
                 resetU1Upgs(player.u1.upgrades,true,true)
             }
         },
+        14: {
+            canClick(){return true},
+            display() {return `G升级“细致入微”信息`},
+            displayEN() {return `Generator Upgrade 35 information`},
+            onClick(){
+                var u = player.u1.upgrades.length;var p = player.p.upgrades.length;var b = player.b.upgrades.length;var g = player.g.upgrades.length;var t = player.t.upgrades.length+(player.t.buyables[11].add(player.t.buyables[12]).toNumber())
+                var s = player.s.buyables[11].add(player.s.buyables[12]).toNumber();
+                var product = u+p+b+g+t+s
+                if(options.ch) window.alert(`
+                细致入微信息:\n
+                U层级总数: ${format(u)} ${prime.includes(u)?``:`!未满足条件!`}\n\n
+                P层级总数: ${format(p)} ${prime.includes(p)?``:`!未满足条件!`}\n
+                B层级总数: ${format(b)} ${prime.includes(b)?``:`!未满足条件!`}\n
+                G层级总数: ${format(g)} ${prime.includes(g)?``:`!未满足条件!`}\n
+                T层级总数: ${format(t)} ${prime.includes(t)?``:`!未满足条件!`}\n
+                S层级总数: ${format(s)} ${prime.includes(s)?``:`!未满足条件!`}\n\n
+                总和:${format(product)} ${prime.includes(product)?``:`!未满足条件!`}\n\n
+                素数表: ${prime}`)
+                else window.alert(`
+                Generator U35 Information:\n
+                U: ${format(u)} ${prime.includes(u)?``:`!NOT A PRIME NUMBER!`}\n\n
+                P: ${format(p)} ${prime.includes(p)?``:`!NOT A PRIME NUMBER!`}\n
+                B: ${format(b)} ${prime.includes(b)?``:`!NOT A PRIME NUMBER!`}\n
+                G: ${format(g)} ${prime.includes(g)?``:`!NOT A PRIME NUMBER!`}\n
+                T: ${format(t)} ${prime.includes(t)?``:`!NOT A PRIME NUMBER!`}\n
+                S: ${format(s)} ${prime.includes(s)?``:`!NOT A PRIME NUMBER!`}\n\n
+                Total: ${format(product)} ${prime.includes(product)?``:`!NOT A PRIME NUMBER!`}\n\n
+                Prime number list: ${prime}`)
+            },
+            unlocked(){return hasUpgrade("u1",55) && !player.g.unl[35]}
+        },
     },
     upgrades: {
         11: {
@@ -592,6 +624,7 @@ addLayer("u1", {
 
         51: {
             description:`u51:升级点加成能量产出...E层级呢?`,
+            descriptionEN:`u51:Upgrade points boost energy...Where's E node?`,
             cost:n(81),
             unlocked(){return player[this.layer].total.gte(128)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
@@ -602,7 +635,8 @@ addLayer("u1", {
             effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}`},
         }, 
         52: {
-            description:`u52:解锁ng-1.时间指数+lg(发生器+1)*lg(倍增器+1)/16.`,
+            description:`u52:解锁NG-1.时间指数+lg(发生器+1)*lg(倍增器+1)/16.`,
+            descriptionEN:`u52:Unlock NG-1.Time Exponent+lg(Generators+1)*lg(boosters+1)/16.`,
             cost:n(81),
             unlocked(){return player[this.layer].total.gte(128)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
@@ -614,6 +648,7 @@ addLayer("u1", {
         }, 
         53: {
             description:`u53:空间建筑不消耗点数,并且空间给予九倍的免费升级点.`,
+            descriptionEN:`u53:Buying Space Buildings uses nothing,and 2nd space effect *9.`,
             cost:n(81),
             unlocked(){return player[this.layer].total.gte(128)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
@@ -633,12 +668,14 @@ addLayer("u1", {
         }, 
         54: {
             description:`u54:解锁极多的发生器升级.你可能需要一定实力来解锁...购买一次后就无需再完成购买条件.获得49临时升级点.`,
+            descriptionEN:`u54:Unlock MORE generator upgrades.Once they've been bought,you can buy them with no requirement.+ 49 temporary upgrade points.`,
             cost:n(81),
             unlocked(){return player[this.layer].total.gte(128)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
         }, 
         55: {
             description:`u55:解锁U挑战-3.`,
+            descriptionEN:`u55:Unlock U challenge-3.`,
             cost:n(81),
             unlocked(){return player[this.layer].total.gte(128)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
@@ -692,6 +729,7 @@ addLayer("u1", {
             name(){return "C-3" + (hasUpgrade("u1",this.baseUPG)?"":"<text style='color:red'>(未解锁)</text>")},
             /**/nameEN(){return "C-3" + (hasUpgrade("u1",this.baseUPG)?"":"<text style='color:red'>(Locked)</text>")},
             challengeDescription: "点数倍率被大幅削弱.<br><text style='color:red'>进入条件:在C-2中,拥有1e15t.</text>",
+            challengeDescriptionEN: "Points multplier is HYPER-NERFED,as you overused it.<br><text style='color:red'>Enter Requirement: Gained 1e15 t in C-2.</text>",
             baseUPG:55,
             onEnter(){
                 resetU1Upgs([this.baseUPG],true)
@@ -710,7 +748,8 @@ addLayer("u1", {
                 return eff
             },
             rewardDescription:`时间速率基于点数倍率增加.<text style='color:red'>(如果您解锁了C2,其效果^2)(如果您解锁了C3,其效果^3).</text>`,
-            rewardDisplay(){return `时间速率x${format(this.rewardEffect())}`},
+            rewardDescriptionEN:`Timespeed is boosted based on points multplier.<text style='color:red'>(If C2 is unlocked,this effect ^2)(If C3 is unlocked,this effect ^3,stacks).</text>`,
+            rewardDisplay(){return `x${format(this.rewardEffect())}`},
             unlocked(){return layers[this.layer].upgrades[this.baseUPG].unlocked()}
         },
     },
