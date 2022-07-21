@@ -421,7 +421,7 @@ addLayer("u1", {
                 Total: ${format(product)} ${prime.includes(product)?``:`!NOT A PRIME NUMBER!`}\n\n
                 Prime number list: ${prime}`)
             },
-            unlocked(){return hasUpgrade("u1",55) && !player.g.unl[35]}
+            unlocked(){return hasUpgrade("u1",55) && !player.g.unl.includes(35)}
         },
     },
     upgrades: {
