@@ -1,6 +1,6 @@
 ﻿let modInfo = {
-	name: "升级树-U1",
-	nameEN: "The Upgrading Tree-U1",
+	name: "升级树",
+	nameEN: "The Upgrading Tree",
 	id: "The_upgrading_tree",
 	author: "QwQe308",
 	pointsName: "点数",
@@ -9,19 +9,16 @@
 	discordLink: "",
 	initialStartPoints: new ExpantaNum (0.5), // Used for hard resets and new players
 	
-	offlineLimit: 0.5,  // In hours
+	offlineLimit: 0,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.52",
-	name: "",
+	num: "0.51",
+	name: "膨胀与否? - Inflation or not?",
 }
 
 let changelog = `<h1>更新日志(Currently not translated):</h1><br>
-	<h3>v0.52</h3><br>
-		- 修复了一些英文.<br>
-		- 修复了一些bug.<br><br>
 	<h3>v0.51</h3><br>
 		- 添加了v0.5内容的英文.<br>
 		- 添加了GU35的辅助.<br><br>
@@ -67,10 +64,7 @@ let changelog = `<h1>更新日志(Currently not translated):</h1><br>
 	<h3>v0.1</h3><br>
 		- 添加前两排升级.`
 
-let winText = `
-Congratulations! You have reached the end of this universe, but for now...(Choose “continue” is a good idea).<br>
-恭喜通关该宇宙!您已经达到了这个宇宙的当前版本结局...(建议选择“继续”).
-`
+let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -103,25 +97,19 @@ var displayThings = [
 		return U1Function
 	},
 	function(){return `t = ${format(player.u1.t)} (+ ${format(getU1TimeSpeed())} /s)`},
-	function(){
-		if(options.ch) if(ngSub())return `<text style='color:lightblue'>你处在NG-中</text>`
-		if(ngSub())return `<text style='color:lightblue'>You are in NG- Mode</text>`
-	},
-	function(){return (options.ch?`该宇宙当前Endgame:500升级点 + 全升级`:`Current Endgame: 480 Upgrade Points`)},
+	function(){if(ngSub())return `<text style='color:lightblue'>你处在NG-中</text>`},
+	function(){return (options.ch?`当前Endgame:480升级点 + 全升级`:`Current Endgame: 480 Upgrade Points`)},
 	function(){return `FPS:${format(1/trueDiff,0)}`},
-	function(){
-		if(options.ch) if(getU1TimeExp().lt(0)) return `低于0的时间指数已被削弱,并且您获得了一定基于原时间指数,时间速率和本轮U重置时间的点数加成!`
-		if(getU1TimeExp().lt(0)) return `Time exponent is nerfed<br>Your points is boosted by unnerfed-time exponent,timespeed and time this U reset!`
-	},
+	function(){if(getU1TimeExp().lt(0)) return `低于0的时间指数已被削弱,并且您获得了一定基于原时间指数,时间速率和本轮U重置时间的点数加成!`},
 	function(){
 		if(options.ch) if(isEndgame()) return `您已超过当前版本目标,在此之后可能会受到版本软上限!`
-		if(isEndgame()) return `After the endgame,there might be some softcaps to prevent inflation!`
+		return `After the endgame,there might be some softcaps to prevent inflation!`
 	},
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.u1.total.gte(500)
+	return player.u1.total.gte(480)
 }
 
 
@@ -145,8 +133,7 @@ function fixOldSave(oldVersion){
       	player.u1.buyables[21]=player.u1.buyables[21].min(5)
       	player.u1.buyables[22]=player.u1.buyables[22].min(5)
       	player.u1.buyables[23]=player.u1.buyables[23].min(20)
-		player.u1.total = n(0)
-	}
+  	}
   	if(oldVersion <= 0.22){
     	if(player.u1.total.gte(50)){
       		player.u1.buyables[11]=n(21)

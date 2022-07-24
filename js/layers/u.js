@@ -1,7 +1,6 @@
 var trueGain = n(0)
 var nerf = n(1)
 var prime = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
-var totalUP = n(0)
 
 function getUsedUP(){
     return player.u1.total.add(player.u1.exchangedUnstableU1P).sub(player.u1.points).max(0)
@@ -16,7 +15,7 @@ function getU1TimeSpeed(){
     timespeed = hasUpgThenMul("g",14,timespeed)
     timespeed = hasUpgThenMul("g",24,timespeed)
     timespeed = timespeed.mul(buyableEffect("s",12))
-    if(ngSub()) timespeed = timespeed.div(4)
+    if(ngSub()) timespeed = timespeed.div(10)
     timespeed = timespeed.mul(buyableEffect("ng",11))
     if(hasChallenge("u1",21)) timespeed = timespeed.mul(challengeEffect("u1",21))
     if(ngSub()) timespeed = expRootSoftcap(timespeed,n(1e30),n(1.2))
@@ -54,11 +53,6 @@ function resetU1Upgs(extraKeptUpgs = [],force = false,aReset= false){
     player.u1.baseUPLastReset = player.u1.total
     for(i=10;i>=1;i--) rowHardReset(i,"u1")
     player.u1.resetTime = 0
-    var upg = []
-    for(i=1;i<=56;i++){
-        if(player.u1.upgrades.includes(i)) upg.push(i)
-    }
-    player.u1.upgrades = upg
     updateTemp()
 	updateTemp()
 }
@@ -143,13 +137,12 @@ addLayer("u1", {
         exchangedUnstableU1P:n(0),
         confirmWindow:true,
         baseUPLastReset:n(0),
-        MetaReset:null,
     }},
     color: "lightblue",
     resource: "升级点", // Name of prestige currency
     resourceEN: "Upgrade Points", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    effectDescription(){return `<br>A节点重置CD:${formatTime(player.a.cd.toNumber())},将获得${format(getResetGain("a"))}自动化点<br>您已使用${format(getUsedUP())}升级点<br>真实升级点:${format(totalUP)}`},
+    effectDescription(){return `<br>A节点重置CD:${formatTime(player.a.cd.toNumber())},将获得${format(getResetGain("a"))}自动化点<br>您已使用${format(getUsedUP())}升级点`},
     effectDescriptionEN(){return `<br>A Node Reset CD:${formatTime(player.a.cd.toNumber())},Will Get ${format(getResetGain("a"))} AP on Reset<br>You've Used ${format(getUsedUP())} Upgrade Points`},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new ExpantaNum(1)
@@ -745,9 +738,9 @@ addLayer("u1", {
                 player.u1.activeChallenge = this.id
             },
             enterReq(){return player.u1.t.gte(1e15)&&hasUpgrade("u1",this.baseUPG)&&inChallenge("u1",12)},
-            canComplete(){return player.points.gte(1e20)},
-            goalDescription(){return format(ExpantaNum(1e20))+"点数"},
-            /**/goalDescriptionEN(){return format(ExpantaNum(1e20))+" Points"},
+            canComplete(){return player.points.gte(1e25)},
+            goalDescription(){return format(ExpantaNum(1e25))+"点数"},
+            /**/goalDescriptionEN(){return format(ExpantaNum(1e25))+" Points"},
             rewardEffect(){
                 var eff = expPow(getU1PointMult().add(10).log10(),2).root(3).max(1)
                 if(hasUpgrade("u1",35)) eff = eff.pow(2)
@@ -763,8 +756,7 @@ addLayer("u1", {
 
     update(diff){
         trueGain = calcU1Point(player.u1.t.add(getU1TimeSpeed())).sub(calcU1Point())
-        totalUP = buyableEffect("u1",11).add(buyableEffect("u1",12)).add(buyableEffect("u1",13)).add(buyableEffect("u1",14)).add(buyableEffect("u1",21)).add(buyableEffect("u1",22).add(buyableEffect("u1",23)).add(buyableEffect("u1",24))).floor()
-        player.u1.total = totalUP.max(player.u1.total)
+        player.u1.total = buyableEffect("u1",11).add(buyableEffect("u1",12)).add(buyableEffect("u1",13)).add(buyableEffect("u1",14)).add(buyableEffect("u1",21)).add(buyableEffect("u1",22).add(buyableEffect("u1",23)).add(buyableEffect("u1",24))).floor()
         //if(player.u1.total.gte(81)) player.u1.total = player.u1.total.sub(81).root(1.5).add(81).floor()
         player.u1.t = player.u1.t.add(getU1TimeSpeed().mul(diff))
         player.points = calcU1Point()
@@ -777,12 +769,3 @@ addLayer("u1", {
         player.u1.t = n(0)
     },
 })
-
-setInterval(
-    function(){
-        if(localStorage.getItem("MetaReset") != player.u1.MetaReset){
-            for(i in player.u1.buyables) player.u1.buyables[i] = zero
-            player.u1.MetaReset = localStorage.getItem("MetaReset")
-        }
-    },1000
-)

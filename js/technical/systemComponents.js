@@ -172,6 +172,10 @@ var systemComponents = {
             <tr>
                 <td><button class="opt" onclick="toggleOpt('hideChallenges')">{{options.ch?'已完成挑战':'Completed Challenges'}}: {{ options.hideChallenges?(options.ch?"隐藏":"HIDDEN"):(options.ch?"显示":"SHOWN") }}</button></td>
                 <td><button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">{{options.ch?'节点内容占据整个屏幕':'Single-Tab Mode'}}: {{ options.forceOneTab?(options.ch?"永远这样":"ALWAYS"):(options.ch?"自动调节":"AUTO") }}</button></td>
+			</tr> 
+			<br>
+			<tr>
+				<td><button class="opt" onclick="options.ch = !options.ch; needsCanvasUpdate = true">{{options.ch?'语言':'Language'}}: {{ options.ch?"中文(Chinese)":"英文(English)" }}</button></td>
 			</tr>
         </table>`
     },
