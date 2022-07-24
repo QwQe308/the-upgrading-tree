@@ -269,7 +269,7 @@ function load(data = null) {
 	loadVue();
 }
 function loadOptions() {
-	let get2 = localStorage.getItem(modInfo.id+"_options");
+	let get2 = localStorage.getItem("The_upgrading_tree_meta_options");
 	if (get2) {
 		options = Object.assign(getStartOptions(), JSON.parse(decodeURIComponent(escape(atob(get2)))));
 	}

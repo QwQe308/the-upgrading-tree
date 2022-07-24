@@ -18,7 +18,7 @@ addLayer("ng", {
                 return c.floor()
             },
             display() { return `计时频率升级<br />时间速率x${format(buyableEffect(this.layer,this.id),2)}.(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />底数为${format(this.base())}(${format(this.base().sub(1))}+1,+1永远最后运算)<br />NG点x${format(n(1.02).pow(getBuyableAmount(this.layer, this.id)),2)}.(下一级: ${format(n(1.02).pow(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
-            displayEN() { return `Tickspeed Upgrade<br />Timespeed x${format(buyableEffect(this.layer,this.id),2)}.(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Effect base is${format(this.base())}(${format(this.base().sub(1))}+1,+1 applys the last)<br />NG Pointx${format(n(1.02).pow(getBuyableAmount(this.layer, this.id)),2)}.(Next: ${format(n(1.02).pow(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG Points<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `Tickspeed Upgrade<br />Timespeed x${format(buyableEffect(this.layer,this.id),2)}.(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Effect base is ${format(this.base())}(${format(this.base().sub(1))}+1,+1 applys the last)<br />NG Pointx${format(n(1.02).pow(getBuyableAmount(this.layer, this.id)),2)}.(Next: ${format(n(1.02).pow(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG Points<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.ng.points.gte(this.cost()) },
             buy() {
                 player.ng.points = player.ng.points.sub(this.cost())
@@ -50,8 +50,8 @@ addLayer("ng", {
                 return `星系<br />时间指数+${format(buyableEffect(this.layer,this.id),2)}(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />计时频率升级底数*${format(buyableEffect(this.layer,this.id).add(1).pow(2),2)}(下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)).add(1).pow(2))})<br />购买时进行一次A转并重置你的计时频率升级和NG点<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` 
             },
             displayEN() {
-                if(getBuyableAmount(this.layer,this.id).gte(5)) return `Remote Galaxy<br />Time Exponent+${format(buyableEffect(this.layer,this.id),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Tickspeed Upgrade base*${format(buyableEffect(this.layer,this.id).add(1).pow(2),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)).add(1).pow(2))})<br />Buying it does a A reset,resets your Tickspeed Upgrade and NG points<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` 
-                return `Galaxy<br />Time Exponent+${format(buyableEffect(this.layer,this.id),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Tickspeed Upgrade base*${format(buyableEffect(this.layer,this.id).add(1).pow(2),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)).add(1).pow(2))})<br />Buying it does a A reset,resets your Tickspeed Upgrade and NG points<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG点<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` 
+                if(getBuyableAmount(this.layer,this.id).gte(5)) return `Remote Galaxy<br />Time Exponent+${format(buyableEffect(this.layer,this.id),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Tickspeed Upgrade base*${format(buyableEffect(this.layer,this.id).add(1).pow(2),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)).add(1).pow(2))})<br />Buying it does a A reset,resets your Tickspeed Upgrade and NG points<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG Points<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` 
+                return `Galaxy<br />Time Exponent+${format(buyableEffect(this.layer,this.id),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Tickspeed Upgrade base*${format(buyableEffect(this.layer,this.id).add(1).pow(2),2)}(Next: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)).add(1).pow(2))})<br />Buying it does a A reset,resets your Tickspeed Upgrade and NG points<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} NG Points<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` 
             },
             canAfford() { return player.ng.points.gte(this.cost()) },
             buy() {
@@ -80,7 +80,7 @@ addLayer("ng", {
             1.点数倍率于时间对点数的加成倍率处达到软上限,超出部分^0.5.<br>
             2.点数减缓自身获取速度.(详见公式)<br>
             3.时间指数-1,在最后生效.<br>
-            4.时间速率/10.<br>
+            4.时间速率/4.<br>
             5.解锁新内容,你可以使用NG点购买升级点.(NG点产量和t,点数,重置点有关)<br>
             6.独立的自动化部分.<br>
             7.一些小改动,如更多软上限.
@@ -134,6 +134,7 @@ addLayer("ng", {
         return gain
     },
     effectDescription(){return `+ ${format(this.getResetGain())} /s`},
+    effectDescriptionEN(){return `+ ${format(this.getResetGain())} /s`},
     update(diff){
         if(!hasUpgrade('u1',52) && player.ng.activeChallenge == 11){
             player.ng.activeChallenge = null

@@ -347,7 +347,7 @@ addLayer("g", {
         },
         25: {
             description: "<text style='color:blue'>万物归一:每行同一时间只能拥有一种重置资源,得到1e169点数.</text>空间要求额外提高速度减缓.",
-            descriptionEN: "<text style='color:blue'>You CAN ONLY keep 1 kind of prestige resource EACH ROW at the SAME TIME.</text>Space extra cost-scaling is nerfed.",
+            descriptionEN: "<text style='color:blue'>You CAN ONLY keep 1 kind of prestige resource EACH ROW at the SAME TIME.Get 1e169 Points.</text>Space extra cost-scaling is nerfed.",
             cost:n(0),
             onPurchase(){
                 if(!player.g.unl.includes(this.id)) player.g.unl.push(this.id)
