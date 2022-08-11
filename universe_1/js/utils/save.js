@@ -201,7 +201,7 @@ function load(data = null) {
 		if(a==null){		
 			player = getStartPlayer();
 			options = getStartOptions();
-			if (player.offlineProd) {
+			if (options.offlineProd) {
 				if (player.offTime === undefined){
 					player.offTime = { remain: 0 }
 				};
@@ -224,7 +224,7 @@ function load(data = null) {
 		if(a[0]!="{"){
 			player = getStartPlayer();
 			options = getStartOptions();
-			if (player.offlineProd) {
+			if (options.offlineProd) {
 				if (player.offTime === undefined){
 					player.offTime = { remain: 0 }
 				};

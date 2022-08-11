@@ -9,7 +9,7 @@
 	discordLink: "",
 	initialStartPoints: new ExpantaNum (0.5), // Used for hard resets and new players
 	
-	offlineLimit: 0.5,  // In hours
+	offlineLimit: 2,  // In hours
 }
 
 // Set your version in num and name
