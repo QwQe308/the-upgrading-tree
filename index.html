@@ -6,45 +6,40 @@
 	<meta http-equiv ="proma" content = "no-cache"/>  
 	<meta http-equiv="cache-control" content="no cache" />
 
-	<link rel="stylesheet" type="text/css" href="style.css" />
-	<link rel="stylesheet" type="text/css" href="popup.css" />
-	<link rel='shortcut icon' type='image/x-icon' href='icon.png'>
+	<link rel="stylesheet" type="text/css" href="universe_META/style.css" />
+	<link rel="stylesheet" type="text/css" href="universe_META/popup.css" />
+	<link rel='shortcut icon' type='image/x-icon' href='universe_META/icon.png'>
 
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 
-	<script src="js/utils/undefined.js"></script>
+	<script src="universe_META/js/utils/undefined.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
-	<script src="js/technical/break_eternity.js"></script>
-	<script src="js/technical/layerSupport.js"></script>
-	<script src="js/tree.js"></script>
-	<script src="js/someUsefulFunctions_QwQe308.js"></script>
+	<script src="universe_META/js/technical/break_eternity.js"></script>
+	<script src="universe_META/js/technical/layerSupport.js"></script>
+	<script src="universe_META/js/tree.js"></script>
+	<script src="universe_META/js/someUsefulFunctions_QwQe308.js"></script>
 
-	<script src="js/layers/u.js"></script>
-	<script src="js/layers/NewGameMinus.js"></script>
-	<script src="js/layers/auto.js"></script>
-	<script src="js/layers/u1_row1.js"></script>
-	<script src="js/layers/u1_row2.js"></script>
-	<script src="js/layers/u1_row3.js"></script>
+	<script src="universe_META/js/mod.js"></script>
+	<script src="universe_META/js/utils/save.js"></script>
+	<script src="universe_META/js/layers/u.js"></script>
 
-	<script src="js/mod.js"></script>
-	<script src="js/technical/temp.js"></script>
-	<script src="js/technical/displays.js"></script>
+	<script src="universe_META/js/technical/temp.js"></script>
+	<script src="universe_META/js/technical/displays.js"></script>
 
-	<script src="js/utils/options.js"></script>
-	<script src="js/game.js"></script>
-	<script src="js/utils.js"></script>
-	<script src="js/utils/easyAccess.js"></script>
-	<script src="js/technical/systemComponents.js"></script>
-	<script src="js/components.js"></script>
-	<script src="js/technical/canvas.js"></script>
-	<script src="js/technical/particleSystem.js"></script>
-	<script src="js/utils/NumberFormating.js"></script>
-	<script src="js/utils/save.js"></script>
-	<script src="js/utils/themes.js"></script>	
+	<script src="universe_META/js/utils/options.js"></script>
+	<script src="universe_META/js/game.js"></script>
+	<script src="universe_META/js/utils.js"></script>
+	<script src="universe_META/js/utils/easyAccess.js"></script>
+	<script src="universe_META/js/technical/systemComponents.js"></script>
+	<script src="universe_META/js/components.js"></script>
+	<script src="universe_META/js/technical/canvas.js"></script>
+	<script src="universe_META/js/technical/particleSystem.js"></script>
+	<script src="universe_META/js/utils/NumberFormating.js"></script>
+	<script src="universe_META/js/utils/themes.js"></script>	
 </head>
 
 
-<body onload="load();options.ch = window.confirm('选择语言(英文版可能会有一些bug)\nChoose your language(there may be some bugs in English mode)\n选择是:中文  否:英文\nselect yes:Chinese  no:English')" onmousemove="updateMouse(event)">
+<body onload="load();if(options.ch === undefined) options.ch = window.confirm('选择语言(英文版可能会有一些bug)\nChoose your language(there may be some bugs in English mode)\n选择是:中文  否:英文\nselect yes:Chinese  no:English')" onmousemove="updateMouse(event)">
 	<div id="app">
 		<canvas id="treeCanvas" class="canvas" v-if="!(gameEnded && !player.keepGoing)"></canvas>
 
@@ -79,14 +74,12 @@
 			 :style="{'margin-top': !readData(layoutInfo.showTree) && player.tab == 'info-tab' ? '50px' : ''}">
 			<div id="version" onclick="showTab('changelog-tab')" class="overlayThing" style="margin-right: 13px" >
 				{{VERSION.withoutName}}</div>
-			<button
-			v-if="((player.navTab == 'none' && (tmp[player.tab].row == 'side' || tmp[player.tab].row == 'otherside' || player[player.tab].prevTab)) || player[player.navTab]?.prevTab)"				class="other-back overlayThing" onclick="goBack(player.navTab == 'none' ? player.tab : player.navTab)">←</button>
-			<img id="optionWheel" class="overlayThing" v-if="player.tab!='options-tab'" src="options_wheel.png"
+			<img id="optionWheel" class="overlayThing" v-if="player.tab!='options-tab'" src="universe_META/options_wheel.png"
 				onclick="showTab('options-tab')"></img>
 			<div id="info" v-if="player.tab!='info-tab'" class="overlayThing" onclick="showTab('info-tab')"><br>i</div>
 			<div id="discord" class="overlayThing">
 				<img onclick="window.open((modInfo.discordLink ? modInfo.discordLink : 'https://discord.gg/F3xveHV'),'mywindow')"
-					src="discord.png" target="_blank"></img>
+					src="universe_META/discord.png" target="_blank"></img>
 				<ul id="discord-links">
 					<li v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink"
 							target="_blank">{{modInfo.discordName}}</a><br></li>
