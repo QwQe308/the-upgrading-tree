@@ -147,4 +147,5 @@ addLayer("ng", {
         player.ng.points = player.ng.points.add(this.getResetGain().mul(diff))
         player.ng.total = player.ng.total.add(this.getResetGain().mul(diff))
     },
+    layerShown(){return layers.u1.upgrades[52].unlocked()}
 })
