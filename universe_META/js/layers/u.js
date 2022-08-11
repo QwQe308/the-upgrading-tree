@@ -256,7 +256,7 @@ addLayer("u1", {
     },
     update(diff){
         if(!uni[1]) return
-        if(!uni[1].u1.real) return
+        if(!uni[1].u1.real) return player[this.layer].points = zero
         var points = n(uni[1].u1.real).div(5).sqrt().mul(tmp.u1.gainMult)
         player[this.layer].points = points.floor()
     },
