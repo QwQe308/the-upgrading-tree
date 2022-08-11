@@ -256,6 +256,7 @@ addLayer("u1", {
     },
     update(diff){
         if(!uni[1]) return
+        if(!uni[1].u1.real) return
         var points = n(uni[1].u1.real).div(5).sqrt().mul(tmp.u1.gainMult)
         player[this.layer].points = points.floor()
     },
@@ -273,7 +274,7 @@ addLayer("u1", {
     },
     bars:{
         progress:{
-            display(){if(!uni[1]) return "请先进入宇宙1!";return `当前升级点/需求升级点: ${format(uni[1].u1.real)} / ${format(this.layerReq(this.colorLayer().add(1)))}`},
+            display(){if(!uni[1]) return "请先进入宇宙1!";if(!uni[1].u1.real) return "请先进入宇宙1!";return `当前升级点/需求升级点: ${format(uni[1].u1.real)} / ${format(this.layerReq(this.colorLayer().add(1)))}`},
             colorLayer(){
                 var layer = player[this.layer].points
                 return layer.floor()
