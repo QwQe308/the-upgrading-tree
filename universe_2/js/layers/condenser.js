@@ -7,6 +7,7 @@ addLayer("c", {
     }},
     color: "yellow",
     resource: "浓缩器", // Name of prestige currency
+    resourceEN: "Condenser", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     row: 1, // Row the layer is in on the tree (0 is the first row)  QwQ:1也可以当第一排
     //effectDescription(){return `+ ${format(this.getResetGain())} /s`},
@@ -44,6 +45,7 @@ addLayer("c", {
                 return c.floor().max(0)
             },
             display() { return `速度浓缩器<br />x${format(buyableEffect(this.layer,this.id),2)} (下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}米/s(拥有:${format(player.u.trueSpd)})<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `Speed Condenser<br />x${format(buyableEffect(this.layer,this.id),2)} (Next Level: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} M/s(Currently:${format(player.u.trueSpd)})<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.u.trueSpd.gte(this.cost()) },
             buy() {
                 var row = Math.floor(Number(this.id)/10)-1
@@ -62,6 +64,7 @@ addLayer("c", {
                 return c.floor().max(0)
             },
             display() { return `加速度浓缩器<br />x${format(buyableEffect(this.layer,this.id),2)} (下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}米/s<sup>2</sup>(拥有:${format(getAcc())})<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `Acceleration Condenser<br />x${format(buyableEffect(this.layer,this.id),2)} (Next Level: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} M/s<sup>2</sup>(Currently:${format(getAcc())})<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return getAcc().gte(this.cost()) },
             buy() {
                 var row = Math.floor(Number(this.id)/10)-1
@@ -79,7 +82,7 @@ addLayer("c", {
                 var c = six.mul(n(1.5).pow(x))
                 return c.floor().max(0)
             },
-            display() { return `等级低效浓缩器<br />x${format(buyableEffect(this.layer,this.id),2)} (下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}等级(拥有:${format(player.r.points)})<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            display() { return `级别低效浓缩器<br />x${format(buyableEffect(this.layer,this.id),2)} (下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}级别(拥有:${format(player.r.points)})<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             displayEN() { return `Rank Slow Condenser<br />x${format(buyableEffect(this.layer,this.id),2)} (Next Level: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Ranks(Currently:${format(player.r.points)})<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
@@ -98,7 +101,7 @@ addLayer("c", {
                 var c = eight.mul(n(1.25).pow(x))
                 return c.floor().max(0)
             },
-            display() { return `时间低效浓缩器<br />x${format(buyableEffect(this.layer,this.id),2)} (下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}等级(拥有:${format(player.r.points)})<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            display() { return `时间低效浓缩器<br />x${format(buyableEffect(this.layer,this.id),2)} (下一级: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}级别(拥有:${format(player.r.points)})<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             displayEN() { return `Time Slow Condenser<br />x${format(buyableEffect(this.layer,this.id),2)} (Next Level: ${format(this.effect(getBuyableAmount(this.layer, this.id).add(1)))})<br />Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))} Ranks(Currently:${format(player.r.points)})<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {

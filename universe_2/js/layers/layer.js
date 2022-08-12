@@ -1,15 +1,15 @@
 addLayer("l", {
-    symbol: "L",
+    symbol: "T",
     position: 0, 
     startData() { return {
         unlocked: false,
 		points: new ExpantaNum(0),
     }},
     color: "lightblue",
-    resource: "阶级", 
-    resourceEN: "Layer", // Name of prestige currency
+    resource: "阶层", 
+    resourceEN: "Tier", // Name of prestige currency
     type: "static", 
-    baseResource: "等级",
+    baseResource: "级别",
     baseResourceEN: "Rank",
     baseAmount() {return player.r.points},
     //获取相关
@@ -32,7 +32,7 @@ addLayer("l", {
     branches:["r"],
     layerShown(){return true},
     hotkeys: [
-        {key: "l", description: "L: L转",descriptionEN: "L: Reset L Node", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "t", description: "T: T转",descriptionEN: "T: Reset T Node", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     canReset(){
         return player.r.points.gte(this.requires()) && getResetGain("l").gte(hasAffix("l","Twin")?2:1)
@@ -49,29 +49,37 @@ addLayer("l", {
     },
     milestones: {
         1: {
-            requirementDescription: "(1) 1阶级",
-            effectDescription(){return `加速度*(升级点/2+1).每个阶级使能量+x0.15. 当前:${format(this.effect())}`},
+            requirementDescription: "(1) 1阶层",
+            requirementDescriptionEN: "(1) 1 Tier",
+            effectDescription(){return `加速度*(升级点/2+1).每个阶层使能量+x0.15. 当前:${format(this.effect())}`},
+            effectDescriptionEN(){return `Acceleration*(Upgrade Points/2+1).Each Tier makes Energy +x0.15. Currently:${format(this.effect())}`},
             effect(){return player.l.points.div(6.66666666666666).add(1)},
             done() {return player.l.points.gte(1) && this.unlocked()},
             unlocked() {return true},
         },
         2: {
-            requirementDescription: "(2) 2阶级",
-            effectDescription(){return `每个阶级使时间速率+x0.25. 当前:${format(this.effect())}`},
+            requirementDescription: "(2) 2阶层",
+            requirementDescriptionEN: "(2) 2 Tier",
+            effectDescription(){return `每个阶层使时间速率+x0.25. 当前:${format(this.effect())}`},
+            effectDescriptionEN(){return `Each tier makes Timespeed +x0.25. Currently:${format(this.effect())}`},
             effect(){return player.l.points.div(4).add(1)},
             done() {return player.l.points.gte(2) && this.unlocked()},
             unlocked() {return hasMilestone("l",this.id-1)},
         },
         3: {
-            requirementDescription: "(3) 3阶级",
-            effectDescription(){return `阶级使等级的要求开根. 当前:${format(this.effect())}`},
+            requirementDescription: "(3) 3阶层",
+            requirementDescriptionEN: "(3) 3 Tier",
+            effectDescription(){return `阶层使级别的要求开根. 当前:${format(this.effect())}`},
+            effectDescriptionEN(){return `Tier roots Rank's requirement. Currently:${format(this.effect())}`},
             effect(){return player.l.points.add(1).log10().div(3).add(1)},
             done() {return player.l.points.gte(3) && this.unlocked()},
             unlocked() {return hasMilestone("l",this.id-1)},
         },
         4: {
-            requirementDescription: "(4) 4阶级",
-            effectDescription(){return `每个阶级使得加速度*1.5. 当前:${format(this.effect())}`},
+            requirementDescription: "(4) 4阶层",
+            requirementDescriptionEN: "(4) 4 Tier",
+            effectDescription(){return `每个阶层使得加速度*1.5. 当前:${format(this.effect())}`},
+            effectDescriptionEN(){return `Each tier makes Acceleration *1.5. Currently:${format(this.effect())}`},
             effect(){return n(1.5).pow(player.l.points)},
             done() {return player.l.points.gte(4) && this.unlocked()},
             unlocked() {return hasMilestone("l",this.id-1)},

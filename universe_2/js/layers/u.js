@@ -154,7 +154,7 @@ addLayer("u", {
                 var c = x.add(1).pow(1.33)
                 return c.floor()
             },
-            display() { return `+1 升级点.(重置U或A以获得)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}等级<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            display() { return `+1 升级点.(重置U或A以获得)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}级别<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             displayEN() { return `+1 Upgrade Points.(Do U or A reset to gain)(Tip:U reset means reset U upgs)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} Ranks<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
@@ -171,8 +171,8 @@ addLayer("u", {
                 var c = x.add(1)
                 return c.floor()
             },
-            display() { return `+1 升级点.(重置U或A以获得)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}阶级<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
-            displayEN() { return `+1 Upgrade Points.(Do U or A reset to gain)(Tip:U reset means reset U upgs)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} Layers<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            display() { return `+1 升级点.(重置U或A以获得)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />费用:${format(this.cost(getBuyableAmount(this.layer, this.id)))}阶层<br>等级:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
+            displayEN() { return `+1 Upgrade Points.(Do U or A reset to gain)(Tip:U reset means reset U upgs)<br />+${format(buyableEffect(this.layer,this.id),2)}.<br />Cost:${format(this.cost(getBuyableAmount(this.layer, this.id)))} Tier<br>Level:${formatWhole(getBuyableAmount(this.layer, this.id))}` },
             canAfford() { return player.l.points.gte(this.cost()) },
             buy() {
                 player.l.points = player.l.points.sub(this.cost()).max(0)
@@ -230,12 +230,14 @@ addLayer("u", {
         },
         14: {
             title:"返回元宇宙",
+            titleEN:"Return to the Meta Universe",
             onClick(){window.location.href = "../index.html"},
             canClick:true
         },
         31: {
             canClick(){return player.u.points.gte(this.cost()) && getUsedUP().gte(this.cost())},
-            display() {return `这个宇宙有点不一样...?宇宙对外来者充满敌意,除去速度什么的,升级似乎也被限制住了,我们得用一些升级点打破这道阻碍.<br>用${format(this.cost())}升级点解锁下一排升级.(你必须先使用等量的升级点!)(同时也可能有新内容解锁!)`},
+            display() {return `这个宇宙有点不一样...?宇宙似乎对外来者充满敌意,除去速度什么的,升级也被限制住了,我们得用一些升级点打破这道阻碍.<br>用${format(this.cost())}升级点解锁下一排升级.(你必须先使用等量的升级点!)(同时也可能有新内容解锁!)`},
+            displayEN() {return `Something seems different in this universe...?Everything in this universe was limited,such as speed, energy...and upgrades.Break The Limit with your Upgrade Points!<br>Use ${format(this.cost())} Upgrade Points to break the limit.(You have to spend UPs equal or greater than this amount first!) (Something new may be unlocked at the same time.)`},
             cost(x = player.u.unlockedRows){
                 return rowCost[x]
             },
@@ -259,6 +261,7 @@ addLayer("u", {
         },
         12: {
             description:`u12:速度被升级点加成.`,
+            descriptionEN:`u12:Speed is boosted based on Upgrade Points.`,
             effect(){
                 var eff = player.u.total.add(1).log10().div(1.5).add(1).pow(2)
                 return eff
@@ -268,10 +271,12 @@ addLayer("u", {
         },
         13: {
             description:`u13:解锁层级“浓缩”.`,
+            descriptionEN:`u13:Unlock "Condenser" layer.`,
             cost:n(1),
         },
         14: {
             description:`u14:浓缩0.5次时间.`,
+            descriptionEN:`u14:Condense time 0.5 times.`,
             effect(){
                 var eff = player.u.t.add(10).log10().pow(0.5)
                 return eff
@@ -281,6 +286,7 @@ addLayer("u", {
         },
         15: {
             description:`u15:升级点倍增距离.`,
+            descriptionEN:`u15:Distance is boosted based on Upgrade Points.`,
             effect(){
                 var eff = player.u.total.add(1).log10().add(1).pow(2)
                 return eff
@@ -290,12 +296,14 @@ addLayer("u", {
         },
         21: {
             description:`u21:解锁减益词缀:高维的<br>解锁增益词缀:低维的.`,
+            descriptionEN:`u21:Unlock "High-Dimensional" and "Low-Dimensional" affixs.`,
             cost:n(3),
             unlocked(){return player.u.unlockedRows >= 2},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
         },
         22: {
             description:`u22:总计词缀点加成能量上限.`,
+            descriptionEN:`u22:Energy Cap is boosted based on total Affix Points.`,
             effect(){
                 var eff = player.aff.total.add(1).log10().add(1).pow(1.25)
                 return eff
@@ -306,13 +314,15 @@ addLayer("u", {
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
         },
         23: {
-            description:`u23:解锁等级低效浓缩器.`,
+            description:`u23:解锁级别低效浓缩器.`,
+            descriptionEN:`u23:Unlock "Rank Slow Condenser".`,
             cost:n(3),
             unlocked(){return player.u.unlockedRows >= 2},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
         },
         24: {
             description:`u24:浓缩0.75次时间.`,
+            descriptionEN:`u24:Condense time 0.75 times.`,
             effect(){
                 var eff = player.u.t.add(10).log10().pow(0.75)
                 return eff
@@ -324,6 +334,7 @@ addLayer("u", {
         },
         25: {
             description:`u25:距离倍增加速度.`,
+            descriptionEN:`u25:Acceleration is boosted based on Distance.`,
             effect(){
                 var eff = player.points.add(10).log10()
                 return eff

@@ -155,6 +155,7 @@ addLayer("u", {
     upgrades: {
         11: {
             description:`u11:基于总分数增幅元时间速率.`,
+            descriptionEN:`u11:Meta-Timespeed is boosted by total score.`,
             effect(){
                 var eff = player.u.total.div(2).add(1).pow(0.75)
                 return eff
@@ -164,12 +165,14 @@ addLayer("u", {
             unlocked(){return true},
         },
         12: {
-            description:`u12:解锁c0-1.`,
+            description:`u12:解锁C0-1.`,
+            descriptionEN:`u11:Unlock C0-1.`,
             cost:n(10),
             unlocked(){return true},
         },
         13: {
             description:`u13:宇宙1的升级点以较低的效率“浓缩”(指以对数加成自身).`,
+            descriptionEN:`u13:Upgrade Points in Universe 1 is condensed with a low rate.(Condense:Boost itself with *lg(x+10)^n)`,
             effect(){
                 if(!uni[1]) return one
                 var eff = n(uni[1].u1.real).div(10).add(1).log10().add(10).log10()
@@ -181,6 +184,7 @@ addLayer("u", {
         },
         14: {
             description:`u14:宇宙2的升级点以较低的效率“浓缩”.`,
+            descriptionEN:`u14:Upgrade Points in Universe 2 is condensed with a low rate.`,
             effect(){
                 if(!uni[2]) return one
                 var eff = n(uni[2].u.real).mul(2).add(1).log10().add(10).log10()
@@ -192,6 +196,7 @@ addLayer("u", {
         },
         15: {
             description:`u15:u1的计时频率升级在NG-外也能购买,但效果减弱.在ng-外ng点变为其立方根.`,
+            descriptionEN:`u15:Tickspeed Boost & NG Points in U1 can be bought/gained outside NG-, with a low rate.`,
             cost:n(10),
             unlocked(){return true},
         },
@@ -201,7 +206,7 @@ addLayer("u", {
             name(){return "C0-1" + (hasUpgrade("u",this.baseUPG)?"":"<text style='color:red'>(未解锁)</text>")},
             /**/nameEN(){return "C0-1" + (hasUpgrade("u",this.baseUPG)?"":"<text style='color:red'>(Locked)</text>")},
             challengeDescription: "速通:在5分钟内达到10U1分数!<br><text style='color:red'>进入条件:U1分数达到10.</text><br>Tip:进入任何U挑战后您的升级会被重置,但花费的升级点不会返还!",
-            /**/challengeDescriptionEN: "",
+            /**/challengeDescriptionEN: "Speedrunner: Get 10 U1 Scores in 5 Minutes!<text style='color:red'>Enter Req:Get 10 U1 Scores.</text><br>Tip:Entering any U challenges resets your U upgrades,but you WILL NOT get upgrade points back until you Resets your upgrades!",
             baseUPG:12,
             onEnter(){
                 resetUpgs([this.baseUPG],true)
@@ -215,9 +220,9 @@ addLayer("u", {
             /**/goalDescriptionEN(){return format(10)+" U1 Score"},
             rewardEffect(){return hasUpgrade("u",this.baseUPG)?[n(1.21),player.points.add(10).log10()]:[n(1.1),player.points.add(10).log10().sqrt()]},
             rewardDescription:"U1分数*1.1,元时间速率*lg(时间+10)^0.5.(如果你解锁了该挑战,这两个效果^2)",
-            /**/rewardDescriptionEN:"",
-            rewardDisplay(){return `分数*${format(this.rewardEffect()[0])},元时间速率*${format(this.rewardEffect()[1])}. `},
-            /**/rewardDisplayEN(){return ``},
+            /**/rewardDescriptionEN:"U1 Score *1.1, Mete-Timespeed*lg(Time+10)^0.5 (If you unlocked this challenge,these effects ^2)",
+            rewardDisplay(){return `分数*${format(this.rewardEffect()[0])},元时间速率*${format(this.rewardEffect()[1])}.`},
+            /**/rewardDisplayEN(){return `Score *${format(this.rewardEffect()[0])}, Meta-Timespeed *${format(this.rewardEffect()[1])}.`},
             unlocked(){return layers[this.layer].upgrades[this.baseUPG].unlocked()}
         },
     },
@@ -247,7 +252,7 @@ addLayer("u1", {
     resourceEN: "Score", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     effectDescription(){return `分数=(U1升级点/5)^0.5. 时间速率*${format(this.timespeed())}(该加成永远最后生效)<br>U1 = 声望树 + 公式树`},
-    effectDescriptionEN(){return `Score = (Upgrade Points/5)^0.5.`},
+    effectDescriptionEN(){return `Score = (Upgrade Points/5)^0.5. Timespeed *${format(this.timespeed())}(ALWAYS applys after all multplier)<br>U1 = The Prestige Tree + The Formula NG-`},
     row: "side", // Row the layer is in on the tree (0 is the first row)  QwQ:1也可以当第一排
     gainMult(){
         var mult = n(1)
@@ -263,6 +268,7 @@ addLayer("u1", {
     clickables:{
         11:{
             title:"进入该宇宙",
+            titleEN:"Enter This Universe",
             onClick(){window.location.href = "universe_1/u1.html"},
             canClick:true
         }
@@ -274,7 +280,10 @@ addLayer("u1", {
     },
     bars:{
         progress:{
-            display(){if(!uni[1]) return "请先进入宇宙1!";if(!uni[1].u1.real) return "请先进入宇宙1!";return `当前升级点/需求升级点: ${format(uni[1].u1.real)} / ${format(this.layerReq(this.colorLayer().add(1)))}`},
+            display(){
+                if(options.ch){if(!uni[1]) return "请先进入宇宙1!";if(!uni[1].u1.real) return "请先进入宇宙1!";return `当前升级点/需求升级点: ${format(uni[1].u1.real)} / ${format(this.layerReq(this.colorLayer().add(1)))}`}
+                if(!uni[1]) return "Enter Universe 1 First!";if(!uni[1].u1.real) return "Enter Universe 1 First!";return `Current UP/Required UP: ${format(uni[1].u1.real)} / ${format(this.layerReq(this.colorLayer().add(1)))}`
+            },
             colorLayer(){
                 var layer = player[this.layer].points
                 return layer.floor()
@@ -325,7 +334,7 @@ addLayer("u2", {
     resourceEN: "Score", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     effectDescription(){return `分数=U2升级点^0.5. 时间速率*${format(this.timespeed())}<br>U2 = 距离增量:现实MOD + 浓缩MOD`},
-    effectDescriptionEN(){return `Score = Upgrade Points/50.`},
+    effectDescriptionEN(){return `Score = Upgrade Points^0.5. Timespeed *${format(this.timespeed())}(ALWAYS applys after all multplier)<br>U1 = The Prestige Tree + The Formula NG-`},
     row: "side", // Row the layer is in on the tree (0 is the first row)  QwQ:1也可以当第一排
     update(diff){
         if(player.u.total.gte(10)) player.u2.unlocked = true
@@ -336,6 +345,7 @@ addLayer("u2", {
     clickables:{
         11:{
             title:"进入该宇宙",
+            titleEN:"Enter This Universe",
             onClick(){window.location.href = "universe_2/u2.html"},
             canClick:true
         }
@@ -347,7 +357,10 @@ addLayer("u2", {
     },
     bars:{
         progress:{
-            display(){if(!uni[2]) return "请先进入宇宙2!";return `当前升级点/需求升级点: ${format(uni[2].u.real)} / ${format(this.layerReq(this.colorLayer().add(1)))}`},
+            display(){
+                if(options.ch){if(!uni[2]) return "请先进入宇宙2!";return `当前升级点/需求升级点: ${format(uni[2].u.real)} / ${format(this.layerReq(this.colorLayer().add(1)))}`}
+                if(!uni[2]) return "Enter Universe 2 First!";return `Current UP / Required UP: ${format(uni[2].u.real)} / ${format(this.layerReq(this.colorLayer().add(1)))}`
+            },
             colorLayer(){
                 var layer = player[this.layer].points
                 return layer.floor()

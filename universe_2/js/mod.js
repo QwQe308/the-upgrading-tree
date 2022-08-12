@@ -52,12 +52,28 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	function(){return `速度: ${format(player.u.trueSpd,3)} m/s (实际速度:${format(trueDistGain,3)} m/s)`},
-	function(){return `加速度: ${format(getAcc(),3)} m/s<sup>2</sup> (实际加速度:${format(trueSpdGain,3)} m/s<sup>2</sup>)`},
-	function(){return `时间速率:x${format(getTimeSpeed())}`},
-	function(){return `能量:${format(player.e.energy)}/${format(getMaxEnergy())} (-${format(layers.e.decay())}/s)`},
-	function(){return (options.ch?`该宇宙当前Endgame:21升级点 + 全升级`:`Current Endgame: 21 Upgrade Points`)},
-	function(){return `FPS:${format(1/trueDiff,0)}`},
+	function(){
+		if(options.ch) return `速度: ${format(player.u.trueSpd,3)} m/s (实际速度:${format(trueDistGain,3)} m/s)`
+		return `Speed: ${format(player.u.trueSpd,3)} m/s (Real Speed:${format(trueDistGain,3)} m/s)`
+	},
+	function(){
+		if(options.ch) return `加速度: ${format(getAcc(),3)} m/s<sup>2</sup> (实际加速度:${format(trueSpdGain,3)} m/s<sup>2</sup>)`
+		return `Acceleration: ${format(getAcc(),3)} m/s<sup>2</sup> (Real Acceleration:${format(trueSpdGain,3)} m/s<sup>2</sup>)`
+	},
+	function(){
+		if(options.ch) return `时间速率: x${format(getTimeSpeed())}`
+		return `Timespeed: x${format(getTimeSpeed())}`
+	},
+	function(){
+		if(options.ch) return `能量: ${format(player.e.energy)}/${format(getMaxEnergy())} (-${format(layers.e.decay())}/s)`
+		return `Energy: ${format(player.e.energy)}/${format(getMaxEnergy())} (-${format(layers.e.decay())}/s)`
+	},
+	function(){
+		return (options.ch?`该宇宙当前Endgame:21升级点 + 全升级`:`Current Endgame: 21 Upgrade Points`)
+	},
+	function(){
+		return `FPS:${format(1/trueDiff,0)}`
+	},
 	function(){
 		if(options.ch) if(isEndgame()) return `您已超过当前版本目标,在此之后可能会受到版本软上限!`
 		if(isEndgame()) return `After the endgame,there might be some softcaps to prevent inflation!`

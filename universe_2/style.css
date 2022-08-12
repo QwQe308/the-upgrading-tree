@@ -590,13 +590,13 @@ ul {
   .tooltip { 
 	pointer-events: none;
 	text-align: center;
-	width: 150px;
+	width: 200px;
 	font-size: 16px;
 	line-height: 1.2;
 	bottom: 100%;
 	left: 50%;
 	margin-bottom: 5px;
-	margin-left: -80px;
+	margin-left: -100px;
 	padding: 7px;
 	font-family: "Lucida Console", "Courier New", monospace;
 	-webkit-border-radius: 3px;

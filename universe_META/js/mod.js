@@ -14,11 +14,13 @@
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.0",
+	num: "1.01",
 	name: "新的旅途? - New Journey?",
 }
 
 let changelog = `<h1>更新日志(Currently not translated):</h1><br>
+	<h3>v1.01</h3><br>
+		- 添加元宇宙和宇宙2的英文.<br>
 	<h3>v1.0</h3><br>
 		- HELLO WORLD.<br>
 		- Tips:每个新版本都有可能会降低上一版本难度,以防止卡关.<br>(Each new version might make the previous version easier,to prevent some players from stuck).
@@ -59,16 +61,20 @@ var displayThings = [
 		return `The data of the other universes update once per second.`
 	},
 	function(){
-		return `元宇宙的时间速率加成所有宇宙,每个宇宙里的强度都不相同.`
+		if(options.ch) return `元宇宙的时间速率加成所有宇宙,每个宇宙里的强度都不相同.`
+		return `Meta-Timespeed boosts all universes' timespeed, but works differently in different universe.`
 	},
 	function(){
-		return `本轮U重置用了${formatTime(player.u.resetTime)}.`
+		if(options.ch) return `本轮U重置用了${formatTime(player.u.resetTime)}.`
+		return `You've spent ${formatTime(player.u.resetTime)} in this U reset.`
 	},
 	function(){
-		return `选择你要游玩的树,然后点击“进入该宇宙”游玩!`
+		if(options.ch) return `在右侧选择你要游玩的树,然后点击“进入该宇宙”游玩!`
+		return `Select a universe on the right, then press "Enter The Universe" to play it!`
 	},
 	function(){
-		return `当前宇宙Endgame:16元升级点.`
+		if(options.ch) return `当前宇宙Endgame:16元升级点.`
+		return `Current Endgame in This Universe: 16 Meta-Upgrade Points.`
 	},
 	function(){
 		if(options.ch) if(isEndgame()) return `您已超过当前版本目标,在此之后可能会受到版本软上限!`

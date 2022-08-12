@@ -32,6 +32,7 @@ addLayer("e", {
     }},
     color: "yellow",
     resource: "机械能", // Name of prestige currency
+    resourceEN: "Mechanical Energy", 
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     row: 3, // Row the layer is in on the tree (0 is the first row)  QwQ:1也可以当第一排
     //effectDescription(){return `+ ${format(this.getResetGain())} /s`},
@@ -44,17 +45,25 @@ addLayer("e", {
     },
     effectDescription(){
         return `
-        你的机械能基于级别,阶级和距离,其中有${format(player.e.best)}是动能,${format(player.e.total)}是势能.(已使用:${format(player.e.costed)})<br>
+        你的机械能基于级别,阶层和距离,其中有${format(player.e.best)}是动能,${format(player.e.total)}是势能.(已使用:${format(player.e.costed)})<br>
         能量:${format(player.e.energy)}/${format(getMaxEnergy())}(-${format(this.decay(),3)}/s,基于距离,不受时间速率影响),使得速度*${format(this.effect(),3)}<br>
         ${(player.points.lt(1000000)?`由于疲惫,你的实际速度除以${format(player.u.spd.mul(getDistMult()).div(trueDistGain).mul(this.effect()).max(1))}(注:实际速度计入了距离倍率)<br>`:
         `由于疲惫,你的实际速度变为其${format(player.u.spd.mul(getDistMult()).mul(getTimeSpeed()).mul(this.effect()).logBase(trueDistGain).max(1))}次根(注:实际速度计入了距离倍率和时间速率)<br>`)}
         ${(player.u.spd.gte(getLightSpeed())?(`由于你的速度超过了光速,你的实际加速度变为其`+format(getAcc().mul(getTimeSpeed()).mul(getSpdMult()).logBase(trueSpdGain).max(0))+"次根"):"")}
     `},
+    effectDescriptionEN(){
+        return `
+        Your ME is based on Rank, Tier and Distance, Which includes ${format(player.e.best)} Kinetic Energy, ${format(player.e.total)} Potential Energy.(Used: ${format(player.e.costed)})<br>
+        Energy: ${format(player.e.energy)}/${format(getMaxEnergy())}(-${format(this.decay(),3)}/s,Based on Distance,Won't be influenced by timespeed),Which makes speed *${format(this.effect(),3)}<br>
+        ${(player.points.lt(1000000)?`As you're tired,your real speed /${format(player.u.spd.mul(getDistMult()).div(trueDistGain).mul(this.effect()).max(1))}(Tip:Real Speed includes Distance Multpliers and Timespeed)<br>`:
+        `As you're tired, your real speed to the ${format(player.u.spd.mul(getDistMult()).mul(getTimeSpeed()).mul(this.effect()).logBase(trueDistGain).max(1))}th root(Tip:Real Speed includes Distance Mult and Timespeed)<br>`)}
+        ${(player.u.spd.gte(getLightSpeed())?(`As your speed is faster than light, your real Acceleration to the `+format(getAcc().mul(getTimeSpeed()).mul(getSpdMult()).logBase(trueSpdGain).max(0))+"th root"):"")}
+    `},
     clickables:{
         11:{
             canClick(){return true},
             display() {return `恢复能量<br>进行一次能量重置,动能也会被重置.`},
-            displayEN() {return ``},
+            displayEN() {return `Recover your Energy<br>It does an Energy reset, and resets your E<sub>k</sub>.`},
             onClick(){
                 player.e.best = zero
                 player.e.energy = getMaxEnergy()
@@ -97,6 +106,7 @@ addLayer("e", {
         },
         13: {
             description:`动能被升级点增幅.`,
+            descriptionEN:`Kinetic Energy is boosted by Upgrade Points.`,
             effect(){
                 var eff = player.u.total.add(1).log10().div(2).add(1)
                 return eff
