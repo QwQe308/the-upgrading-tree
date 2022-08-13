@@ -126,7 +126,7 @@ addLayer("u", {
     resourceEN: "Meta Upgrade Points", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     effectDescription(){return `您已使用${format(getUsedUP())}元升级点.元升级点 = 最高总分数.临时的元升级点倍率 = lg(t+100)/2-1.<br>已获得的升级点:${format(player.u.bestTotal)} - 额外倍率:x${format(player.points.add(100).log10().div(2))}`},
-    effectDescriptionEN(){return `You've used ${format(getUsedUP())} Meta Upgrade Points. Meta Upgrade Point = Best Total Score. Temporary Meta Upgrade Point Multplier = lg(t+100)/2+1.<br>Gained Upgrade Points: ${format(player.u.bestTotal)} - Temporary Mult: x${format(player.points.add(100).log10().div(2))}`},
+    effectDescriptionEN(){return `You've used ${format(getUsedUP())} Meta Upgrade Points.<br>Meta Upgrade Point = Best Total Score. Temporary Meta Upgrade Point Multplier = lg(t+100)/2+1.<br>Gained Upgrade Points: ${format(player.u.bestTotal)} - Temporary Mult: x${format(player.points.add(100).log10().div(2))}`},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = one
         return mult
