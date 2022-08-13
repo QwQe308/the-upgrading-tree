@@ -146,7 +146,7 @@ addLayer("u", {
     resourceEN: "Upgrade Points", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     effectDescription(){return `<br>A节点重置CD:${formatTime(player.a.cd.toNumber())},将获得${format(getResetGain("a"))}自动化点<br>您已使用${format(getUsedUP())}升级点<br>真实升级点:${format(player.u.real)}`},
-    effectDescriptionEN(){return `<br>A Node Reset CD:${formatTime(player.a.cd.toNumber())},Will Get ${format(getResetGain("a"))} AP on Reset<br>You've Used ${format(getUsedUP())} Upgrade Points`},
+    effectDescriptionEN(){return `<br>A Node Reset CD:${formatTime(player.a.cd.toNumber())},Will Get ${format(getResetGain("a"))} AP on Reset<br>You've Used ${format(getUsedUP())} Upgrade Points<br>Real Upgrade Point: ${format(player.u.real)}`},
     row: "side", // Row the layer is in on the tree (0 is the first row)  QwQ:1也可以当第一排
     buyables: {
         11: {
