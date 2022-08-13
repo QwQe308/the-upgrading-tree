@@ -6,6 +6,7 @@ function color(num){
 function getTimeSpeed(){
     var timespeed = one
     timespeed = hasUpgThenMul("u",11,timespeed)
+    if(hasChallenge('u',11)) timespeed = timespeed.mul(challengeEffect('u',11)[1])
     return timespeed
 }
 function getUsedUP(){
