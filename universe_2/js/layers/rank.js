@@ -26,6 +26,7 @@ addLayer("r", {
             mult = mult.mul(getNextAt("r").add(10).log10().pow(pow))
         }
         mult = hasMSThenMul("r",7,mult)
+        if(hasAchievement('ach',23)) mult = mult.mul(achievementEffect('ach',23))
         return mult
     },
     gainExp() { 
