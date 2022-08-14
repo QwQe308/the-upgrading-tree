@@ -90,7 +90,7 @@ addLayer("ach", {
             tooltip(){return `由于疲惫造成的现实速度减缓达到/1024.奖励:每个成就点使得自动化点获取要求/1.1.(/${format(tmp.ach.achievements[this.id].effect)},最大为1000)`},
             tooltipEN(){return `Real Speed Division caused by tired reached /1024. Reward:Each Achievement Point gives 1.1x division to Automation Points' Requirement.(/${format(tmp.ach.achievements[this.id].effect)},capped at 1000).`},
             effect(){return n(1.1).pow(player.ach.points).min(1000)},
-            done(){return player.u.spd.mul(getDistMult()).div(trueDistGain).mul(this.effect()).max(1).gte(1024) && player.energy.gte(1)},
+            done(){return player.u.spd.mul(getDistMult()).div(trueDistGain).mul(this.effect()).max(1).gte(1024) && player.e.energy.gte(1)},
             onComplete(){player[this.layer].points = player[this.layer].points.add(2**Math.floor(Number(this.id)/10-1))},
         },
         25: {

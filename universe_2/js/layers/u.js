@@ -12,7 +12,7 @@ function hasMetaUpgrade(id){return metaupg.includes(id.toString())}
 
 function resetUpgs(extraKeptUpgs = [],force = false,aReset= false){
     layers.u.doReset("u")
-    layers.aff.doReset("u")
+    if(!aReset) layers.aff.doReset("u")
     player.points = zero
     if(player.a.cd.lte(0)&&!aReset){
         player.a.points = player.a.points.add(getResetGain('a'))
