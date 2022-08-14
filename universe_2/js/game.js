@@ -240,7 +240,7 @@ function doReset(layer, force=false) {
 
 	if (run(layers[layer].resetsNothing, layers[layer])) return
 	if(layer == 'a' && !force){
-	  resetUpgs(player.u1.upgrades,false,true)
+	  resetUpgs(player.u.upgrades,false,true)
 	  updateTemp()
 	  updateTemp()
 	  return
@@ -249,6 +249,7 @@ function doReset(layer, force=false) {
 	for (layerResetting in layers) {
 		if (row >= layers[layerResetting].row && (!force || layerResetting != layer)) completeChallenge(layerResetting)
 	}
+	
 	layers.u.doReset(layer)
 
 	prevOnReset = {...player} 
