@@ -481,7 +481,7 @@ function loadVue() {
 			v-bind:style="achievementStyle(layer, data)">
 			<tooltip :text="
 			(tmp[layer].achievements[data].tooltip == '') ? false : hasAchievement(layer, data) ? (tmp[layer].achievements[data].doneTooltip ? tmp[layer].achievements[data].doneTooltip : (tmp[layer].achievements[data].tooltip ? (options.ch?tmp[layer].achievements[data].tooltip:tmp[layer].achievements[data].tooltipEN) : (options.ch?'已完成!':'Completed!')))
-			: (tmp[layer].achievements[data].goalTooltip ? tmp[layer].achievements[data].goalTooltip : (tmp[layer].achievements[data].tooltip ? tmp[layer].achievements[data].tooltip : (options.ch?'锁定':'Locked')))
+			: (tmp[layer].achievements[data].goalTooltip ? tmp[layer].achievements[data].goalTooltip : (tmp[layer].achievements[data].tooltip ? (options.ch?tmp[layer].achievements[data].tooltip:tmp[layer].achievements[data].tooltipEN) : (options.ch?'锁定':'Locked')))
 		"></tooltip>
 			<span v-if= "tmp[layer].achievements[data].name"><br><h3 v-bind:style="tmp[layer].achievements[data].textStyle" v-html="options.ch?tmp[layer].achievements[data].name:tmp[layer].achievements[data].nameEN"></h3><br></span>
 		</div>
