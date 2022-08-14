@@ -402,7 +402,7 @@ addLayer("u1", {
                 resetU1Upgs(player.u1.upgrades,true,true)
             }
         },
-        14: {
+        21: {
             canClick(){return true},
             display() {return `G升级“细致入微”信息`},
             displayEN() {return `Generator Upgrade 35 information`},
@@ -431,9 +431,9 @@ addLayer("u1", {
                 Total: ${format(product)} ${prime.includes(product)?``:`!NOT A PRIME NUMBER!`}\n\n
                 Prime number list: ${prime}`)
             },
-            unlocked(){return hasUpgrade("u1",55) && !player.g.unl.includes("35")}
+            unlocked(){return hasUpgrade("u1",54) && !player.g.unl.includes("35")}
         },
-        21: {
+        14: {
             title:"返回元宇宙",
             onClick(){window.location.href = "../index.html"},
             canClick:true
