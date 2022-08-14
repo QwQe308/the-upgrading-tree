@@ -435,6 +435,7 @@ addLayer("u1", {
         },
         14: {
             title:"返回元宇宙",
+            titleEN:"Return Meta Universe",
             onClick(){window.location.href = "../index.html"},
             canClick:true
         },
