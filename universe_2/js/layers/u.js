@@ -37,7 +37,7 @@ function resetUpgs(extraKeptUpgs = [],force = false,aReset= false){
     for(i=1;i<=56;i++){
         if(player.u.upgrades.includes(i)) upg.push(i)
     }
-    if(!force) player.u.unlockedRows = 1
+    if((!force) && (!aReset)) player.u.unlockedRows = 1
     player.u.upgrades = upg
     updateTemp()
 	updateTemp()
@@ -225,7 +225,7 @@ addLayer("u", {
             display() {return `强制进行A重置(CD未到无自动化点奖励)<br />获得${format(player.u.total.sub(player.u.baseUPLastReset))}升级点`},
             displayEN() {return `Do \'A\' force reset(no AP reward while CD isn\'t over)<br />Gain ${format(player.u.total.sub(player.u.baseUPLastReset))} Upgrade Points`},
             onClick(){
-                resetUpgs(player.u.upgrades,true,true)
+                resetUpgs(player.u.upgrades,true)
             }
         },
         14: {
