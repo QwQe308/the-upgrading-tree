@@ -206,4 +206,5 @@ addLayer("r", {
         if(hasAffix("r","Twin")) return 2
         return 0
     },
+    resetsNothing(){return false},
 })

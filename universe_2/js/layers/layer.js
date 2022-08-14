@@ -102,5 +102,6 @@ addLayer("l", {
     update(diff){
         if(options.ch) tmp[this.layer].resource = getAllAffix(this.layer)+layers[this.layer].resource
         else tmp[this.layer].resourceEN = getAllAffix(this.layer)+layers[this.layer].resourceEN
-    }
+    },
+    resetsNothing(){return false},
 })
