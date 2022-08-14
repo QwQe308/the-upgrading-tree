@@ -418,16 +418,18 @@ addLayer("u1", {
                 var product = u+p+b+g+t+s
                 if(options.ch) window.alert(`
                 细致入微信息:\n
+                这些数字为层级中的升级数与购买项等级的总和,保证这些都为100以内的素数!
                 U层级总数: ${format(u)} ${prime.includes(u)?``:`!未满足条件!`}\n\n
                 P层级总数: ${format(p)} ${prime.includes(p)?``:`!未满足条件!`}\n
                 B层级总数: ${format(b)} ${prime.includes(b)?``:`!未满足条件!`}\n
                 G层级总数: ${format(g)} ${prime.includes(g)?``:`!未满足条件!`}\n
                 T层级总数: ${format(t)} ${prime.includes(t)?``:`!未满足条件!`}\n
                 S层级总数: ${format(s)} ${prime.includes(s)?``:`!未满足条件!`}\n\n
-                总和:${format(product)} ${prime.includes(product)?``:`!未满足条件!`}\n\n
-                素数表: ${prime}`)
+                所有层级的总和:${format(product)} ${prime.includes(product)?``:`!未满足条件!`}\n\n
+                *素数表: ${prime}`)
                 else window.alert(`
-                Generator U35 Information:\n
+                Generator Upgrade 35 Information:\n
+                These are bought buyables and upgrades' total amount, and all these numbers have to be prime numbers below 100. (Exclude U buyables)
                 U: ${format(u)} ${prime.includes(u)?``:`!NOT A PRIME NUMBER!`}\n\n
                 P: ${format(p)} ${prime.includes(p)?``:`!NOT A PRIME NUMBER!`}\n
                 B: ${format(b)} ${prime.includes(b)?``:`!NOT A PRIME NUMBER!`}\n
@@ -435,7 +437,7 @@ addLayer("u1", {
                 T: ${format(t)} ${prime.includes(t)?``:`!NOT A PRIME NUMBER!`}\n
                 S: ${format(s)} ${prime.includes(s)?``:`!NOT A PRIME NUMBER!`}\n\n
                 Total: ${format(product)} ${prime.includes(product)?``:`!NOT A PRIME NUMBER!`}\n\n
-                Prime number list: ${prime}`)
+                *Prime number list: ${prime}`)
             },
             unlocked(){return hasUpgrade("u1",54) && !player.g.unl.includes("35")}
         },
