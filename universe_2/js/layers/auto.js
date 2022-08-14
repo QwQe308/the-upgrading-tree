@@ -82,7 +82,7 @@ var layerA = {
           if(!autoActive(this.id)) return
           if(!layers["r"/* fix this */].layerShown()) return
           player.a[this.id].time += diff            
-          if(autoStat(this.id).lte(player.a[this.id].time) || layers.t.resetsNothing()){
+          if(autoStat(this.id).lte(player.a[this.id].time) || layers.r.resetsNothing()){
             for(i in layers.r.buyables){
               i = Number(i)
               if(!i) break
