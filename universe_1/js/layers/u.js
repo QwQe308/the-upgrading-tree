@@ -402,6 +402,12 @@ addLayer("u1", {
                 resetU1Upgs(player.u1.upgrades,true,true)
             }
         },
+        14: {
+            title:"返回元宇宙",
+            titleEN:"Return Meta Universe",
+            onClick(){window.location.href = "../index.html"},
+            canClick:true
+        },
         21: {
             canClick(){return true},
             display() {return `G升级“细致入微”信息`},
@@ -432,12 +438,6 @@ addLayer("u1", {
                 Prime number list: ${prime}`)
             },
             unlocked(){return hasUpgrade("u1",54) && !player.g.unl.includes("35")}
-        },
-        14: {
-            title:"返回元宇宙",
-            titleEN:"Return Meta Universe",
-            onClick(){window.location.href = "../index.html"},
-            canClick:true
         },
     },
     upgrades: {
