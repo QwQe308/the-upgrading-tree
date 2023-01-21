@@ -6,7 +6,7 @@ var metaBoost = n(localStorage.getItem("metaBoost1"))
 
 function getUsedUP(){
     var cost = zero
-    for(i in player.u1.upgrades) cost = cost.add(layers.u1.upgrades[player.u1.upgrades[i]].cost)
+    cost = player.u1.real.add(player.u1.exchangedUnstableU1P).sub(player.u1.points)
     return cost
 }
 function hasMetaUpgrade(id){
