@@ -20,7 +20,7 @@ addLayer("b", {
     exponent: 1.25,
     gainMult() { 
         mult = new ExpantaNum(1)
-        mult = mult.mul(challengeEffect("u1",11))
+        if(hasChallenge('u1',11)) mult = mult.mul(challengeEffect("u1",11))
         return mult
     },
     gainExp() { 
@@ -151,7 +151,7 @@ addLayer("g", {
     exponent: 1.2,
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new ExpantaNum(1)
-        mult = mult.mul(challengeEffect("u1",11))
+        if(hasChallenge('u1',11))mult = mult.mul(challengeEffect("u1",11))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
