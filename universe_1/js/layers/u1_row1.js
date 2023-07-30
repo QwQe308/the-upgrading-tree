@@ -61,7 +61,7 @@ addLayer("p", {
                 return eff
             },
             effectDisplay(){return `^${format(tmp[this.layer].upgrades[this.id].effect)}`},
-            cost(){return n(10)},
+            cost(){return n(8)},
         },
         12: {
             description: "点数加成重置点.",
@@ -74,7 +74,7 @@ addLayer("p", {
             },
             effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}`},
             unlocked(){return hasUpgrade("u1",23)},
-            cost(){return n(64)},
+            cost(){return n(32)},
         },        
         13: {
             description: "重置点加成点数加成重置点.",
@@ -87,7 +87,7 @@ addLayer("p", {
             },
             effectDisplay(){return `^${format(tmp[this.layer].upgrades[this.id].effect)}`},
             unlocked(){return hasUpgrade("u1",23)},
-            cost(){return n(128)},
+            cost(){return n(64)},
         },        
         14: {
             description: "时间加成重置点加成点数加成重置点.",
@@ -100,19 +100,19 @@ addLayer("p", {
             },
             effectDisplay(){return `^${format(tmp[this.layer].upgrades[this.id].effect)}`},
             unlocked(){return hasUpgrade("u1",23)},
-            cost(){return n(512)},
+            cost(){return n(256)},
         },
         15: {
             description: "升级点加成重置点.",
             descriptionEN: "Upgrade Points boost Prestige Points.",
             effect(){
-                var eff = player.u1.total.div(16).add(1).pow(2)
-                if(ngSub()) eff = eff.div(64).add(1).pow(2)
+                var eff = player.u1.total.div(12).add(1).pow(2)
+                if(ngSub()) eff = eff.div(64).add(1).pow(2.25)
                 return eff
             },
             effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}`},
             unlocked(){return hasUpgrade("u1",23)},
-            cost(){return n(2048)},
+            cost(){return n(512)},
         },
     },
     clickables: {

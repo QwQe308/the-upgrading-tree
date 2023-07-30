@@ -6,7 +6,7 @@ var metaBoost = n(localStorage.getItem("metaBoost1"))
 
 function getUsedUP(){
     var cost = zero
-    cost = player.u1.total.add(player.u1.exchangedUnstableU1P).sub(player.u1.points)
+    for(i in player.u1.upgrades) cost = cost.add(layers.u1.upgrades[player.u1.upgrades[i]].cost)
     return cost
 }
 function hasMetaUpgrade(id){
@@ -34,6 +34,7 @@ function getU1TimeSpeed(){
 function resetU1Upgs(extraKeptUpgs = [],force = false,aReset= false){
     player.u1.t = n(0)
     player.points = calcU1Point()
+    player.ng.points = zero
     if(player.a.cd.lte(0)&&!aReset){
         player.a.points = player.a.points.add(getResetGain('a'))
         player.a.total = player.a.total.add(getResetGain('a'))
@@ -484,7 +485,7 @@ addLayer("u1", {
             description:`u15:升级点总数倍增点数.(未获取的也计入)`,
             descriptionEN:`u15:Upgrade Points boost Points.(\'Upgrade Points\' always means total value,based on up next turn).`,
             effect(){
-                var eff = player.u1.total.pow(1.25).mul(0.2).add(1)
+                var eff = player.u1.total.pow(1.25).mul(0.24).add(1)
                 if(hasChallenge("u1",11)) eff = eff.pow(player.points.add(1).log10().add(10).log10())
                 eff = eff.pow(buyableEffect("u1",24).add(1).log10().add(1))
                 return eff
@@ -497,7 +498,7 @@ addLayer("u1", {
 
         21: {
             description:`u21:解锁倍增器.Tip:你需要一个附近的升级才能购买!`,
-            descriptionEN:`u21:Unlock Booster.Tip:You can only buy a upg next to a bought upgrade.`,
+            descriptionEN:`u21:Unlock Booster.Tip:You can only buy a upg next to a bought one.`,
             cost:n(3),
             unlocked(){return player[this.layer].total.gte(3)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)}
@@ -654,7 +655,7 @@ addLayer("u1", {
         }, 
         52: {
             description:`u52:解锁NG-1.时间指数+lg(发生器+1)*lg(倍增器+1)/16.`,
-            descriptionEN:`u52:Unlock NG-1.Time Exponent+lg(Generators+1)*lg(boosters+1)/16.`,
+            descriptionEN:`u52:Unlock NG-1. Time Exponent+lg(Generators+1)*lg(boosters+1)/16.`,
             cost:n(81),
             unlocked(){return player[this.layer].total.gte(128)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
@@ -666,7 +667,7 @@ addLayer("u1", {
         }, 
         53: {
             description:`u53:空间建筑不消耗点数,并且空间给予九倍的免费升级点.`,
-            descriptionEN:`u53:Buying Space Buildings uses nothing,and 2nd space effect *9.`,
+            descriptionEN:`u53:Buying Space Buildings uses nothing, and 2nd space effect *9.`,
             cost:n(81),
             unlocked(){return player[this.layer].total.gte(128)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
@@ -686,7 +687,7 @@ addLayer("u1", {
         }, 
         54: {
             description:`u54:解锁极多的发生器升级.你可能需要一定实力来解锁...购买一次后就无需再完成购买条件.获得49临时升级点.`,
-            descriptionEN:`u54:Unlock MORE generator upgrades.Once they've been bought,you can buy them with no requirement.+ 49 temporary upgrade points.`,
+            descriptionEN:`u54:Unlock MORE generator upgrades. Once they've been bought, you can buy them with no requirement.+ 49 temporary upgrade points.`,
             cost:n(81),
             unlocked(){return player[this.layer].total.gte(128)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
@@ -698,13 +699,19 @@ addLayer("u1", {
             unlocked(){return player[this.layer].total.gte(128)},
             canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
         }, 
+        /* 61: {
+            description:`u61:解锁H节点.`,
+            cost:n(243),
+            unlocked(){return player[this.layer].total.gte(512)},
+            canAfford(){return checkAroundUpg(this.layer,Number(this.id)) && player[this.layer].points.gte(this.cost)},
+        },  */
     },
     challenges: {
         11: {
             name(){return "C-1" + (hasUpgrade("u1",this.baseUPG)?"":"<text style='color:red'>(未解锁)</text>")},
             /**/nameEN(){return "C-1" + (hasUpgrade("u1",this.baseUPG)?"":"<text style='color:red'>(Locked)</text>")},
-            challengeDescription: "挑战就是没有挑战.<br><text style='color:red'>进入条件:拥有10,000,000t.</text><br>Tip:进入任何U挑战后您的升级会被重置,但花费的升级点不会返还!",
-            /**/challengeDescriptionEN: "A challengeful challenge could be NERF-LESS.<br><text style='color:red'>Enter Requirement: 10,000,000t.</text><br>Tip:Entering any U challenges resets your U upgrades,but you WILL NOT get upgrade points back!",
+            challengeDescription: "挑战就是没有挑战.<br><text style='color:red'>进入条件:拥有4,000,000t.</text><br>Tip:进入任何U挑战后您的升级会被重置,但花费的升级点不会返还!",
+            /**/challengeDescriptionEN: "A challengeful challenge could be NERF-LESS.<br><text style='color:red'>Enter Requirement: 4,000,000t.</text><br>Tip:Entering any U challenges resets your U upgrades,but you WILL NOT get upgrade points back!",
             baseUPG:35,
             onEnter(){
                 resetU1Upgs([this.baseUPG],true)
@@ -712,13 +719,13 @@ addLayer("u1", {
             onExit(){
                 player.u1.activeChallenge = this.id
             },
-            enterReq(){return player.u1.t.gte(10000000)&&hasUpgrade("u1",this.baseUPG)},
-            canComplete(){return player.points.gte(100000000)},
-            goalDescription(){return format(ExpantaNum(100000000))+"点数"},
-            /**/goalDescriptionEN(){return format(ExpantaNum(100000000))+" Points"},
-            rewardEffect(){return player.g.power.add(1).pow(hasUpgrade("u1",this.baseUPG)?3.5:1.75)},
+            enterReq(){return player.u1.t.gte(4e6)&&hasUpgrade("u1",this.baseUPG)},
+            canComplete(){return player.points.gte(1e7)},
+            goalDescription(){return format(ExpantaNum(1e7))+"点数"},
+            /**/goalDescriptionEN(){return format(ExpantaNum(1e7))+" Points"},
+            rewardEffect(){return player.g.power.add(1).pow(hasUpgrade("u1",this.baseUPG)?3.6:1.8)},
             rewardDescription:"1.倍增器和发生器价格除以(发生器能量+1)^1.75.<text style='color:red'>(如果您解锁了C1,该效果再次^2)</text>.<br>2.基于点数小幅度改善u15公式.",
-            /**/rewardDescriptionEN:"1.Booster & Generator cost is divided by (Energy+1)^1.75.<text style='color:red'>(If C1 is unlocked,this effect ^2 again)</text>.<br>2.u15 is slightly boosted based on Points.",
+            /**/rewardDescriptionEN:"1.Booster & Generator cost is divided by (Energy+1)^1.8.<text style='color:red'>(If C1 is unlocked,this effect ^2 again)</text>.<br>2.u15 is slightly boosted based on Points.",
             rewardDisplay(){return `1.价格/${format(this.rewardEffect())}. `},
             /**/rewardDisplayEN(){return `1.Cost/${format(this.rewardEffect())}. `},
             unlocked(){return layers[this.layer].upgrades[this.baseUPG].unlocked()}
@@ -727,7 +734,7 @@ addLayer("u1", {
             name(){return "C-2" + (hasUpgrade("u1",this.baseUPG)?"":"<text style='color:red'>(未解锁)</text>")},
             /**/nameEN(){return "C-2" + (hasUpgrade("u1",this.baseUPG)?"":"<text style='color:red'>(Locked)</text>")},
             challengeDescription: "无时间指数.点数被能量倍增.<br><text style='color:red'>进入条件:拥有1e10t.</text>",
-            /**/challengeDescriptionEN: "Wow time exponent seems not so useful now.REMOVE it.<br><text style='color:red'>Enter Requirement: 1e10t.</text>",
+            /**/challengeDescriptionEN: "Hmmm time exponent seems not so useful now. REMOVE it.<br><text style='color:red'>Enter Requirement: 1e10t.</text>",
             baseUPG:44,
             onEnter(){
                 resetU1Upgs([this.baseUPG],true)
@@ -746,8 +753,8 @@ addLayer("u1", {
         21: {
             name(){return "C-3" + (hasUpgrade("u1",this.baseUPG)?"":"<text style='color:red'>(未解锁)</text>")},
             /**/nameEN(){return "C-3" + (hasUpgrade("u1",this.baseUPG)?"":"<text style='color:red'>(Locked)</text>")},
-            challengeDescription: "点数倍率被大幅削弱.<br><text style='color:red'>进入条件:在C-2中,拥有1e15t.</text>",
-            /**/challengeDescriptionEN: "Points multiplier is HYPER-NERFED,as you overused it.<br><text style='color:red'>Enter Requirement: Gained 1e15 t in C-2.</text>",
+            challengeDescription: "点数倍率被大幅削弱.<br><text style='color:red'>进入条件:在C-2中,拥有1e14t.</text>",
+            /**/challengeDescriptionEN: "Points multiplier is HYPER-NERFED, as you overused it.<br><text style='color:red'>Enter Requirement: Gained 1e14 t in C-2.</text>",
             baseUPG:55,
             onEnter(){
                 resetU1Upgs([this.baseUPG],true)
@@ -755,7 +762,7 @@ addLayer("u1", {
             onExit(){
                 player.u1.activeChallenge = this.id
             },
-            enterReq(){return player.u1.t.gte(1e15)&&hasUpgrade("u1",this.baseUPG)&&inChallenge("u1",12)},
+            enterReq(){return player.u1.t.gte(1e14)&&hasUpgrade("u1",this.baseUPG)&&inChallenge("u1",12)},
             canComplete(){return player.points.gte(1e20)},
             goalDescription(){return format(ExpantaNum(1e20))+"点数"},
             /**/goalDescriptionEN(){return format(ExpantaNum(1e20))+" Points"},

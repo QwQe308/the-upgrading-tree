@@ -20,7 +20,7 @@ addLayer("b", {
     exponent: 1.25,
     gainMult() { 
         mult = new ExpantaNum(1)
-        if(hasChallenge('u1',11)) mult = mult.mul(challengeEffect("u1",11))
+        mult = mult.mul(challengeEffect("u1",11))
         return mult
     },
     gainExp() { 
@@ -84,7 +84,7 @@ addLayer("b", {
         },
         12: {
             description: "倍增器效果基于重置点增加.",
-            descriptionEN: "Boosters\' effect is boosted by Prestige Points.Reversed effect sounds fun.",
+            descriptionEN: "Boosters\' effect is boosted by Prestige Points. Reversed effect sounds fun.(not)",
             effect(){
                 var eff = player.p.points.add(1).log10().pow(0.5).div(10).add(1)
                 return eff
@@ -146,12 +146,12 @@ addLayer("g", {
     baseResource: "点数",
     baseResourceEN: "Points",
     baseAmount() {return player.points},
-    requires(){return n(200)},
+    requires(){return n(100)},
     base:4,
     exponent: 1.2,
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new ExpantaNum(1)
-        if(hasChallenge('u1',11))mult = mult.mul(challengeEffect("u1",11))
+        mult = mult.mul(challengeEffect("u1",11))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -227,8 +227,8 @@ addLayer("g", {
             description: "总升级点加成时间速率.",
             descriptionEN: "Upgrade Points boost Time Speed.",
             effect(){
-                var eff = player.u1.total.div(9).pow(2.5).add(1)
-                if(ngSub()) eff = eff.div(1600).add(1).pow(2)
+                var eff = player.u1.total.div(9).pow(2.75).add(1)
+                if(ngSub()) eff = eff.div(1600).add(1).pow(2.5)
                 return eff
             },
             effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}`},
@@ -334,7 +334,7 @@ addLayer("g", {
             description: "<text style='color:blue'>静态时间:不获得发生器,得到1e16t.</text>基于升级点,本次U&A重置所用的现实时间和t,增幅时间速率.",
             descriptionEN: "<text style='color:blue'>Do not gain Generator,and get 1e16 t.</text>Boost Timespeed based on real time this U&A reset,Upgrade points and t.",
             effect(){
-                var eff = player.u1.total.div(25).add(1).pow(Math.log10(player.u1.resetTime)/1.8).pow(player.u1.t.add(1e10).log10().log10().pow(2))
+                var eff = player.u1.total.div(25).add(1).pow(Math.log10(player.u1.resetTime)/1.6).pow(player.u1.t.add(1e10).log10().log10().pow(2))
                 return eff
             },
             effectDisplay(){return `x${format(tmp[this.layer].upgrades[this.id].effect)}${player.g.unl.includes(this.id)?"":`<text style='color:red'>(${options.ch?"未解锁":"Locked"})</text>`}`},

@@ -129,7 +129,7 @@ addLayer("ng", {
     },
     getResetGain(){
         if(!hasMetaUpgrade(15)) if(!ngSub()) return zero
-        var gain = expPow(player.points.add(10).log10().mul(player.p.points.add(10).log10()).mul(player.u1.t.add(10).log10()).cbrt(),1.8).sub(1).pow(2).div(10)
+        var gain = expPow(player.points.add(10).log10().mul(player.p.points.add(10).log10()).mul(player.u1.t.add(10).log10()).cbrt(),1.8).sub(1).pow(2).div(5)
         if(!ngSub()) gain = gain.cbrt()
         if(gain.lte(1)) gain = gain.sqrt()
         gain = gain.mul(n(1.02).pow(getBuyableAmount("ng",11)))
