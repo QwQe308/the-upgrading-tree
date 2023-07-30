@@ -284,7 +284,7 @@ function startChallenge(layer, x) {
 	let enter = false
 	if (!player[layer].unlocked) return
 	if (player[layer].activeChallenge == x) {
-		if(!canCompleteChallenge(layer,x)) if(!window.confirm("您是否要退出挑战")) return;
+		if(!canCompleteChallenge(layer,x)) if(options.ch?(!window.confirm("您是否要退出挑战")):(!window.confirm("Do you really want to exit the challenge?"))) return;
 		completeChallenge(layer, x)
 		player[layer].activeChallenge = null
 	} else {

@@ -107,6 +107,8 @@ function update(){
     }
     //存储元宇宙升级
     localStorage.setItem("metaupg",player.u.upgrades.toString())
+    //存储语言
+    //localStorage.setItem("language",options.ch)
 }
 
 addLayer("u", {

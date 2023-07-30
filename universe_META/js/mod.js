@@ -80,6 +80,9 @@ var displayThings = [
 		if(options.ch) if(isEndgame()) return `您已超过当前版本目标,在此之后可能会受到版本软上限!`
 		if(isEndgame()) return `After the endgame,there might be some softcaps to prevent inflation!`
 	},
+    function(){
+		return `在元宇宙的设置中可以更换语言 - You can change language in the setting in meta universe`
+	},
 ]
 
 // Determines when the game "ends"

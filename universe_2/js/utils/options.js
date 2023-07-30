@@ -13,7 +13,7 @@ function getStartOptions() {
 		showStory: true,
 		forceOneTab: false,
 		oldStyle: false,
-		ch: true,
+		ch: false,
 	}
 }
 
