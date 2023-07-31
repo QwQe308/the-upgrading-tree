@@ -115,7 +115,7 @@ addLayer("u", {
     name: "META universe", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "U", // This appears on the layer's node. Default is the id with the first letter capitalized
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: zero,
         t:zero,
         exchangedUnstableUP:zero,
@@ -124,6 +124,10 @@ addLayer("u", {
         bestTotal:zero,
         MetaReset:null,
     }},
+    requires:n(4),
+    baseAmount(){return player.u.total},
+    baseResource:"最高总分数",
+    baseResourceEN:"Best Total Score",
     color: "lightblue",
     resource: "元升级点", // Name of prestige currency
     resourceEN: "Meta Upgrade Points", // Name of prestige currency
@@ -241,6 +245,8 @@ addLayer("u", {
             else window.alert("Challenge Failed!")
             player.u.activeChallenge = null
         }
+
+        if(total.gte(4)) player.u.unlocked = true
     },
 })
 
@@ -332,6 +338,7 @@ addLayer("u2", {
     requires:ten,
     baseAmount(){return player.u.total},
     baseResource:"最高总分数",
+    baseResourceEN:"Best Total Score",
     color: "lightblue",
     resource: "分数", // Name of prestige currency
     resourceEN: "Score", // Name of prestige currency
