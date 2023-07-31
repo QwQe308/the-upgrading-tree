@@ -214,8 +214,18 @@ addLayer("u", {
     clickables: {
         11: {
             canClick() { return true },
-            display() { return `重置升级<br />升级点恢复为 ${format(player.u.total)}.(本轮获得${format(player.u.total.sub(player.u.baseUPLastReset).max(0))})<br />您在这一轮中获得了${format(player.u.exchangedUnstableUP)}临时升级点(当前值:${format(getUnstableUP())})` },
-            displayEN() { return `Reset Upgrades<br />Upgrade Points will be ${format(player.u.total)}.(Gained ${format(player.u.total.sub(player.u.baseUPLastReset))} this turn)<br />You have ${format(player.u.exchangedUnstableUP)} temporary Upgrade Points now(Current gained:${format(getUnstableUP())})` },
+            display() {
+                let str = `重置升级<br />升级点恢复为 ${format(player.u.total)}.`
+                if (player.u.total.sub(player.u.baseUPLastReset).gt(0)) str += `(本轮获得${format(player.u.total.sub(player.u.baseUPLastReset).max(0))})`
+                if (player.u.exchangedUnstableU1P.gt(0)) str += `<br />您在这一轮中获得了${format(player.u.exchangedUnstableU1P)}临时升级点(当前值:${format(getUnstableUP())})`
+                return str
+            },
+            displayEN() {
+                let str = `Reset Upgrades<br />Upgrade Points will be ${format(player.u.total)}.`
+                if (player.u.total.sub(player.u.baseUPLastReset).gt(0)) str += `(Gained ${format(player.u.total.sub(player.u.baseUPLastReset))} this reset)`
+                if (player.u.exchangedUnstableUP.gt(0)) str += `<br />You have ${format(player.u.exchangedUnstableUP)} temporary Upgrade Points now(Current gained:${format(getUnstableUP())})`
+                return str
+            },
             onClick() {
                 if (options.ch) if (player.u.confirmWindow) if (!confirm("确定重置升级?")) return
                 if (!options.ch) if (player.u.confirmWindow) if (!confirm("Are you sure to RESET YOUR U UPGRADES?")) return
@@ -247,7 +257,7 @@ addLayer("u", {
         31: {
             canClick() { return player.u.points.gte(this.cost()) && getUsedUP().gte(this.cost()) },
             display() { return `这个宇宙有点不一样...?宇宙似乎对外来者充满敌意,除去速度什么的,升级也被限制住了,我们得用一些升级点打破这道阻碍.<br>用${format(this.cost())}升级点解锁下一排升级.(你必须先使用等量的升级点!)(同时也可能有新内容解锁!)` },
-            displayEN() { return `Something seems different in this universe...?Everything in this universe was limited,such as speed, energy...and upgrades.Break The Limit with your Upgrade Points!<br>Use ${format(this.cost())} Upgrade Points to break the limit.(You have to spend UPs equal or greater than this amount first!) (Something new may be unlocked at the same time.)` },
+            displayEN() { return `Something seems different in this universe...? Everything in this universe was limited, such as speed, energy...and upgrades. Break The Limit with your Upgrade Points!<br>Use ${format(this.cost())} Upgrade Points to break the limit.(You have to spend UPs equal or greater than this amount first!) (Something new may be unlocked at the same time.)` },
             cost(x = player.u.unlockedRows) {
                 return rowCost[x]
             },
@@ -255,7 +265,8 @@ addLayer("u", {
                 player.u.points = player.u.points.sub(this.cost())
                 player.u.unlockedRows++
             },
-            style() { return { height: "80px", width: "500px" } }
+            style() { return { height: "80px", width: "500px" } },
+            unlocked() {return player.u.total.gte(3)},
         },
     },
     upgrades: {
@@ -268,6 +279,7 @@ addLayer("u", {
             },
             effectDisplay() { return `/${format(tmp[this.layer].upgrades[this.id].effect)}` },
             cost: n(1),
+            unlocked() {return player.u.total.gte(1)},
         },
         12: {
             description: `u12:速度被升级点加成.`,
@@ -278,11 +290,13 @@ addLayer("u", {
             },
             effectDisplay() { return `x${format(tmp[this.layer].upgrades[this.id].effect)}` },
             cost: n(1),
+            unlocked() {return player.u.total.gte(1)},
         },
         13: {
             description: `u13:解锁层级“浓缩”.`,
             descriptionEN: `u13:Unlock "Condenser" layer.`,
             cost: n(1),
+            unlocked() {return player.u.total.gte(1)},
         },
         14: {
             description: `u14:浓缩0.5次时间.`,
@@ -293,6 +307,7 @@ addLayer("u", {
             },
             effectDisplay() { return `x${format(tmp[this.layer].upgrades[this.id].effect)}` },
             cost: n(1),
+            unlocked() {return player.u.total.gte(1)},
         },
         15: {
             description: `u15:升级点倍增距离.`,
@@ -303,6 +318,7 @@ addLayer("u", {
             },
             effectDisplay() { return `x${format(tmp[this.layer].upgrades[this.id].effect)}` },
             cost: n(1),
+            unlocked() {return player.u.total.gte(1)},
         },
         21: {
             description: `u21:解锁减益词缀:高维的<br>解锁增益词缀:低维的.`,
