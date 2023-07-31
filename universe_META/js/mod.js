@@ -109,4 +109,6 @@ function maxTickLength() {
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
-function fixOldSave(oldVersion){}
+function fixOldSave(oldVersion){
+    if(oldVersion == 1.01) player.u.unlocked = false
+}
