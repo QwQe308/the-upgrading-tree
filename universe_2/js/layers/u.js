@@ -217,7 +217,7 @@ addLayer("u", {
             display() {
                 let str = `重置升级<br />升级点恢复为 ${format(player.u.total)}.`
                 if (player.u.total.sub(player.u.baseUPLastReset).gt(0)) str += `(本轮获得${format(player.u.total.sub(player.u.baseUPLastReset).max(0))})`
-                if (player.u.exchangedUnstableU1P.gt(0)) str += `<br />您在这一轮中获得了${format(player.u.exchangedUnstableU1P)}临时升级点(当前值:${format(getUnstableUP())})`
+                if (player.u.exchangedUnstableUP.gt(0)) str += `<br />您在这一轮中获得了${format(player.u.exchangedUnstableUP)}临时升级点(当前值:${format(getUnstableUP())})`
                 return str
             },
             displayEN() {
